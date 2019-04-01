@@ -1,8 +1,12 @@
 package main;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -16,6 +20,7 @@ public class mainScene {
     /*The only thing that needs to be called to create the mainwindowView
      */
     private mainScene(Stage stage) {
+
         createScene(stage);
 
     }
@@ -41,12 +46,13 @@ public class mainScene {
     }
 
     private Pane createPane() {
-        //FIXME Correct the spaces between the elements
+
         BorderPane mainPane = new BorderPane();
         GridPane innerPane = new GridPane();
         innerPane.setAlignment(Pos.CENTER);
-        innerPane.setVgap(5.0);
-        innerPane.setHgap(5.0);
+        innerPane.setVgap(10.0);
+        innerPane.setHgap(10.0);
+        innerPane.setPadding(new Insets(10.0));
 
 
         mainPane.setCenter(innerPane);
@@ -69,9 +75,10 @@ public class mainScene {
     }
 
     private void setControls(GridPane p) {
-        ListView bestellungen = new ListView<>();
-        Button bestellungHinzufuegen = new Button("Hinzufügen");
-        p.add(bestellungen, 0, 0, 3, 3);
-        p.add(bestellungHinzufuegen, 4, 0);
+        ListView möglichePizzenListView = new ListView<>();
+        ListView bestellungenListView = new ListView<>();
+        //TODO Costomise ListView Cell to show name and prive in a row
+        p.add(möglichePizzenListView, 0, 0, 3, 3);
+        p.add(bestellungenListView, 4, 0, 3, 3);
     }
 }
