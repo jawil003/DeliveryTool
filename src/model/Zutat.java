@@ -1,4 +1,4 @@
-package toolClasses;
+package model;
 
 public class Zutat {
     private String name;
