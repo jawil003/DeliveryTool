@@ -4,14 +4,25 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.Pizzaverwaltung;
 
+import java.sql.SQLException;
+
 public class Main extends Application {
 
     private Pizzaverwaltung pizzaverwaltung;
 
+    {
+        try {
+            pizzaverwaltung = new Pizzaverwaltung(null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("DeliveryTool");
-        mainWindow.showScene(primaryStage);
+        final mainWindow mainWindow = main.mainWindow.showScene(primaryStage);
+        mainWindow.setPizzaverwaltung(pizzaverwaltung);
 
     }
 
