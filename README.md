@@ -6,4 +6,10 @@ Our project is a delivery tool for a big brand of pizzerias in Germany (as a sch
 ## Database:
 [MySQL Database](https://www.db4free.net)
 
+| Benutzername  | Password      |
+| ------------- |:-------------:| 
+| User          | Password      | 
+ 
+
+
 
