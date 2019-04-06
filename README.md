@@ -8,7 +8,7 @@ Our project is a delivery tool for a big brand of pizzerias in Germany (as a sch
 
 | Benutzername  | Password      |
 | ------------- |:-------------:| 
-| User          | Password      | 
+| delivery      | 34zy23npNZ    | 
  
 
 
