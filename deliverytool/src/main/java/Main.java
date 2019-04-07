@@ -1,5 +1,3 @@
-package main;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.Pizzaverwaltung;
@@ -21,7 +19,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("DeliveryTool");
-        final mainWindow mainWindow = main.mainWindow.showScene(primaryStage);
+        final MainWindow mainWindow = MainWindow.showScene(primaryStage);
         mainWindow.setPizzaverwaltung(pizzaverwaltung);
 
     }

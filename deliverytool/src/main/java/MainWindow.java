@@ -1,5 +1,3 @@
-package main;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,27 +12,27 @@ import javafx.util.Callback;
 import model.Pizza;
 import model.Pizzaverwaltung;
 
-public class mainWindow {
+public class MainWindow {
 
-    private static mainWindow mainWindow;
+    private static MainWindow mainWindow;
     private static Scene scene;
     private ListView möglichePizzenListView;
     private Pizzaverwaltung pizzaverwaltung;
 
     /*The only thing that needs to be called to create the mainwindowView
      */
-    private mainWindow(Stage stage) {
+    private MainWindow(Stage stage) {
 
         createScene(stage);
 
     }
 
     //this method is the entry point of the class to make shure that it is only called one time and not again
-    public static mainWindow showScene(Stage stage) {
+    public static MainWindow showScene(Stage stage) {
         if (mainWindow != null) {
 
         } else {
-            mainWindow = new mainWindow(stage);
+            mainWindow = new MainWindow(stage);
         }
 
         return mainWindow;
@@ -80,16 +78,16 @@ public class mainWindow {
         pane.setTop(bar);
     }
 
-    public static main.mainWindow getMainWindow() {
+    public static MainWindow getMainWindow() {
         return mainWindow;
     }
 
-    public static void setMainWindow(main.mainWindow mainWindow) {
-        main.mainWindow.mainWindow = mainWindow;
+    public static void setMainWindow(MainWindow mainWindow) {
+        mainWindow.mainWindow = mainWindow;
     }
 
     public static void setScene(Scene scene) {
-        main.mainWindow.scene = scene;
+        mainWindow.scene = scene;
     }
 
     private void setControls(GridPane p) {
