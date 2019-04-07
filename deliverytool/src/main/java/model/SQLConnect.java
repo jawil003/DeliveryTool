@@ -2,7 +2,6 @@ package model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SQLConnect {
@@ -13,7 +12,7 @@ public class SQLConnect {
     private static String dbname = "deliverytool";
     private static Connection conn = null;
 
-    public static Connection establishConnection(String databaseName) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public static Connection establishConnection() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         System.out.println("* Treiber laden");
         Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         System.out.println(Class.forName("com.mysql.cj.jdbc.Driver"));
@@ -24,20 +23,6 @@ public class SQLConnect {
         conn = DriverManager.getConnection(url, user, password);
         return conn;
 
-    }
-
-    public static ResultSet sqlRequest(String sqlCommand) throws SQLException {
-        return conn.createStatement().executeQuery(sqlCommand);
-    }
-
-    public static boolean endingConnection() throws SQLException {
-        System.out.println("* Datenbank-Verbindung beenden");
-        if (conn.isValid(1000)) {
-            conn.close();
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public static String getHostname() {

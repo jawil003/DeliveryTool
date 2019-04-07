@@ -2,33 +2,36 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import model.Pizza;
 import model.Pizzaverwaltung;
+
+import java.sql.SQLException;
 
 public class MainWindow {
 
     private static MainWindow mainWindow;
     private static Scene scene;
-    private ListView möglichePizzenListView;
     private Pizzaverwaltung pizzaverwaltung;
-
+    ListView<String> möglichePizzenListView;
     /*The only thing that needs to be called to create the mainwindowView
      */
     private MainWindow(Stage stage) {
-
+        try {
+            pizzaverwaltung = new Pizzaverwaltung();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         createScene(stage);
 
     }
 
     //this method is the entry point of the class to make shure that it is only called one time and not again
     public static MainWindow showScene(Stage stage) {
+
         if (mainWindow != null) {
 
         } else {
@@ -91,25 +94,20 @@ public class MainWindow {
     }
 
     private void setControls(GridPane p) {
-        möglichePizzenListView = new ListView<>();
-        for (Pizza e : pizzaverwaltung.getPizzen()) {
-            möglichePizzenListView.getItems().add(e);
-        }
-
-        möglichePizzenListView.setCellFactory(new Callback<ListView, ListCell>() {
-            @Override
-            public ListCell call(ListView param) {
-                return new ListCell();
-            }
-        });
         Label pizzenLabel = new Label("Pizzen");
 
         Button plusButton = new Button();
-        plusButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/plus.png"))));
-        pizzenLabel.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/pizza.png"))));
+        // plusButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/plus.png"))));
+//        pizzenLabel.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/pizza.png"))));
         Label bestellungenLabel = new Label("Bestellung(en)");
+        möglichePizzenListView = new ListView<>();
         ListView bestellungenListView = new ListView<>();
-        bestellungenLabel.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/cash-register.png"))));
+
+        for (Pizza e : pizzaverwaltung.getPizzen()) {
+            möglichePizzenListView.getItems().add(e.toString());
+        }
+
+//        bestellungenLabel.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/cash-register.png"))));
         Label gesamtPreis = new Label("Gesamt:");
         //TODO Customise ListView Cell to show name and price in a row
         p.add(pizzenLabel, 0, 0);

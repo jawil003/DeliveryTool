@@ -10,7 +10,7 @@ public class Main extends Application {
 
     {
         try {
-            pizzaverwaltung = new Pizzaverwaltung(null);
+            pizzaverwaltung = new Pizzaverwaltung();
         } catch (SQLException e) {
             e.printStackTrace();
         }

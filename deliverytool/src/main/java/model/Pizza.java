@@ -4,10 +4,11 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 public class Pizza extends ListenEintrag {
-    Optional<Double> preisKlein;
-    Optional<Double> preisMittel;
-    Optional<Double> preisGroß;
-    Optional<Double> preisFamilie;
+    private String name;
+    private Optional<Double> preisKlein;
+    private Optional<Double> preisMittel;
+    private Optional<Double> preisGroß;
+    private Optional<Double> preisFamilie;
     private LinkedList<Zutat> zutaten;
 
     //Constructors:
@@ -19,6 +20,7 @@ public class Pizza extends ListenEintrag {
 
     public Pizza(String name, LinkedList<Zutat> zutaten, Double preisKlein, Double preisMittel, Double preisGroß, Double preisFamilie) {
         super(name);
+        this.name = name;
         this.zutaten = zutaten;
         this.preisKlein = Optional.ofNullable(preisKlein);
         this.preisMittel = Optional.ofNullable(preisMittel);
@@ -67,5 +69,10 @@ public class Pizza extends ListenEintrag {
 
     public void addZutaten(Zutat e) {
         zutaten.add(e);
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

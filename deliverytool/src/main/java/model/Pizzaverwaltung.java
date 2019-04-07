@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.LinkedList;
 
 public class Pizzaverwaltung {
-    LinkedList<Pizza> pizzen;
+    LinkedList<Pizza> pizzen = new LinkedList<>();
 
     public Pizzaverwaltung() throws SQLException {
         this(null);
@@ -16,8 +16,14 @@ public class Pizzaverwaltung {
 
     public Pizzaverwaltung(LinkedList<Pizza> pizzen) throws SQLException {
         Connection connection = null;
+        if (pizzen != null) {
+            this.pizzen = pizzen;
+        } else {
+            this.pizzen = new LinkedList<>();
+        }
+
         try {
-            connection = SQLConnect.establishConnection("deliverytool.Pizza");
+            connection = SQLConnect.establishConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -31,9 +37,11 @@ public class Pizzaverwaltung {
         assert connection != null;
         final Statement statement = connection.createStatement();
         final ResultSet resultSet = statement.executeQuery("SELECT `Name`, `PreisKlein`, `PreisMittel`, `PreisGroß`, `PreisFamilie` FROM Pizza");
+
+
         //FIXME: NullPointerException caused by wrong table access.
         while (resultSet.next()) {
-            pizzen.add(new Pizza(resultSet.getString(1),
+            this.pizzen.add(new Pizza(resultSet.getString(1),
                     null,
                     resultSet.getDouble(2),
                     resultSet.getDouble(3),
@@ -41,7 +49,7 @@ public class Pizzaverwaltung {
                     resultSet.getDouble(5)));
         }
 
-        this.pizzen = pizzen;
+        connection.close();
     }
 
     public LinkedList<Pizza> getPizzen() {
