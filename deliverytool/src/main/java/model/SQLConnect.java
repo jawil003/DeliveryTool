@@ -2,6 +2,7 @@ package model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SQLConnect {
@@ -23,6 +24,10 @@ public class SQLConnect {
         conn = DriverManager.getConnection(url, user, password);
         return conn;
 
+    }
+
+    public static ResultSet sqlRequest(String sqlCommand) throws SQLException {
+        return conn.createStatement().executeQuery(sqlCommand);
     }
 
     public static boolean endingConnection() throws SQLException {
