@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class SQLConnect {
     private final static String hostname = "db4free.net";
     private final static String port = "3306";
-    private final static String user = "delivery";
+    private final static String user = "delivery@localhost";
     private final static String password = "34zy23npNZ";
     private static String dbname;
     private static Connection conn = null;
