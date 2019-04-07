@@ -11,11 +11,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import model.Pizza;
+import model.Pizzaverwaltung;
 
 public class mainWindow {
 
     private static mainWindow mainWindow;
     private static Scene scene;
+    private ListView möglichePizzenListView;
+    private Pizzaverwaltung pizzaverwaltung;
 
     /*The only thing that needs to be called to create the mainwindowView
      */
@@ -26,12 +30,14 @@ public class mainWindow {
     }
 
     //this method is the entry point of the class to make shure that it is only called one time and not again
-    public static void showScene(Stage stage) {
+    public static mainWindow showScene(Stage stage) {
         if (mainWindow != null) {
 
         } else {
             mainWindow = new mainWindow(stage);
         }
+
+        return mainWindow;
     }
 
     public Scene getScene() {
@@ -74,8 +80,24 @@ public class mainWindow {
         pane.setTop(bar);
     }
 
+    public static main.mainWindow getMainWindow() {
+        return mainWindow;
+    }
+
+    public static void setMainWindow(main.mainWindow mainWindow) {
+        main.mainWindow.mainWindow = mainWindow;
+    }
+
+    public static void setScene(Scene scene) {
+        main.mainWindow.scene = scene;
+    }
+
     private void setControls(GridPane p) {
-        ListView möglichePizzenListView = new ListView<>();
+        möglichePizzenListView = new ListView<>();
+        for (Pizza e : pizzaverwaltung.getPizzen()) {
+            möglichePizzenListView.getItems().add(e);
+        }
+
         möglichePizzenListView.setCellFactory(new Callback<ListView, ListCell>() {
             @Override
             public ListCell call(ListView param) {
@@ -83,6 +105,7 @@ public class mainWindow {
             }
         });
         Label pizzenLabel = new Label("Pizzen");
+
         Button plusButton = new Button();
         plusButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/plus.png"))));
         pizzenLabel.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/pizza.png"))));
@@ -97,5 +120,21 @@ public class mainWindow {
         p.add(möglichePizzenListView, 0, 1, 3, 3);
         p.add(bestellungenListView, 4, 1, 3, 3);
         p.add(gesamtPreis, 4, 4);
+    }
+
+    public ListView getMöglichePizzenListView() {
+        return möglichePizzenListView;
+    }
+
+    public void setMöglichePizzenListView(ListView möglichePizzenListView) {
+        this.möglichePizzenListView = möglichePizzenListView;
+    }
+
+    public Pizzaverwaltung getPizzaverwaltung() {
+        return pizzaverwaltung;
+    }
+
+    public void setPizzaverwaltung(Pizzaverwaltung pizzaverwaltung) {
+        this.pizzaverwaltung = pizzaverwaltung;
     }
 }
