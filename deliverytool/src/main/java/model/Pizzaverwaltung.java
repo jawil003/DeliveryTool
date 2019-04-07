@@ -17,7 +17,7 @@ public class Pizzaverwaltung {
     public Pizzaverwaltung(LinkedList<Pizza> pizzen) throws SQLException {
         Connection connection = null;
         try {
-            connection = SQLConnect.establishConnection("Pizza");
+            connection = SQLConnect.establishConnection("deliverytool.Pizza");
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -31,7 +31,7 @@ public class Pizzaverwaltung {
         assert connection != null;
         final Statement statement = connection.createStatement();
         final ResultSet resultSet = statement.executeQuery("SELECT `Name`, `PreisKlein`, `PreisMittel`, `PreisGroß`, `PreisFamilie` FROM Pizza");
-
+        //FIXME: NullPointerException caused by wrong table access.
         while (resultSet.next()) {
             pizzen.add(new Pizza(resultSet.getString(1),
                     null,

@@ -8,19 +8,19 @@ import java.sql.SQLException;
 public class SQLConnect {
     private final static String hostname = "db4free.net";
     private final static String port = "3306";
-    private final static String user = "delivery@localhost";
+    private final static String user = "delivery";
     private final static String password = "34zy23npNZ";
-    private static String dbname;
+    private static String dbname = "deliverytool";
     private static Connection conn = null;
 
     public static Connection establishConnection(String databaseName) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        dbname = databaseName;
         System.out.println("* Treiber laden");
         Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         System.out.println(Class.forName("com.mysql.cj.jdbc.Driver"));
         System.out.println(Class.forName("com.mysql.cj.jdbc.Driver").newInstance());
         System.out.println("* Verbindung aufbauen");
         String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbname;
+        System.out.println(url);
         conn = DriverManager.getConnection(url, user, password);
         return conn;
 
