@@ -2,6 +2,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -98,7 +100,7 @@ public class MainWindow {
 
         Button plusButton = new Button();
         // plusButton.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/plus.png"))));
-//        pizzenLabel.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/pizza.png"))));
+        pizzenLabel.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/pizza.png"))));
         Label bestellungenLabel = new Label("Bestellung(en)");
         möglichePizzenListView = new ListView<>();
         ListView bestellungenListView = new ListView<>();
@@ -107,7 +109,7 @@ public class MainWindow {
             möglichePizzenListView.getItems().add(e.toString());
         }
 
-//        bestellungenLabel.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/cash-register.png"))));
+        bestellungenLabel.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/cash-register.png"))));
         Label gesamtPreis = new Label("Gesamt:");
         //TODO Customise ListView Cell to show name and price in a row
         p.add(pizzenLabel, 0, 0);
