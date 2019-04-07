@@ -30,7 +30,7 @@ public class Pizzaverwaltung {
 
         assert connection != null;
         final Statement statement = connection.createStatement();
-        final ResultSet resultSet = statement.executeQuery("SELECT Name, PreisKlein, PreisMittel, PreisGroß, PreisFamilie FROM Pizza");
+        final ResultSet resultSet = statement.executeQuery("SELECT `Name`, `PreisKlein`, `PreisMittel`, `PreisGroß`, `PreisFamilie` FROM Pizza");
 
         while (resultSet.next()) {
             pizzen.add(new Pizza(resultSet.getString(1),
