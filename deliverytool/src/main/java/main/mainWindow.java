@@ -94,7 +94,7 @@ public class mainWindow {
 
     private void setControls(GridPane p) {
         möglichePizzenListView = new ListView<>();
-        for (Pizza e : pizzaverwaltung) {
+        for (Pizza e : pizzaverwaltung.getPizzen()) {
             möglichePizzenListView.getItems().add(e);
         }
 

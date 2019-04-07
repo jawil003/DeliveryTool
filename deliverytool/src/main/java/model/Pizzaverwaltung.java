@@ -5,10 +5,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Pizzaverwaltung implements Iterable<Pizza> {
+public class Pizzaverwaltung {
     LinkedList<Pizza> pizzen;
 
     public Pizzaverwaltung() throws SQLException {
@@ -45,18 +44,11 @@ public class Pizzaverwaltung implements Iterable<Pizza> {
         this.pizzen = pizzen;
     }
 
-    @Override
-    public Iterator<Pizza> iterator() {
-        return new Iterator<Pizza>() {
-            @Override
-            public boolean hasNext() {
-                return pizzen.iterator().hasNext();
-            }
+    public LinkedList<Pizza> getPizzen() {
+        return pizzen;
+    }
 
-            @Override
-            public Pizza next() {
-                return pizzen.iterator().next();
-            }
-        };
+    public void setPizzen(LinkedList<Pizza> pizzen) {
+        this.pizzen = pizzen;
     }
 }

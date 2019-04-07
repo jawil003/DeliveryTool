@@ -15,9 +15,9 @@ public class SQLConnect {
     public static Connection establishConnection(String databaseName) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         dbname = databaseName;
         System.out.println("* Treiber laden");
-        Class.forName("org.gjt.mm.mysql.Driver").newInstance();
-        System.out.println(Class.forName("org.gjt.mm.mysql.Driver"));
-        System.out.println(Class.forName("org.gjt.mm.mysql.Driver").newInstance());
+        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+        System.out.println(Class.forName("com.mysql.cj.jdbc.Driver"));
+        System.out.println(Class.forName("com.mysql.cj.jdbc.Driver").newInstance());
         System.out.println("* Verbindung aufbauen");
         String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbname;
         conn = DriverManager.getConnection(url, user, password);
