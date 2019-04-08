@@ -34,7 +34,6 @@ public class Pizzaverwaltung {
             e.printStackTrace();
         }
 
-        assert connection != null;
         final Statement statement = connection.createStatement();
         final ResultSet resultSet = statement.executeQuery("SELECT `Name`, `PreisKlein`, `PreisMittel`, `PreisGroß`, `PreisFamilie` FROM Pizza");
 
