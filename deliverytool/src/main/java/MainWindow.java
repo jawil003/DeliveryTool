@@ -27,7 +27,8 @@ public class MainWindow {
 
     pizzaverwaltung = new Pizzaverwaltung();
 
-    createScene(stage);
+    if (pizzaverwaltung.isConnected())
+      createScene(stage);
   }
 
   // this method is the entry point of the class to make shure that it is only called one time and
@@ -48,24 +49,9 @@ public class MainWindow {
     return mainWindow;
   }
 
-  public static void setMainWindow(MainWindow mainWindow) {
-    MainWindow.mainWindow = mainWindow;
-  }
-
-  public Scene getScene() {
-    return scene;
-  }
-
-  public static void setScene(Scene scene) {
-    MainWindow.scene = scene;
-  }
-
-  private void createScene(Stage stage) {
-    Scene scene = new Scene(createPane());
-    MainWindow.scene = scene;
-    stage.setScene(scene);
-    stage.show();
-  }
+  //creates a borderpane:
+  // - with a gridpane inside
+  // - a menubar at the top from the borderpane (setMenueBar())
 
   private Pane createPane() {
 
@@ -103,12 +89,6 @@ public class MainWindow {
     pizzenLabel.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/pizza.png"))));
     Label bestellungenLabel = new Label("Bestellung(en)");
     möglichePizzenListView = new ListView<>();
-    /*möglichePizzenListView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-      @Override
-      public ListCell<String> call(ListView<String> param) {
-        return new PizzaCell<>();
-      }
-    });*/
     ListView bestellungenListView = new ListView<>();
 
     for (Pizza e : pizzaverwaltung.getPizzen()) {
@@ -125,6 +105,31 @@ public class MainWindow {
     p.add(möglichePizzenListView, 0, 1, 3, 3);
     p.add(bestellungenListView, 4, 1, 3, 3);
     p.add(gesamtPreis, 4, 4);
+  }
+
+  //Getters and setters:
+
+  public static void setMainWindow(MainWindow mainWindow) {
+    MainWindow.mainWindow = mainWindow;
+  }
+
+  //creates a scene for the elements of the window
+  private void createScene(Stage stage) {
+    //create new Scene from the Pane that is returned
+    Scene scene = new Scene(createPane());
+    //setting the scene as the static class attribute
+    MainWindow.scene = scene;
+    //sets and shows the scene as stage's scene which is given from the main class
+    stage.setScene(scene);
+    stage.show();
+  }
+
+  public Scene getScene() {
+    return scene;
+  }
+
+  public static void setScene(Scene scene) {
+    MainWindow.scene = scene;
   }
 
   public ListView getMöglichePizzenListView() {

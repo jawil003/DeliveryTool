@@ -8,6 +8,9 @@ import java.util.LinkedList;
 
 public class Pizzaverwaltung {
     LinkedList<Pizza> pizzen = new LinkedList<>();
+    Connection connection;
+
+    //Constructors:
 
     public Pizzaverwaltung()
             throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
@@ -16,7 +19,6 @@ public class Pizzaverwaltung {
 
     public Pizzaverwaltung(LinkedList<Pizza> pizzen)
             throws SQLException, IllegalAccessException, ClassNotFoundException, InstantiationException {
-        Connection connection = null;
         if (pizzen != null) {
             this.pizzen = pizzen;
         } else {
@@ -50,11 +52,17 @@ public class Pizzaverwaltung {
         connection.close();
     }
 
+    //getters and setters:
+
     public LinkedList<Pizza> getPizzen() {
         return pizzen;
     }
 
     public void setPizzen(LinkedList<Pizza> pizzen) {
         this.pizzen = pizzen;
+    }
+
+    public boolean isConnected() {
+        return connection != null;
     }
 }

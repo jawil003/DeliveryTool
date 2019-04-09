@@ -8,12 +8,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLConnect {
-    private static final String hostname = "db4free.net";
-    private static final String port = "3306";
-    private static final String user = "delivery";
-    private static final String password = "34zy23npNZ";
-    private static String dbname = "deliverytool";
-    private static Connection conn = null;
+
+    //SQL Variables:
+    private static final String hostname = "db4free.net"; //the webadress of the database
+    private static final String port = "3306"; //the connection port of the mySQL Server
+    private static final String user = "delivery"; //username for login in database
+    private static final String password = "34zy23npNZ"; //password for login in database
+    private static String dbname = "deliverytool"; //name of the database
+    private static Connection conn = null; //connection to the database
 
     public static Connection establishConnection()
             throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
