@@ -1,6 +1,5 @@
 package model;
 
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,11 +9,13 @@ import java.util.LinkedList;
 public class Pizzaverwaltung {
     LinkedList<Pizza> pizzen = new LinkedList<>();
 
-    public Pizzaverwaltung() throws SQLException {
+    public Pizzaverwaltung()
+            throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         this(null);
     }
 
-    public Pizzaverwaltung(LinkedList<Pizza> pizzen) throws SQLException {
+    public Pizzaverwaltung(LinkedList<Pizza> pizzen)
+            throws SQLException, IllegalAccessException, ClassNotFoundException, InstantiationException {
         Connection connection = null;
         if (pizzen != null) {
             this.pizzen = pizzen;
@@ -22,30 +23,28 @@ public class Pizzaverwaltung {
             this.pizzen = new LinkedList<>();
         }
 
-        try {
-            connection = SQLConnect.establishConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        connection = SQLConnect.establishConnection();
+
+        if (connection == null) {
+            new SQLException("No connection to mySQL Server");
+            return;
         }
 
         final Statement statement = connection.createStatement();
-        final ResultSet resultSet = statement.executeQuery("SELECT `Name`, `PreisKlein`, `PreisMittel`, `PreisGroß`, `PreisFamilie` FROM Pizza");
+        final ResultSet resultSet =
+                statement.executeQuery(
+                        "SELECT `Name`, `PreisKlein`, `PreisMittel`, `PreisGroß`, `PreisFamilie` FROM Pizza");
 
-
-        //FIXME: NullPointerException caused by wrong table access.
+        // FIXME: NullPointerException caused by wrong table access.
         while (resultSet.next()) {
-            this.pizzen.add(new Pizza(resultSet.getString(1),
-                    null,
-                    resultSet.getDouble(2),
-                    resultSet.getDouble(3),
-                    resultSet.getDouble(4),
-                    resultSet.getDouble(5)));
+            this.pizzen.add(
+                    new Pizza(
+                            resultSet.getString(1),
+                            null,
+                            resultSet.getDouble(2),
+                            resultSet.getDouble(3),
+                            resultSet.getDouble(4),
+                            resultSet.getDouble(5)));
         }
 
         connection.close();
