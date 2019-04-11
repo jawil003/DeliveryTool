@@ -37,7 +37,7 @@ public class Pizzaverwaltung {
                 statement.executeQuery(
                         "SELECT `Name`, `PreisKlein`, `PreisMittel`, `PreisGroß`, `PreisFamilie` FROM Pizza");
 
-        // FIXME: NullPointerException caused by wrong table access.
+
         while (resultSet.next()) {
             this.pizzen.add(
                     new Pizza(
