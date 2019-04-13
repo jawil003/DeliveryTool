@@ -1,9 +1,11 @@
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -17,7 +19,7 @@ public class MainWindow {
 
   private static MainWindow mainWindow;
   private static Scene scene;
-  ListView<String> möglichePizzenListView;
+  private ListView<Pizza> möglichePizzenListView;
   private Pizzaverwaltung pizzaverwaltung;
 
   /*The only thing that needs to be called to create the mainwindowView
@@ -92,12 +94,21 @@ public class MainWindow {
     ListView bestellungenListView = new ListView<>();
 
     for (Pizza e : pizzaverwaltung.getPizzen()) {
-      möglichePizzenListView.getItems().add(e.toString());
+      möglichePizzenListView.getItems().add(e);
     }
 
     bestellungenLabel.setGraphic(
             new ImageView(new Image(getClass().getResourceAsStream("/cash-register.png"))));
     Label gesamtPreis = new Label("Gesamt:");
+
+    möglichePizzenListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent event) {
+        bestellungenListView.getItems().add(möglichePizzenListView.getSelectionModel().getSelectedItem().getName() + ": " + möglichePizzenListView.getSelectionModel().getSelectedItem().getPreisGroß().get());
+        //gesamtPreis.setText(String.valueOf(Double.parseDouble(gesamtPreis.getText())+möglichePizzenListView.getSelectionModel().getSelectedItem().getPreisGroß().get());
+      }
+    });
+
     // TODO Customise ListView Cell to show name and price in a row
     p.add(pizzenLabel, 0, 0);
     // p.add(plusLabel, 3, 0);
