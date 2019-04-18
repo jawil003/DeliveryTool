@@ -14,7 +14,7 @@ public class SQLConnect {
     private static final String port = "3306"; //the connection port of the mySQL Server
     private static final String user = "delivery"; //username for login in database
     private static final String password = "34zy23npNZ"; //password for login in database
-    private static String dbname = "deliverytool"; //name of the database
+    private final static String dbname = "deliverytool"; //name of the database
     private static Connection conn = null; //connection to the database
 
     public static Connection establishConnection()
@@ -50,11 +50,6 @@ public class SQLConnect {
 
     public static String getDbname() {
         return dbname;
-    }
-
-    public static void setDbname(String dbname) {
-        SQLConnect.dbname = dbname;
-    }
 
     public static String getUser() {
         return user;
