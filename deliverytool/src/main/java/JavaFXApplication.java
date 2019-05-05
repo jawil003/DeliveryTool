@@ -1,0 +1,41 @@
+import Controller.WindowController;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import model.Pizzaverwaltung;
+
+import java.io.File;
+
+public class JavaFXApplication extends Application {
+
+    //path to window fxml file
+    protected static final String FXML_PATH = "deliverytool/fxml/Window.fxml";
+
+    //JavaFX scene
+    protected Scene scene = null;
+
+    //JavaFX root pane (AnchorPane)
+    protected Pane rootPane = null;
+    //JavaFX window controller (MVC principle)
+    protected WindowController controller = null;
+    private Pizzaverwaltung verw;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(new File(FXML_PATH).toURI().toURL());
+        verw = new Pizzaverwaltung();
+        this.controller = new WindowController(verw.getPizzen());
+        loader.setController(this.controller);
+        Parent rootPane = loader.load();
+        primaryStage.setTitle("Deliverytool");
+        this.scene = new Scene(rootPane);
+        primaryStage.setScene(scene);
+        controller.init(primaryStage, scene, rootPane);
+        primaryStage.centerOnScreen();
+        primaryStage.requestFocus();
+        primaryStage.show();
+    }
+}

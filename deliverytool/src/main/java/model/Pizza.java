@@ -11,14 +11,19 @@ public class Pizza extends ListenEintrag {
     private Optional<Double> preisFamilie;
     private LinkedList<Zutat> zutaten;
 
-    //Constructors:
-
+    // Constructors:
 
     public Pizza(String name, LinkedList<Zutat> zutaten) {
         this(name, zutaten, null, null, null, null);
     }
 
-    public Pizza(String name, LinkedList<Zutat> zutaten, Double preisKlein, Double preisMittel, Double preisGroß, Double preisFamilie) {
+    public Pizza(
+            String name,
+            LinkedList<Zutat> zutaten,
+            Double preisKlein,
+            Double preisMittel,
+            Double preisGroß,
+            Double preisFamilie) {
         super(name);
         this.name = name;
         this.zutaten = zutaten;
@@ -28,7 +33,7 @@ public class Pizza extends ListenEintrag {
         this.preisFamilie = Optional.ofNullable(preisFamilie);
     }
 
-    //Getters and Setters:
+    // Getters and Setters:
 
     public LinkedList<Zutat> getZutaten() {
         return zutaten;
@@ -37,7 +42,6 @@ public class Pizza extends ListenEintrag {
     public void addZutat(Zutat zutat) {
         if (this.zutaten == null) {
             this.zutaten = new LinkedList<>();
-
         }
 
         this.zutaten.add(zutat);

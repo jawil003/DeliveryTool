@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="25.0" prefWidth="253.0"
+            xmlns="http://javafx.com/javafx/8.0.201">
+    <children>
+        <ImageView fx:id="pizzaImageview" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true"
+                   AnchorPane.bottomAnchor="2.5" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.5">
+            <image>
+                <Image url="@../../../../../../../../Downloads/Kursmaterial%20und%20Projekte%20aus%20dem%20Kurs/Abschnitte/33.%20Pizza%20Tabelle%20mit%20TableView/pizza.png"/>
+            </image>
+        </ImageView>
+        <Label fx:id="pizzaLabel" layoutX="34.0" layoutY="6.0" text="Pizzaname" AnchorPane.bottomAnchor="2.5"
+               AnchorPane.leftAnchor="34.0" AnchorPane.topAnchor="2.5"/>
+        <HBox alignment="CENTER_RIGHT" layoutX="98.0" layoutY="3.0" prefHeight="28.0" prefWidth="172.0" spacing="7.0"
+              AnchorPane.rightAnchor="0.0">
+            <children>
+                <Button fx:id="kleinButton" mnemonicParsing="false" style="-fx-background-color: red;" text="K"/>
+                <Button fx:id="mittelButton" mnemonicParsing="false" style="-fx-background-color: orange;" text="M"/>
+                <Button fx:id="großButton" mnemonicParsing="false" style="-fx-background-color: yellow;" text="G"/>
+                <Button fx:id="familieButton" mnemonicParsing="false" prefWidth="25.0"
+                        style="-fx-background-color: green;" text="F"/>
+            </children>
+            <padding>
+                <Insets right="5.0"/>
+            </padding>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="2.5" top="2.5"/>
+    </padding>
+</AnchorPane>

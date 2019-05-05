@@ -1,17 +1,10 @@
 import javafx.application.Application;
-import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Main {
 
-  public static void main(String[] args) {
-    launch(args);
-  }
+    public static void main(String[] args) {
+        //start JavaFX and create JavaFX window
+        Application.launch(JavaFXApplication.class, args);
+    }
 
-  @Override
-  public void start(Stage primaryStage) throws Exception {
-      //setting the title of the program
-    primaryStage.setTitle("DeliveryTool");
-      //show the first window of the software, where you can pick the pizzas the consumer wants
-    final MainWindow mainWindow = MainWindow.showScene(primaryStage);
-  }
 }

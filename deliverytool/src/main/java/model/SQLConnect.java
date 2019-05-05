@@ -50,6 +50,7 @@ public class SQLConnect {
 
     public static String getDbname() {
         return dbname;
+    }
 
     public static String getUser() {
         return user;

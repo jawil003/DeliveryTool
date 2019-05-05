@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.201">
+    <children>
+        <ListView fx:id="pizzenListview" layoutX="24.0" layoutY="35.0" prefHeight="353.0" prefWidth="271.0"
+                  AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="34.0"/>
+        <ListView fx:id="kasseListview" layoutX="20.0" layoutY="35.0" prefHeight="353.0" prefWidth="271.0"
+                  AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="35.0"/>
+        <MenuBar fx:id="menuBar" prefHeight="29.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0"
+                 AnchorPane.rightAnchor="0.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="Datei">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Schließen"/>
+                        <MenuItem mnemonicParsing="false" text="Neustart"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Bearbeiten">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Ausgewählt löschen"/>
+                        <MenuItem mnemonicParsing="false" text="Alles löschen"/>
+                        <MenuItem mnemonicParsing="false" text="Eintrag hinzufügen"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Hilfe">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Über"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <HBox alignment="TOP_CENTER" layoutX="300.0" layoutY="394.0" prefHeight="29.0" prefWidth="271.0" spacing="5.0"
+              AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="394.0">
+            <children>
+                <Label contentDisplay="CENTER" text="Zu bezahlen:"/>
+                <Label text="0,00€"/>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

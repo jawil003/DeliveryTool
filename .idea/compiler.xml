@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="deliverytool" target="${jdk.version}" />
+      <module name="deliverytool" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
