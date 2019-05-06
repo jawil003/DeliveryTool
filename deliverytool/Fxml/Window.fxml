@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.HBox?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.201">
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1">
     <children>
         <ListView fx:id="pizzenListview" layoutX="24.0" layoutY="35.0" prefHeight="353.0" prefWidth="271.0"
                   AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="34.0"/>
-        <ListView fx:id="kasseListview" layoutX="20.0" layoutY="35.0" prefHeight="353.0" prefWidth="271.0"
-                  AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="35.0"/>
+        <ListView id="kasseListview" fx:id="kasseListview" layoutX="20.0" layoutY="35.0" prefHeight="353.0"
+                  prefWidth="271.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="35.0"/>
         <MenuBar fx:id="menuBar" prefHeight="29.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0"
                  AnchorPane.rightAnchor="0.0">
             <menus>

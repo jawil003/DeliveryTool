@@ -1,13 +1,14 @@
 import Controller.WindowController;
+import Model.Pizzaverwaltung;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Pizzaverwaltung;
 
 import java.io.File;
+import java.sql.SQLException;
 
 public class JavaFXApplication extends Application {
 
@@ -26,7 +27,11 @@ public class JavaFXApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(new File(FXML_PATH).toURI().toURL());
-        verw = new Pizzaverwaltung();
+        try {
+            verw = new Pizzaverwaltung();
+        } catch (SQLException e) {
+            return;
+        }
         this.controller = new WindowController(verw.getPizzen());
         loader.setController(this.controller);
         Parent rootPane = loader.load();

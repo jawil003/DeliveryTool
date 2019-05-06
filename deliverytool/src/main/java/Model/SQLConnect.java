@@ -1,4 +1,4 @@
-package model;
+package Model;
 
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import javafx.scene.control.Alert;

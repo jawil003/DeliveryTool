@@ -1,0 +1,22 @@
+.button:pressed {
+    -fx-border-color: dodgerblue;
+    -fx-border-width: 2.5px;
+
+}
+
+#kleinButton {
+    -fx-background-color: red;
+}
+
+#mittelButton {
+    -fx-background-color: orange;
+}
+
+#grossButton {
+    -fx-background-color: yellow;
+}
+
+#familieButton {
+    -fx-background-color: green;
+}
+

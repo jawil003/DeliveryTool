@@ -1,4 +1,4 @@
-package model;
+package Model;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -28,8 +28,7 @@ public class Pizzaverwaltung {
         connection = SQLConnect.establishConnection();
 
         if (connection == null) {
-            new SQLException("No connection to mySQL Server");
-            return;
+            throw new SQLException("No connection to mySQL Server");
         }
 
         final Statement statement = connection.createStatement();

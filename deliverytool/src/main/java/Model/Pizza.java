@@ -1,4 +1,4 @@
-package model;
+package Model;
 
 import java.util.LinkedList;
 import java.util.Optional;
@@ -73,6 +73,14 @@ public class Pizza extends ListenEintrag {
 
     public void addZutaten(Zutat e) {
         zutaten.add(e);
+    }
+
+    public Optional<Double> getPreisFamilie() {
+        return preisFamilie;
+    }
+
+    public void setPreisFamilie(Optional<Double> preisFamilie) {
+        this.preisFamilie = preisFamilie;
     }
 
     @Override
