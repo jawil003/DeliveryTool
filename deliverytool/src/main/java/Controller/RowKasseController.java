@@ -26,18 +26,26 @@ public class RowKasseController implements Initializable {
     }
 
     public void init(Pizza pizza, int size) {
+
         this.kasseAnzahlLabel.setText(String.valueOf(1));
         anzahl = 1;
-        this.kasseAnzahlName.setText(pizza.getName());
         switch (size) {
             case 1:
+                this.kasseAnzahlName.setText(pizza.getName() + " (klein)");
                 this.kassePreis.setText(pizza.getPreisKlein().get().toString() + "0€");
+                break;
             case 2:
+                this.kasseAnzahlName.setText(pizza.getName() + " (mittel)");
                 this.kassePreis.setText(pizza.getPreisMittel().get().toString() + "0€");
+                break;
             case 3:
+                this.kasseAnzahlName.setText(pizza.getName() + " (groß)");
                 this.kassePreis.setText(pizza.getPreisGroß().get().toString() + "0€");
+                break;
             case 4:
+                this.kasseAnzahlName.setText(pizza.getName() + " (Familie)");
                 this.kassePreis.setText(pizza.getPreisFamilie().get().toString() + "0€");
+                break;
         }
     }
 

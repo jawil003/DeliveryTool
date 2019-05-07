@@ -42,7 +42,7 @@
               AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="394.0">
             <children>
                 <Label contentDisplay="CENTER" text="Zu bezahlen:"/>
-                <Label text="0,00€"/>
+                <Label fx:id="gesamterPreisLabel" text="0,00€"/>
             </children>
         </HBox>
     </children>
