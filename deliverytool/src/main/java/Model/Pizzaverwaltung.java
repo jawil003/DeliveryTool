@@ -1,9 +1,7 @@
 package Model;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.LinkedList;
 
 public class Pizzaverwaltung {
@@ -25,30 +23,16 @@ public class Pizzaverwaltung {
             this.pizzen = new LinkedList<>();
         }
 
-        connection = SQLConnect.establishConnection();
+        SQLConnect connect = new SQLConnect();
 
-        if (connection == null) {
-            throw new SQLException("No connection to mySQL Server");
+        final LinkedList<String> strings = connect.selectItems("Pizza", "Name", "PreisKlein",
+                "PreisMittel", "PreisGroß", "PreisFamilie");
+
+
+        for (int i = 0; i < strings.size() / 5; i++) {
+            pizzen.add(new Pizza(strings.get(i), null, Double.parseDouble(strings.get(i + 1)),
+                    Double.parseDouble(strings.get(i + 2)), Double.parseDouble(strings.get(i + 3)), Double.parseDouble(strings.get(i + 4))));
         }
-
-        final Statement statement = connection.createStatement();
-        final ResultSet resultSet =
-                statement.executeQuery(
-                        "SELECT `Name`, `PreisKlein`, `PreisMittel`, `PreisGroß`, `PreisFamilie` FROM Pizza");
-
-
-        while (resultSet.next()) {
-            this.pizzen.add(
-                    new Pizza(
-                            resultSet.getString(1),
-                            null,
-                            resultSet.getDouble(2),
-                            resultSet.getDouble(3),
-                            resultSet.getDouble(4),
-                            resultSet.getDouble(5)));
-        }
-
-        connection.close();
     }
 
     //getters and setters:

@@ -30,7 +30,7 @@ public class JavaFXApplication extends Application {
         try {
             verw = new Pizzaverwaltung();
         } catch (SQLException e) {
-            return;
+            e.printStackTrace();
         }
         this.controller = new WindowController(verw.getPizzen());
         loader.setController(this.controller);
