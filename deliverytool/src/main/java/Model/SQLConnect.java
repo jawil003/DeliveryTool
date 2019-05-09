@@ -1,11 +1,12 @@
 package Model;
 
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
-import javafx.scene.control.Alert;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 public class SQLConnect {
 
@@ -17,7 +18,11 @@ public class SQLConnect {
     private final static String dbname = "deliverytool"; //name of the database
     private static Connection conn = null; //connection to the database
 
-    public static Connection establishConnection()
+    public SQLConnect() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        establishConnection();
+    }
+
+    private static void establishConnection()
             throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         System.out.println("* Treiber laden");
         Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
@@ -29,42 +34,30 @@ public class SQLConnect {
         try {
             conn = DriverManager.getConnection(url, user, password);
         } catch (CommunicationsException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Server antwortet nicht");
-            alert.setContentText(
-                    "Entweder ist keine Internetverbindung vorhanden\noder der Datenbankserver ist aktuell nicht erreichbar");
-            alert.showAndWait();
-            return null;
+            e.printStackTrace();
         }
-        return conn;
     }
 
-    public static String getHostname() {
-        return hostname;
+    public LinkedList<String> selectItems(String tableName, String... tableRows) throws SQLException {
+        LinkedList<String> result = new LinkedList<>();
+        final ResultSet resultSet = conn.createStatement().executeQuery("SELECT " +
+                " * "
+                + "FROM " +
+                tableName);
+        for (String e : tableRows) {
+            result.add(resultSet.getString(e));
+        }
+        closeConnection();
+        return result;
     }
 
-    public static String getPort() {
-        return port;
+    public void insertItems(String sqlStatement) throws SQLException {
+        conn.createStatement().executeUpdate(sqlStatement);
+        closeConnection();
+
     }
 
-    public static String getDbname() {
-        return dbname;
-    }
-
-    public static String getUser() {
-        return user;
-    }
-
-    public static String getPassword() {
-        return password;
-    }
-
-    public static Connection getConn() {
-        return conn;
-    }
-
-    public static void setConn(Connection conn) {
-        SQLConnect.conn = conn;
+    private void closeConnection() throws SQLException {
+        conn.close();
     }
 }
