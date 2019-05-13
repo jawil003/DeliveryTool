@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SQLConnect {
@@ -17,7 +18,11 @@ public class SQLConnect {
     private final static String dbname = "deliverytool"; //name of the database
     private static Connection conn = null; //connection to the database
 
-    public static Connection establishConnection()
+    public SQLConnect() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        establishConnection();
+    }
+
+    private void establishConnection()
             throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         System.out.println("* Treiber laden");
         Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
@@ -35,9 +40,24 @@ public class SQLConnect {
             alert.setContentText(
                     "Entweder ist keine Internetverbindung vorhanden\noder der Datenbankserver ist aktuell nicht erreichbar");
             alert.showAndWait();
-            return null;
         }
-        return conn;
+
+    }
+
+    public ResultSet selectItems(String sqlStatement) throws SQLException {
+        final ResultSet resultSet = conn.createStatement().executeQuery(sqlStatement);
+        //closeConnection();
+        return resultSet;
+
+    }
+
+    public void insertItems(String sqlStatement) throws SQLException {
+        conn.createStatement().executeUpdate(sqlStatement);
+        //closeConnection();
+    }
+
+    public void closeConnection() throws SQLException {
+        conn.close();
     }
 
     public static String getHostname() {

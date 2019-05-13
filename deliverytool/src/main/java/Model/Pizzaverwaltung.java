@@ -1,6 +1,7 @@
 package Model;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
@@ -12,7 +13,7 @@ public class Pizzaverwaltung {
 
     public Pizzaverwaltung()
             throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        this(null);
+        this(new LinkedList<>());
     }
 
     public Pizzaverwaltung(LinkedList<Pizza> pizzen)
@@ -25,14 +26,17 @@ public class Pizzaverwaltung {
 
         SQLConnect connect = new SQLConnect();
 
-        final LinkedList<String> strings = connect.selectItems("Pizza", "Name", "PreisKlein",
-                "PreisMittel", "PreisGroß", "PreisFamilie");
+        String sql;
+        ResultSet set = connect.selectItems("SELECT * FROM Pizza");
 
-
-        for (int i = 0; i < strings.size() / 5; i++) {
-            pizzen.add(new Pizza(strings.get(i), null, Double.parseDouble(strings.get(i + 1)),
-                    Double.parseDouble(strings.get(i + 2)), Double.parseDouble(strings.get(i + 3)), Double.parseDouble(strings.get(i + 4))));
+        while (set.next()) {
+            Pizza pizza = new Pizza(set.getString(1),
+                    null, set.getDouble(2),
+                    set.getDouble(3), set.getDouble(4),
+                    set.getDouble(5));
         }
+
+        connect.closeConnection();
     }
 
     //getters and setters:
