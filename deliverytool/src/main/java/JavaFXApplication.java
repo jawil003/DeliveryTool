@@ -7,12 +7,13 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.sql.SQLException;
 
 public class JavaFXApplication extends Application {
 
     //path to window fxml file
-    protected static final String FXML_PATH = "Fxml/Window.fxml";
+    protected static final String FXML_PATH = "deliverytool/Fxml/Window.fxml";
 
     //JavaFX scene
     protected Scene scene = null;
@@ -25,7 +26,7 @@ public class JavaFXApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_PATH).toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File(FXML_PATH).toURI().toURL());
         try {
             verw = new Pizzaverwaltung();
         } catch (SQLException e) {

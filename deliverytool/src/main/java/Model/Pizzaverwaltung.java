@@ -13,7 +13,7 @@ public class Pizzaverwaltung {
 
     public Pizzaverwaltung()
             throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        this(new LinkedList<>());
+        this(null);
     }
 
     public Pizzaverwaltung(LinkedList<Pizza> pizzen)
@@ -34,6 +34,7 @@ public class Pizzaverwaltung {
                     null, set.getDouble(2),
                     set.getDouble(3), set.getDouble(4),
                     set.getDouble(5));
+            this.pizzen.add(pizza);
         }
 
         connect.closeConnection();

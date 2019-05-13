@@ -19,8 +19,8 @@ import java.util.LinkedList;
 
 public class WindowController {
 
-  protected static final String ROW_FXML = "deliverytool/fxml/RowPizzenListview.fxml";
-  protected static final String ROW2_FXML = "deliverytool/fxml/RowKasseListview.fxml";
+  protected static final String ROW_FXML = "deliverytool/Fxml/RowPizzenListview.fxml";
+  protected static final String ROW2_FXML = "deliverytool/Fxml/RowKasseListview.fxml";
   protected LinkedList<Pizza> list = null;
   RowPizzenController pizzenContr;
   RowKasseController kasseContr;
@@ -138,6 +138,7 @@ public class WindowController {
     kasseContr.init(pizza, size);
 
     this.kasseListview.getItems().add(rootPane);
+    //TODO: Label des Gesamten Preises muss sich aktualisieren
 
   }
 
