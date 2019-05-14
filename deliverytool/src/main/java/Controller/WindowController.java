@@ -19,8 +19,8 @@ import java.util.LinkedList;
 
 public class WindowController {
 
-  protected static final String ROW_FXML = "deliverytool/Fxml/RowPizzenListview.fxml";
-  protected static final String ROW2_FXML = "deliverytool/Fxml/RowKasseListview.fxml";
+    protected static final String ROW_FXML = "deliverytool/Fxml/RowPizzenListcell.fxml";
+    protected static final String ROW2_FXML = "deliverytool/Fxml/RowKasseListcell.fxml";
   protected LinkedList<Pizza> list = null;
   RowPizzenController pizzenContr;
   RowKasseController kasseContr;

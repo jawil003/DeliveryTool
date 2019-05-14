@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -25,7 +24,6 @@
                 <RowConstraints maxHeight="282.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES"/>
                 <RowConstraints maxHeight="323.0" minHeight="0.0" prefHeight="51.0" vgrow="SOMETIMES"/>
                 <RowConstraints maxHeight="422.0" minHeight="10.0" prefHeight="279.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="370.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES"/>
                 <RowConstraints maxHeight="370.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
@@ -55,9 +53,17 @@
                         <TextField promptText="Familie"/>
                     </children>
                 </HBox>
-                <ListView prefHeight="267.0" prefWidth="457.0" GridPane.columnSpan="2" GridPane.rowIndex="2"/>
+                <HBox spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                    <children>
+                        <ListView prefHeight="267.0" prefWidth="457.0"/>
+                        <ListView prefHeight="267.0" prefWidth="457.0"/>
+                    </children>
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </HBox>
                 <HBox alignment="CENTER" spacing="10.0" GridPane.columnSpan="2" GridPane.halignment="CENTER"
-                      GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                      GridPane.rowIndex="3" GridPane.valignment="CENTER">
                     <children>
                         <Button mnemonicParsing="false" text="Abbrechen"/>
                         <Button mnemonicParsing="false" text="OK"/>
@@ -65,11 +71,6 @@
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                     </padding>
-                </HBox>
-                <HBox alignment="CENTER" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                    <children>
-                        <ComboBox prefWidth="150.0" promptText="Zutat auswählen"/>
-                    </children>
                 </HBox>
             </children>
         </GridPane>

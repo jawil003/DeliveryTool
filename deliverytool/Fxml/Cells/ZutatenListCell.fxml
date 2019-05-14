@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="25.0" prefWidth="253.0"
+            xmlns="http://javafx.com/javafx/11.0.1">
+    <children>
+        <HBox alignment="CENTER" layoutX="98.0" layoutY="3.0" prefHeight="28.0" prefWidth="172.0" spacing="5.0"
+              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets right="5.0"/>
+            </padding>
+            <children>
+                <Label fx:id="pizzaLabel" text="Zutatenname">
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT"/>
+                    </cursor>
+                    <HBox.margin>
+                        <Insets right="30.0"/>
+                    </HBox.margin>
+                </Label>
+                <Label fx:id="pizzaLabel1" text="Menge">
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT"/>
+                    </cursor>
+                </Label>
+                <Label fx:id="pizzaLabel11" text="ME">
+                    <cursor>
+                        <Cursor fx:constant="DEFAULT"/>
+                    </cursor>
+                </Label>
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="2.5" top="2.5"/>
+    </padding>
+</AnchorPane>

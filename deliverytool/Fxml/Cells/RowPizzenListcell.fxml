@@ -25,21 +25,24 @@
               AnchorPane.rightAnchor="0.0">
             <children>
                 <Button id="kleinButton" fx:id="kleinButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
-                        mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5" stylesheets="@Styling/rowStyle.css"
+                        mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
+                        stylesheets="@../Styling/rowStyle.css"
                         text="K" textAlignment="CENTER">
                     <cursor>
                         <Cursor fx:constant="DEFAULT"/>
                     </cursor>
                 </Button>
                 <Button id="mittelButton" fx:id="mittelButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
-                        mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5" stylesheets="@Styling/rowStyle.css"
+                        mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
+                        stylesheets="@../Styling/rowStyle.css"
                         text="M" textAlignment="CENTER">
                     <cursor>
                         <Cursor fx:constant="DEFAULT"/>
                     </cursor>
                 </Button>
                 <Button id="grossButton" fx:id="grossButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
-                        mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5" stylesheets="@Styling/rowStyle.css"
+                        mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
+                        stylesheets="@../Styling/rowStyle.css"
                         text="G" textAlignment="CENTER">
                     <cursor>
                         <Cursor fx:constant="DEFAULT"/>
@@ -47,7 +50,7 @@
                 </Button>
                 <Button id="familieButton" fx:id="familieButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
                         mnemonicParsing="false" mouseTransparent="true" prefHeight="23.5" prefWidth="23.5"
-                        stylesheets="@Styling/rowStyle.css" text="F" textAlignment="CENTER">
+                        stylesheets="@../Styling/rowStyle.css" text="F" textAlignment="CENTER">
                     <cursor>
                         <Cursor fx:constant="OPEN_HAND"/>
                     </cursor>
