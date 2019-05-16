@@ -1,5 +1,6 @@
 package Controller;
 
+import App.JavaFXApplication;
 import Model.Pizza;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -101,13 +102,20 @@ public class WindowController {
             }
         });
 
+      //FIXME: NeustartItem causes a loop and freeze of gui
+
         neustartItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                schließenItem.fire();
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+                      Platform.exit();
+                      try {
+                        new JavaFXApplication().start(new Stage());
+                      } catch (Exception e) {
+                        e.printStackTrace();
+                      }
                     }
                 });
             }
