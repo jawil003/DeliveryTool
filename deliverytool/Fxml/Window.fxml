@@ -1,43 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
     <children>
-        <ListView fx:id="pizzenListview" layoutX="24.0" layoutY="35.0" prefHeight="353.0" prefWidth="271.0"
-                  AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="34.0"/>
-        <ListView id="kasseListview" fx:id="kasseListview" layoutX="20.0" layoutY="35.0" prefHeight="353.0"
-                  prefWidth="271.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="35.0"/>
-        <MenuBar fx:id="menuBar" prefHeight="29.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0"
-                 AnchorPane.rightAnchor="0.0">
+        <MenuBar fx:id="menuBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
             <menus>
                 <Menu mnemonicParsing="false" text="Datei">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Schließen"/>
-                        <MenuItem mnemonicParsing="false" text="Neustart"/>
+                        <MenuItem fx:id="schließenItem" mnemonicParsing="false" text="Schließen"/>
+                        <MenuItem fx:id="neustartItem" mnemonicParsing="false" text="Neustart"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Bearbeiten">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Ausgewählt löschen"/>
-                        <MenuItem mnemonicParsing="false" text="Alles löschen"/>
-                        <MenuItem mnemonicParsing="false" text="Eintrag hinzufügen"/>
+                        <MenuItem fx:id="ausgewähltLoeschen" mnemonicParsing="false" text="Ausgewählt löschen"/>
+                        <MenuItem fx:id="allesLoeschenItem" mnemonicParsing="false" text="Alles löschen"/>
+                        <MenuItem fx:id="eintragHinzufuegenItem" mnemonicParsing="false" text="Eintrag hinzufügen"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Hilfe">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Über"/>
+                        <MenuItem fx:id="ueberItem" mnemonicParsing="false" text="Über"/>
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
-        <HBox alignment="TOP_CENTER" layoutX="300.0" layoutY="394.0" prefHeight="29.0" prefWidth="271.0" spacing="5.0"
-              AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="394.0">
+        <GridPane alignment="CENTER" hgap="10.0" prefHeight="388.0" prefWidth="600.0" vgap="10.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="10.0" prefWidth="291.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="289.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="362.0" minHeight="10.0" prefHeight="348.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="362.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
             <children>
-                <Label contentDisplay="CENTER" text="Zu bezahlen:"/>
-                <Label fx:id="gesamterPreisLabel" text="0,00€"/>
+                <ListView id="kasseListview" fx:id="kasseListview" prefHeight="353.0" prefWidth="271.0"
+                          GridPane.columnIndex="1"/>
+                <ListView fx:id="pizzenListview" prefHeight="340.0" prefWidth="300.0" GridPane.hgrow="ALWAYS"/>
+                <HBox alignment="TOP_CENTER" prefHeight="29.0" prefWidth="271.0" spacing="5.0" GridPane.columnIndex="1"
+                      GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <children>
+                        <Label contentDisplay="CENTER" text="Zu bezahlen:"/>
+                        <Label fx:id="gesamterPreisLabel" text="0,00€"/>
+                    </children>
+                </HBox>
             </children>
-        </HBox>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+        </GridPane>
     </children>
-</AnchorPane>
+</VBox>

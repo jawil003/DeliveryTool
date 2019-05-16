@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="25.0" prefWidth="253.0"
             xmlns="http://javafx.com/javafx/11.0.1">
     <children>
@@ -26,33 +29,30 @@
             <children>
                 <Button id="kleinButton" fx:id="kleinButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
                         mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
-                        stylesheets="@../Styling/rowStyle.css"
-                        text="K" textAlignment="CENTER">
+                        stylesheets="@../Styling/rowStyle.css" text="K" textAlignment="CENTER">
                     <cursor>
                         <Cursor fx:constant="DEFAULT"/>
                     </cursor>
                 </Button>
                 <Button id="mittelButton" fx:id="mittelButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
                         mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
-                        stylesheets="@../Styling/rowStyle.css"
-                        text="M" textAlignment="CENTER">
+                        stylesheets="@../Styling/rowStyle.css" text="M" textAlignment="CENTER">
                     <cursor>
                         <Cursor fx:constant="DEFAULT"/>
                     </cursor>
                 </Button>
                 <Button id="grossButton" fx:id="grossButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
                         mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
-                        stylesheets="@../Styling/rowStyle.css"
-                        text="G" textAlignment="CENTER">
+                        stylesheets="@../Styling/rowStyle.css" text="G" textAlignment="CENTER">
                     <cursor>
                         <Cursor fx:constant="DEFAULT"/>
                     </cursor>
                 </Button>
-                <Button id="familieButton" fx:id="familieButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
-                        mnemonicParsing="false" mouseTransparent="true" prefHeight="23.5" prefWidth="23.5"
+                <Button id="familieButton" fx:id="familieButton" alignment="CENTER" lineSpacing="1.0" maxHeight="25.0"
+                        maxWidth="25.0" mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
                         stylesheets="@../Styling/rowStyle.css" text="F" textAlignment="CENTER">
                     <cursor>
-                        <Cursor fx:constant="OPEN_HAND"/>
+                        <Cursor fx:constant="DEFAULT"/>
                     </cursor>
                 </Button>
             </children>

@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Pizza;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,17 +11,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 public class WindowController {
 
-    protected static final String ROW_FXML = "deliverytool/Fxml/RowPizzenListcell.fxml";
-    protected static final String ROW2_FXML = "deliverytool/Fxml/RowKasseListcell.fxml";
+  protected static final String ROW_FXML = "deliverytool/Fxml/Cells/RowPizzenListcell.fxml";
+  protected static final String ROW2_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
   protected LinkedList<Pizza> list = null;
   RowPizzenController pizzenContr;
   RowKasseController kasseContr;
@@ -30,6 +34,18 @@ public class WindowController {
   private ListView<Pane> kasseListview;
   @FXML
   private MenuBar menuBar;
+  @FXML
+  private MenuItem ausgewähltLoeschen;
+
+  @FXML
+  private MenuItem allesLoeschenItem;
+
+  @FXML
+  private MenuItem eintragHinzufuegenItem;
+
+  @FXML
+  private MenuItem ueberItem;
+
   double gesamterPreis = 0.00;
   @FXML
   private Label gesamterPreisLabel;
@@ -47,11 +63,31 @@ public class WindowController {
   }
 
   public void init(Stage primaryStage, Scene scene, Parent rootPane) {
-    int counter = 0;
+
+    kasseListview.getItems().addListener(new ListChangeListener<Pane>() {
+      @Override
+
+      //TODO: Change it so that only the changed elements are called
+
+      public void onChanged(Change<? extends Pane> c) {
+        final List<? extends Pane> list = c.getAddedSubList();
+        final Iterator<? extends Pane> iterator = list.iterator();
+        while (iterator.hasNext()) {
+          final Pane next = iterator.next();
+          String text = ((Label) next.lookup("#kassePreis")).getText();
+          text = text.substring(0, text.length() - 1);
+          gesamterPreis += Double.valueOf(text);
+          gesamterPreisLabel.setText(String.valueOf(gesamterPreis));
+        }
+      }
+    });
 
     // create rows
     for (Pizza pizza : this.list) {
       addRow(pizza, ROW_FXML);
+
+      //Actions:
+
       pizzenContr.getKleinButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -92,11 +128,10 @@ public class WindowController {
           }
         }
       });
-
-      // increment counter
-      counter++;
     }
   }
+
+  //A Pizza is added
 
   protected void addRow(Pizza pizza, String fxmlPath) {
     // load fxml
