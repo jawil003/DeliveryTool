@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Pizza;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -45,6 +46,10 @@ public class WindowController {
 
   @FXML
   private MenuItem ueberItem;
+    @FXML
+    private MenuItem schließenItem;
+    @FXML
+    private MenuItem neustartItem;
 
   double gesamterPreis = 0.00;
   @FXML
@@ -70,14 +75,15 @@ public class WindowController {
       //TODO: Change it so that only the changed elements are called
 
       public void onChanged(Change<? extends Pane> c) {
-        final List<? extends Pane> list = c.getAddedSubList();
-        final Iterator<? extends Pane> iterator = list.iterator();
-        while (iterator.hasNext()) {
-          final Pane next = iterator.next();
+          final List<? extends Pane> list = c.getAddedSubList();
+          final Iterator<? extends Pane> iterator = list.iterator();
+          Pane next = iterator.next();
+          while (iterator.hasNext()) {
+              next = iterator.next();
           String text = ((Label) next.lookup("#kassePreis")).getText();
           text = text.substring(0, text.length() - 1);
           gesamterPreis += Double.valueOf(text);
-          gesamterPreisLabel.setText(String.valueOf(gesamterPreis));
+              gesamterPreisLabel.setText(String.valueOf(gesamterPreis) + "€");
         }
       }
     });
@@ -87,6 +93,25 @@ public class WindowController {
       addRow(pizza, ROW_FXML);
 
       //Actions:
+
+        schließenItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Platform.exit();
+            }
+        });
+
+        neustartItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                schließenItem.fire();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                });
+            }
+        });
 
       pizzenContr.getKleinButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
@@ -98,7 +123,8 @@ public class WindowController {
           }
         }
       });
-      pizzenContr.getMittelButton().setOnAction(new EventHandler<ActionEvent>() {
+
+        pizzenContr.getMittelButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
           try {
@@ -108,7 +134,8 @@ public class WindowController {
           }
         }
       });
-      pizzenContr.getGrossButton().setOnAction(new EventHandler<ActionEvent>() {
+
+        pizzenContr.getGrossButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
           try {
@@ -118,7 +145,8 @@ public class WindowController {
           }
         }
       });
-      pizzenContr.getFamilieButton().setOnAction(new EventHandler<ActionEvent>() {
+
+        pizzenContr.getFamilieButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
           try {
