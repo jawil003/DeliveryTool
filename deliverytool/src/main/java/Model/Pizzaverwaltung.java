@@ -1,13 +1,11 @@
 package Model;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class Pizzaverwaltung {
-    LinkedList<Pizza> pizzen = new LinkedList<>();
-    Connection connection;
+    private LinkedList<Pizza> pizzen;
 
     //Constructors:
 
@@ -16,7 +14,7 @@ public class Pizzaverwaltung {
         this(null);
     }
 
-    public Pizzaverwaltung(LinkedList<Pizza> pizzen)
+    private Pizzaverwaltung(LinkedList<Pizza> pizzen)
             throws SQLException, IllegalAccessException, ClassNotFoundException, InstantiationException {
         if (pizzen != null) {
             this.pizzen = pizzen;
@@ -24,20 +22,9 @@ public class Pizzaverwaltung {
             this.pizzen = new LinkedList<>();
         }
 
-        SQLConnect connect = new SQLConnect();
-
-        String sql;
-        ResultSet set = connect.selectItems("SELECT * FROM Pizza");
-
-        while (set.next()) {
-            Pizza pizza = new Pizza(set.getString(1),
-                    null, set.getDouble(2),
-                    set.getDouble(3), set.getDouble(4),
-                    set.getDouble(5));
-            this.pizzen.add(pizza);
-        }
-
-        connect.closeConnection();
+        SQLConnect conn = new SQLConnect();
+        this.pizzen = conn.getPizzen();
+        this.pizzen.sort(Comparator.comparing(ListenEintrag::getName));
     }
 
     //getters and setters:
@@ -46,11 +33,10 @@ public class Pizzaverwaltung {
         return pizzen;
     }
 
-    public void setPizzen(LinkedList<Pizza> pizzen) {
-        this.pizzen = pizzen;
+    public void add(Pizza pizza) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        this.pizzen.add(pizza);
+        SQLConnect connect = new SQLConnect();
+        connect.setPizza(pizza);
     }
 
-    public boolean isConnected() {
-        return connection != null;
-    }
 }

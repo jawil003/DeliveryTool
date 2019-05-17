@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 public class SQLConnect {
 
@@ -44,19 +45,51 @@ public class SQLConnect {
 
     }
 
-    public ResultSet selectItems(String sqlStatement) throws SQLException {
+    private ResultSet selectItems(String sqlStatement) throws SQLException {
         final ResultSet resultSet = conn.createStatement().executeQuery(sqlStatement);
         //closeConnection();
         return resultSet;
 
     }
 
-    public void insertItems(String sqlStatement) throws SQLException {
+    private void insertItems(String sqlStatement) throws SQLException {
         conn.createStatement().executeUpdate(sqlStatement);
         //closeConnection();
     }
 
-    public void closeConnection() throws SQLException {
+    public LinkedList<Pizza> getPizzen() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+        LinkedList<Pizza> pizzen = new LinkedList<>();
+
+        String sql;
+        ResultSet set = selectItems("SELECT * FROM Pizza");
+
+        while (set.next()) {
+            Pizza pizza = new Pizza(set.getString(1),
+                    null, set.getDouble(2),
+                    set.getDouble(3), set.getDouble(4),
+                    set.getDouble(5));
+            pizzen.add(pizza);
+        }
+
+        closeConnection();
+        return pizzen;
+    }
+
+    public void setPizza(Pizza pizza) throws SQLException {
+        insertItems("INSERT INTO Pizza " +
+                "(Name, PreisKLein, PreisMittel, PreisGroß, PreisFamilie) " +
+                "VALUES" +
+                "(" +
+                "'" + pizza.getName() + "'" +
+                "'" + pizza.getPreisKlein().orElse(0.00) + "'" +
+                "'" + pizza.getPreisMittel().orElse(0.00) + "'" +
+                "'" + pizza.getPreisGroß().orElse(0.00) + "'" +
+                "'" + pizza.getPreisFamilie().orElse(0.00) + "'"
+                + ")");
+        closeConnection();
+    }
+
+    private void closeConnection() throws SQLException {
         conn.close();
     }
 

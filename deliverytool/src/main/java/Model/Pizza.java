@@ -13,6 +13,10 @@ public class Pizza extends ListenEintrag {
 
     // Constructors:
 
+    public Pizza() {
+        this(null, null);
+    }
+
     public Pizza(String name, LinkedList<Zutat> zutaten) {
         this(name, zutaten, null, null, null, null);
     }

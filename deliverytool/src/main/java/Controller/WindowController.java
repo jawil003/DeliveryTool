@@ -19,9 +19,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 public class WindowController {
 
@@ -55,9 +53,12 @@ public class WindowController {
   double gesamterPreis = 0.00;
   @FXML
   private Label gesamterPreisLabel;
+  private Stage primaryStage;
 
-  public WindowController(LinkedList<Pizza> pizzen) {
+  public WindowController(LinkedList<Pizza> pizzen, Stage primaryStage) {
+
     this.list = pizzen;
+    this.primaryStage = primaryStage;
   }
 
   public static String getRowFxml() {
@@ -76,22 +77,19 @@ public class WindowController {
       //TODO: Change it so that only the changed elements are called
 
       public void onChanged(Change<? extends Pane> c) {
-          final List<? extends Pane> list = c.getAddedSubList();
-          final Iterator<? extends Pane> iterator = list.iterator();
-          Pane next = iterator.next();
-          while (iterator.hasNext()) {
-              next = iterator.next();
-          String text = ((Label) next.lookup("#kassePreis")).getText();
-          text = text.substring(0, text.length() - 1);
-          gesamterPreis += Double.valueOf(text);
-              gesamterPreisLabel.setText(String.valueOf(gesamterPreis) + "€");
+        while (c.next()) {
+          for (Pane additem : c.getAddedSubList()) {
+            final Label lookup = (Label) additem.lookup("#kassePreis");
+            gesamterPreis += Double.valueOf(lookup.getText().substring(0, lookup.getText().length() - 1));
+          }
         }
+        gesamterPreisLabel.setText(String.format("%s0", String.valueOf(gesamterPreis)) + "€");
       }
     });
 
     // create rows
     for (Pizza pizza : this.list) {
-      addRow(pizza, ROW_FXML);
+      addPizzaRow(pizza, ROW_FXML);
 
       //Actions:
 
@@ -120,6 +118,17 @@ public class WindowController {
                 });
             }
         });
+
+      eintragHinzufuegenItem.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+          try {
+            eintragHinzufuegen();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      });
 
       pizzenContr.getKleinButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
@@ -169,7 +178,7 @@ public class WindowController {
 
   //A Pizza is added
 
-  protected void addRow(Pizza pizza, String fxmlPath) {
+  private void addPizzaRow(Pizza pizza, String fxmlPath) {
     // load fxml
     try {
       FXMLLoader loader = new FXMLLoader(new File(fxmlPath).toURI().toURL());
@@ -190,7 +199,7 @@ public class WindowController {
     }
   }
 
-  public void addKasseneintrag(Pizza pizza, int size) throws IOException {
+  private void addKasseneintrag(Pizza pizza, int size) throws IOException {
     FXMLLoader loader = new FXMLLoader(new File(ROW2_FXML).toURI().toURL());
     for (int i = 0; i < kasseListview.getItems().size(); i++) {
       Pane p = kasseListview.getItems().get(i);
@@ -210,6 +219,15 @@ public class WindowController {
 
     this.kasseListview.getItems().add(rootPane);
     //TODO: Label des Gesamten Preises muss sich aktualisieren
+
+  }
+
+  private void eintragHinzufuegen() throws IOException {
+    FXMLLoader loader = new FXMLLoader(new File("deliverytool/Fxml/InsertNewPizzaView.fxml").toURI().toURL());
+    Pizza pizza = new Pizza();
+    final InsertPizzaViewController insertPizzaViewController = new InsertPizzaViewController(pizza);
+    loader.setController(insertPizzaViewController);
+    insertPizzaViewController.init(loader, primaryStage);
 
   }
 
