@@ -1,6 +1,6 @@
-package Model;
+package Model.PizzenDB;
 
-public class ListenEintrag {
+public abstract class ListenEintrag {
 
     private String name;
 

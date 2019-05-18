@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Pizza;
+import Model.PizzenDB.Pizza;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;

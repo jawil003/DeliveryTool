@@ -1,4 +1,4 @@
-package Model;
+package Model.PizzenDB;
 
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import javafx.scene.control.Alert;
@@ -54,7 +54,6 @@ public class SQLConnect {
 
     private void insertItems(String sqlStatement) throws SQLException {
         conn.createStatement().executeUpdate(sqlStatement);
-        //closeConnection();
     }
 
     public LinkedList<Pizza> getPizzen() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
@@ -77,13 +76,13 @@ public class SQLConnect {
 
     public void setPizza(Pizza pizza) throws SQLException {
         insertItems("INSERT INTO Pizza " +
-                "(Name, PreisKLein, PreisMittel, PreisGroß, PreisFamilie) " +
-                "VALUES" +
+                "(Name, PreisKlein, PreisMittel, PreisGroß, PreisFamilie) " +
+                "VALUES " +
                 "(" +
-                "'" + pizza.getName() + "'" +
-                "'" + pizza.getPreisKlein().orElse(0.00) + "'" +
-                "'" + pizza.getPreisMittel().orElse(0.00) + "'" +
-                "'" + pizza.getPreisGroß().orElse(0.00) + "'" +
+                "'" + pizza.getName() + "', " +
+                "'" + pizza.getPreisKlein().orElse(0.00) + "', " +
+                "'" + pizza.getPreisMittel().orElse(0.00) + "', " +
+                "'" + pizza.getPreisGroß().orElse(0.00) + "', " +
                 "'" + pizza.getPreisFamilie().orElse(0.00) + "'"
                 + ")");
         closeConnection();

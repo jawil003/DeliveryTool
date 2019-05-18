@@ -1,4 +1,4 @@
-package Model;
+package Model.PizzenDB;
 
 import java.util.LinkedList;
 import java.util.Optional;

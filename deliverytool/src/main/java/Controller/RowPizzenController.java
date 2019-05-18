@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Pizza;
+import Model.PizzenDB.Pizza;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

@@ -1,7 +1,11 @@
 package Controller;
 
 import App.JavaFXApplication;
-import Model.Pizza;
+import Model.Kasse.BestelltePizza;
+import Model.Kasse.InvalidEntryException;
+import Model.Kasse.Kassenverwaltung;
+import Model.PizzenDB.Pizza;
+import Model.PizzenDB.Pizzaverwaltung;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -10,22 +14,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.sql.SQLException;
+import java.util.List;
 
 public class WindowController {
 
   protected static final String ROW_FXML = "deliverytool/Fxml/Cells/RowPizzenListcell.fxml";
   protected static final String ROW2_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
-  protected LinkedList<Pizza> list = null;
+  InsertPizzaViewController parentController;
+  private Pizzaverwaltung verw;
   RowPizzenController pizzenContr;
   RowKasseController kasseContr;
   @FXML
@@ -54,10 +58,12 @@ public class WindowController {
   @FXML
   private Label gesamterPreisLabel;
   private Stage primaryStage;
+  private Kassenverwaltung verwk;
 
-  public WindowController(LinkedList<Pizza> pizzen, Stage primaryStage) {
+  public WindowController(Pizzaverwaltung verw, Kassenverwaltung verwk, Stage primaryStage) {
 
-    this.list = pizzen;
+    this.verw = verw;
+    this.verwk = verwk;
     this.primaryStage = primaryStage;
   }
 
@@ -71,24 +77,10 @@ public class WindowController {
 
   public void init(Stage primaryStage, Scene scene, Parent rootPane) {
 
-    kasseListview.getItems().addListener(new ListChangeListener<Pane>() {
-      @Override
-
-      //TODO: Change it so that only the changed elements are called
-
-      public void onChanged(Change<? extends Pane> c) {
-        while (c.next()) {
-          for (Pane additem : c.getAddedSubList()) {
-            final Label lookup = (Label) additem.lookup("#kassePreis");
-            gesamterPreis += Double.valueOf(lookup.getText().substring(0, lookup.getText().length() - 1));
-          }
-        }
-        gesamterPreisLabel.setText(String.format("%s0", String.valueOf(gesamterPreis)) + "€");
-      }
-    });
+    verwk.getKassenEintraege().addListener(new KasseViewListener());
 
     // create rows
-    for (Pizza pizza : this.list) {
+    for (Pizza pizza : this.verw.getPizzen()) {
       addPizzaRow(pizza, ROW_FXML);
 
       //Actions:
@@ -119,16 +111,7 @@ public class WindowController {
             }
         });
 
-      eintragHinzufuegenItem.setOnAction(new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-          try {
-            eintragHinzufuegen();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-      });
+      eintragHinzufuegenItem.setOnAction(new EintragHinzufuegenListener());
 
       pizzenContr.getKleinButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
@@ -136,6 +119,8 @@ public class WindowController {
           try {
             addKasseneintrag(pizza, 1);
           } catch (IOException e) {
+            e.printStackTrace();
+          } catch (InvalidEntryException e) {
             e.printStackTrace();
           }
         }
@@ -148,7 +133,19 @@ public class WindowController {
             addKasseneintrag(pizza, 2);
           } catch (IOException e) {
             e.printStackTrace();
+          } catch (InvalidEntryException e) {
+            e.printStackTrace();
           }
+        }
+      });
+
+      allesLoeschenItem.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+          kasseListview.getItems().clear();
+          verwk.getKassenEintraege().clear();
+          gesamterPreis = 0.0;
+          gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
         }
       });
 
@@ -159,6 +156,8 @@ public class WindowController {
             addKasseneintrag(pizza, 3);
           } catch (IOException e) {
             e.printStackTrace();
+          } catch (InvalidEntryException e) {
+            e.printStackTrace();
           }
         }
       });
@@ -168,7 +167,7 @@ public class WindowController {
         public void handle(ActionEvent event) {
           try {
             addKasseneintrag(pizza, 4);
-          } catch (IOException e) {
+          } catch (IOException | InvalidEntryException e) {
             e.printStackTrace();
           }
         }
@@ -199,7 +198,30 @@ public class WindowController {
     }
   }
 
-  private void addKasseneintrag(Pizza pizza, int size) throws IOException {
+  private void addKasseneintrag(Pizza pizza, int size) throws IOException, InvalidEntryException {
+    BestelltePizza bp = new BestelltePizza(pizza.getName());
+
+    switch (size) {
+      case 1:
+        bp.setGroeße('k');
+        bp.setPreis(pizza.getPreisKlein().orElse(0.0));
+        break;
+      case 2:
+        bp.setGroeße('m');
+        bp.setPreis(pizza.getPreisMittel().orElse(0.0));
+        break;
+      case 3:
+        bp.setGroeße('g');
+        bp.setPreis(pizza.getPreisGroß().orElse(0.0));
+        break;
+      case 4:
+        bp.setGroeße('f');
+        bp.setPreis(pizza.getPreisFamilie().orElse(0.0));
+        break;
+    }
+
+    verwk.addKassenEintrag(bp);
+
     FXMLLoader loader = new FXMLLoader(new File(ROW2_FXML).toURI().toURL());
     for (int i = 0; i < kasseListview.getItems().size(); i++) {
       Pane p = kasseListview.getItems().get(i);
@@ -227,16 +249,11 @@ public class WindowController {
     Pizza pizza = new Pizza();
     final InsertPizzaViewController insertPizzaViewController = new InsertPizzaViewController(pizza);
     loader.setController(insertPizzaViewController);
+    this.parentController = insertPizzaViewController;
     insertPizzaViewController.init(loader, primaryStage);
 
-  }
+    insertPizzaViewController.getOkButton().setOnAction(new OkButtonListener());
 
-  public LinkedList<Pizza> getList() {
-    return list;
-  }
-
-  public void setList(LinkedList<Pizza> list) {
-    this.list = list;
   }
 
   public ListView<Pane> getPizzenListview() {
@@ -278,4 +295,64 @@ public class WindowController {
     return "";
 
   }
+
+  //Listener:
+
+  private class OkButtonListener implements EventHandler<ActionEvent> {
+
+    @Override
+    public void handle(ActionEvent event) {
+      try {
+        verw.add(new Pizza(parentController.getNameField().getText(), null,
+                Double.valueOf(parentController.getPreisKleinFiled().getText()),
+                Double.valueOf(parentController.getPreisMittelField().getText()),
+                Double.valueOf(parentController.getPreisGroßField().getText()),
+                Double.valueOf(parentController.getPreisFamilieField().getText())));
+        parentController.close();
+      } catch (NumberFormatException e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.setTitle("Preis(e) ungültig");
+        alert.setHeaderText("Bitte gültige Preis(e) eingeben und alle Felder ausfüllen");
+        alert.showAndWait();
+      } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      } catch (InstantiationException e) {
+        e.printStackTrace();
+      } catch (IllegalAccessException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  private class EintragHinzufuegenListener implements EventHandler<ActionEvent> {
+
+    @Override
+    public void handle(ActionEvent event) {
+      try {
+        eintragHinzufuegen();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  private class KasseViewListener implements ListChangeListener<BestelltePizza> {
+
+    @Override
+    public void onChanged(Change<? extends BestelltePizza> c) {
+      while (c.next()) {
+        final List<? extends BestelltePizza> addedSubList = c.getAddedSubList();
+        for (BestelltePizza p : addedSubList) {
+          gesamterPreis += p.getPreis();
+
+        }
+        gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
+
+      }
+    }
+  }
+
 }

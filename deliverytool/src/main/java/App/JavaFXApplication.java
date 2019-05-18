@@ -1,7 +1,8 @@
 package App;
 
 import Controller.WindowController;
-import Model.Pizzaverwaltung;
+import Model.Kasse.Kassenverwaltung;
+import Model.PizzenDB.Pizzaverwaltung;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,6 +23,7 @@ public class JavaFXApplication extends Application {
     //JavaFX window controller (MVC principle)
     private WindowController controller;
     private Pizzaverwaltung verw;
+    private Kassenverwaltung verwk;
 
     public static void main(String[] args) {
         launch(args);
@@ -32,10 +34,12 @@ public class JavaFXApplication extends Application {
         FXMLLoader loader = new FXMLLoader(new File(FXML_PATH).toURI().toURL());
         try {
             verw = new Pizzaverwaltung();
+            verwk = new Kassenverwaltung();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        this.controller = new WindowController(verw.getPizzen(), primaryStage);
+
+        this.controller = new WindowController(verw, verwk, primaryStage);
         loader.setController(this.controller);
         Parent rootPane = loader.load();
         primaryStage.setTitle("Deliverytool");

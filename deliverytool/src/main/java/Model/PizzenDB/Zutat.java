@@ -1,4 +1,4 @@
-package Model;
+package Model.PizzenDB;
 
 public class Zutat {
     private String name;

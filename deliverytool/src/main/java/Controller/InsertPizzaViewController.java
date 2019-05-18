@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Pizza;
+import Model.PizzenDB.Pizza;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -47,13 +47,15 @@ public class InsertPizzaViewController {
 
     private Pizza pizza;
 
+    Stage current;
+
     public InsertPizzaViewController(Pizza pizza) {
         this.pizza = pizza;
     }
 
     public void init(FXMLLoader loader, Stage parent) throws IOException {
         final Pane load = loader.load();
-        Stage current = new Stage();
+        current = new Stage();
         current.initOwner(parent);
         current.initModality(Modality.WINDOW_MODAL);
         final Scene scene = new Scene(load);
@@ -150,5 +152,9 @@ public class InsertPizzaViewController {
 
     public void setPizza(Pizza pizza) {
         this.pizza = pizza;
+    }
+
+    public void close() {
+        current.close();
     }
 }
