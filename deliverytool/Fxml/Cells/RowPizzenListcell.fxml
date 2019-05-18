@@ -19,7 +19,7 @@
                 <Image url="@../../../../../../../../Downloads/Kursmaterial%20und%20Projekte%20aus%20dem%20Kurs/Abschnitte/33.%20Pizza%20Tabelle%20mit%20TableView/pizza.png"/>
             </image>
             <viewport>
-                <Rectangle2D height="25.0" minX="25.0" minY="25.0" width="25.0"/>
+                <Rectangle2D/>
             </viewport>
         </ImageView>
         <Label fx:id="pizzaLabel" layoutX="34.0" layoutY="6.0" text="Pizzaname" AnchorPane.bottomAnchor="2.5"

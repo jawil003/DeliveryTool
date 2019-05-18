@@ -19,12 +19,12 @@ public class Kassenverwaltung {
         this.kassenEintraege.add(kassenEintrag);
     }
 
-    public void removeKassenEintrag(int index) {
-
+    public KassenEintrag removeKassenEintrag(int index) {
+        return kassenEintraege.remove(index);
     }
 
     public void removeKassenEintrag(BestelltePizza kassenEintrag) {
-
+        kassenEintraege.remove(kassenEintrag);
     }
 
     @Override

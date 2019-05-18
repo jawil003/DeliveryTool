@@ -3,6 +3,7 @@ package Controller;
 import App.JavaFXApplication;
 import Model.Kasse.BestelltePizza;
 import Model.Kasse.InvalidEntryException;
+import Model.Kasse.KassenEintrag;
 import Model.Kasse.Kassenverwaltung;
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.Pizzaverwaltung;
@@ -15,6 +16,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -172,8 +175,24 @@ public class WindowController {
           }
         }
       });
+
+      ausgewähltLoeschen.setOnAction(
+              new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                  deleteSelected();
+                }
+              });
+
+      kasseListview.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        @Override
+        public void handle(KeyEvent event) {
+          deleteSelected(event);
+        }
+      });
     }
   }
+
 
   //A Pizza is added
 
@@ -294,6 +313,27 @@ public class WindowController {
 
     return "";
 
+  }
+
+  private void deleteSelected(KeyEvent event) {
+    if (kasseListview.isFocused()) {
+      if (event.getCode() == KeyCode.BACK_SPACE) {
+        deleteSelected();
+      }
+    }
+  }
+
+  public void deleteSelected() {
+    final int selectedIndex = kasseListview.getSelectionModel().getSelectedIndex();
+    final KassenEintrag kassenEintrag = verwk.removeKassenEintrag(selectedIndex);
+    final Label lookup = (Label) kasseListview.getItems().get(selectedIndex).lookup("#kasseAnzahlLabel");
+    if (Integer.valueOf(lookup.getText()) > 1) {
+      lookup.setText(String.valueOf(Integer.valueOf(lookup.getText()) - 1));
+    } else {
+      kasseListview.getItems().remove(selectedIndex);
+    }
+    gesamterPreis -= kassenEintrag.getPreis();
+    gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
   }
 
   //Listener:
