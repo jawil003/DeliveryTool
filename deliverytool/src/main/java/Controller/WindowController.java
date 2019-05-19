@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class WindowController {
@@ -95,7 +96,7 @@ public class WindowController {
             }
         });
 
-      //FIXME: NeustartItem causes a loop and freeze of gui
+      //FIXME: NeustartItem causes a loop and freeze of gui (DB Access is not yet a different thread
 
         neustartItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -221,6 +222,7 @@ public class WindowController {
 
   private void addKasseneintrag(Pizza pizza, int size) throws IOException, InvalidEntryException {
     BestelltePizza bp = new BestelltePizza(pizza.getName());
+    DecimalFormat df2 = new DecimalFormat("#,##");
 
     switch (size) {
       case 1:

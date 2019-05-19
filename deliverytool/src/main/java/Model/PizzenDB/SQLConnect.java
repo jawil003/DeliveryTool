@@ -90,6 +90,9 @@ public class SQLConnect {
 
     private void closeConnection() throws SQLException {
         conn.close();
+        System.out.println("* Verbindung abgebaut");
+        String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbname;
+        System.out.println(url);
     }
 
     public static String getHostname() {
