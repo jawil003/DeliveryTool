@@ -103,12 +103,14 @@ public class WindowController {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                      Platform.exit();
-                      try {
-                        new JavaFXApplication().start(new Stage());
-                      } catch (Exception e) {
-                        e.printStackTrace();
-                      }
+                      primaryStage.close();
+                      Platform.runLater(() -> {
+                        try {
+                          new JavaFXApplication().start(new Stage());
+                        } catch (Exception e) {
+                          e.printStackTrace();
+                        }
+                      });
                     }
                 });
             }
@@ -259,7 +261,6 @@ public class WindowController {
     kasseContr.init(pizza, size);
 
     this.kasseListview.getItems().add(rootPane);
-    //TODO: Label des Gesamten Preises muss sich aktualisieren
 
   }
 

@@ -73,41 +73,13 @@ public class InsertPizzaViewController {
             }
         });
 
-        nameField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ENTER) {
-                    preisKleinFiled.requestFocus();
-                }
-            }
-        });
+        nameField.setOnKeyPressed(new enterPressedTextFieldListener(preisKleinFiled));
 
-        preisKleinFiled.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ENTER) {
-                    preisMittelField.requestFocus();
-                }
-            }
-        });
+        preisKleinFiled.setOnKeyPressed(new enterPressedTextFieldListener(preisMittelField));
 
-        preisMittelField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ENTER) {
-                    preisGroßField.requestFocus();
-                }
-            }
-        });
+        preisMittelField.setOnKeyPressed(new enterPressedTextFieldListener(preisGroßField));
 
-        preisGroßField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ENTER) {
-                    preisFamilieField.requestFocus();
-                }
-            }
-        });
+        preisGroßField.setOnKeyPressed(new enterPressedTextFieldListener(preisFamilieField));
 
 
     }
@@ -194,5 +166,20 @@ public class InsertPizzaViewController {
 
     public void close() {
         current.close();
+    }
+
+    private class enterPressedTextFieldListener implements EventHandler<KeyEvent> {
+        TextField then;
+
+        public enterPressedTextFieldListener(TextField then) {
+            this.then = then;
+        }
+
+        @Override
+        public void handle(KeyEvent event) {
+            if (event.getCode() == KeyCode.ENTER) {
+                then.requestFocus();
+            }
+        }
     }
 }
