@@ -1,5 +1,7 @@
 package Model.PizzenDB;
 
+import java.util.Objects;
+
 public class Zutat {
     private String name;
     private int menge;
@@ -33,5 +35,20 @@ public class Zutat {
 
     public void setMengeneinheit(String mengeneinheit) {
         this.mengeneinheit = mengeneinheit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Zutat zutat = (Zutat) o;
+        return menge == zutat.menge &&
+                Objects.equals(name, zutat.name) &&
+                Objects.equals(mengeneinheit, zutat.mengeneinheit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, menge, mengeneinheit);
     }
 }

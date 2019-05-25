@@ -21,11 +21,26 @@ public class SQLConnect {
 
     private boolean isRunning;
 
-    public SQLConnect() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    /**
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
+    public SQLConnect()
+            throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         isRunning = true;
         establishConnection();
     }
 
+    /**
+     * Set up the connection to the mySQL Database
+     *
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws ClassNotFoundException
+     */
     private void establishConnection()
             throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         System.out.println("* Treiber laden");
@@ -48,6 +63,13 @@ public class SQLConnect {
 
     }
 
+    /**
+     * Make a SQL SELECT Request to the mySQL Database
+     *
+     * @param sqlStatement
+     * @return
+     * @throws SQLException
+     */
     private ResultSet selectItems(String sqlStatement) throws SQLException {
         final ResultSet resultSet = conn.createStatement().executeQuery(sqlStatement);
         //closeConnection();
@@ -55,11 +77,27 @@ public class SQLConnect {
 
     }
 
+    /**
+     * Make a SQL INSERT Request to the mySQL Database
+     *
+     * @param sqlStatement
+     * @throws SQLException
+     */
     private void insertItems(String sqlStatement) throws SQLException {
         conn.createStatement().executeUpdate(sqlStatement);
     }
 
-    public LinkedList<Pizza> getPizzen() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+    /**
+     * Make a SQL SELECT Request to the mySQL DB and returns all Pizza Entries as a LinkedList
+     *
+     * @return LinkedList <Pizza>
+     * @throws SQLException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
+     */
+    public LinkedList<Pizza> getPizzen()
+            throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         LinkedList<Pizza> pizzen = new LinkedList<>();
 
         String sql;
@@ -77,7 +115,11 @@ public class SQLConnect {
         return pizzen;
     }
 
-    public void setPizza(Pizza pizza) throws SQLException {
+    /**
+     * @param pizza
+     * @throws SQLException
+     */
+    public void addPizza(Pizza pizza) throws SQLException {
         insertItems("INSERT INTO Pizza " +
                 "(Name, PreisKlein, PreisMittel, PreisGroß, PreisFamilie) " +
                 "VALUES " +
@@ -91,6 +133,9 @@ public class SQLConnect {
         closeConnection();
     }
 
+    /**
+     * @throws SQLException
+     */
     private void closeConnection() throws SQLException {
         conn.close();
         System.out.println("* Verbindung abgebaut");

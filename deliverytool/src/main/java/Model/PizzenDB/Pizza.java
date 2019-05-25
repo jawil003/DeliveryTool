@@ -1,6 +1,7 @@
 package Model.PizzenDB;
 
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Pizza extends ListenEintrag {
@@ -90,5 +91,23 @@ public class Pizza extends ListenEintrag {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pizza pizza = (Pizza) o;
+        return Objects.equals(name, pizza.name) &&
+                Objects.equals(preisKlein, pizza.preisKlein) &&
+                Objects.equals(preisMittel, pizza.preisMittel) &&
+                Objects.equals(preisGroß, pizza.preisGroß) &&
+                Objects.equals(preisFamilie, pizza.preisFamilie) &&
+                Objects.equals(zutaten, pizza.zutaten);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, preisKlein, preisMittel, preisGroß, preisFamilie, zutaten);
     }
 }

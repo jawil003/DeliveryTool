@@ -49,7 +49,7 @@ public class Pizzaverwaltung {
                 e.printStackTrace();
             }
             try {
-                sqlConnection.setPizza(pizza);
+                sqlConnection.addPizza(pizza);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

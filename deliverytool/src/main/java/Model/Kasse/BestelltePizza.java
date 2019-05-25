@@ -1,5 +1,7 @@
 package Model.Kasse;
 
+import java.util.Objects;
+
 public class BestelltePizza extends KassenEintrag {
     char groeße;
 
@@ -41,7 +43,21 @@ public class BestelltePizza extends KassenEintrag {
     @Override
     public String toString() {
         return "BestelltePizza{" +
-                "preis=" + preis +
+                "groeße=" + groeße +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        BestelltePizza that = (BestelltePizza) o;
+        return groeße == that.groeße;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), groeße);
     }
 }

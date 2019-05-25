@@ -1,5 +1,7 @@
 package Model.Kasse;
 
+import java.util.Objects;
+
 public abstract class KassenEintrag {
     Double preis;
     private String name;
@@ -38,5 +40,19 @@ public abstract class KassenEintrag {
         return "KassenEintrag{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KassenEintrag that = (KassenEintrag) o;
+        return Objects.equals(preis, that.preis) &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(preis, name);
     }
 }
