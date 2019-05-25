@@ -25,9 +25,7 @@ public class Pizzaverwaltung {
 
         //if there is no initialized list the constructor will initialize a new one
 
-        if (pizzen != null) {
-            //this.pizzen = FXCollections.observableArrayList(pizzen);
-        } else {
+        if (pizzen == null) {
             this.pizzen = FXCollections.observableArrayList();
         }
 
@@ -40,23 +38,20 @@ public class Pizzaverwaltung {
 
     //method to add a new Pizza Entry (used by the eintraegeHinzufuegen Window)
 
-    public void add(Pizza pizza) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public void add(Pizza pizza) {
         this.pizzen.add(pizza);
         ExecutorService executor = Executors.newFixedThreadPool(10);
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                sqlConnection = null;
-                try {
-                    sqlConnection = new SQLConnect();
-                } catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    sqlConnection.setPizza(pizza);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        executor.execute(() -> {
+            sqlConnection = null;
+            try {
+                sqlConnection = new SQLConnect();
+            } catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            try {
+                sqlConnection.setPizza(pizza);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
 

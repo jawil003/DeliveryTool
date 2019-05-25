@@ -22,8 +22,6 @@ public class JavaFXApplication extends Application {
     //JavaFX scene
     protected Scene scene = null;
 
-    //JavaFX window controller (MVC principle)
-    private WindowController controller;
     private Pizzaverwaltung verw;
     private Kassenverwaltung verwk;
 
@@ -43,8 +41,9 @@ public class JavaFXApplication extends Application {
 
         //MainWindow is build and controller added
 
-        this.controller = new WindowController(verw, verwk, primaryStage);
-        loader.setController(this.controller);
+        //JavaFX window controller (MVC principle)
+        WindowController controller = new WindowController(verw, verwk, primaryStage);
+        loader.setController(controller);
         Parent rootPane = loader.load();
         primaryStage.setTitle("Deliverytool");
         this.scene = new Scene(rootPane);

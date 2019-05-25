@@ -349,7 +349,7 @@ public class WindowController {
         verw.add(new Pizza(parentController.getNameField().getText(), null,
                 Double.valueOf(parentController.getPreisKleinFiled().getText()),
                 Double.valueOf(parentController.getPreisMittelField().getText()),
-                Double.valueOf(parentController.getPreisGroßField().getText()),
+                Double.valueOf(parentController.getPreisGrossField().getText()),
                 Double.valueOf(parentController.getPreisFamilieField().getText())));
         parentController.close();
       } catch (NumberFormatException e) {

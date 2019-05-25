@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.PizzenDB.Pizza;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +28,7 @@ public class InsertPizzaViewController {
     private TextField preisMittelField;
 
     @FXML
-    private TextField preisGroßField;
+    private TextField preisGrossField;
 
     @FXML
     private TextField preisFamilieField;
@@ -38,7 +37,7 @@ public class InsertPizzaViewController {
     private ListView<?> zutatenView;
 
     @FXML
-    private ListView<?> hinzugefügteZutatenView;
+    private ListView<?> hinzugefuegteZutatenView;
 
     @FXML
     private Button abbrechenButton;
@@ -49,13 +48,13 @@ public class InsertPizzaViewController {
 
     private Pizza pizza;
 
-    Stage current;
+    private Stage current;
 
-    public InsertPizzaViewController(Pizza pizza) {
+    InsertPizzaViewController(Pizza pizza) {
         this.pizza = pizza;
     }
 
-    public void init(FXMLLoader loader, Stage parent) throws IOException {
+    void init(FXMLLoader loader, Stage parent) throws IOException {
         final Pane load = loader.load();
         current = new Stage();
         current.initOwner(parent);
@@ -66,78 +65,49 @@ public class InsertPizzaViewController {
         current.setResizable(false);
         current.show();
 
-        abbrechenButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                current.close();
-            }
-        });
+        abbrechenButton.setOnAction(event -> current.close());
 
         nameField.setOnKeyPressed(new enterPressedTextFieldListener(preisKleinFiled));
 
         preisKleinFiled.setOnKeyPressed(new enterPressedTextFieldListener(preisMittelField));
 
-        preisMittelField.setOnKeyPressed(new enterPressedTextFieldListener(preisGroßField));
+        preisMittelField.setOnKeyPressed(new enterPressedTextFieldListener(preisGrossField));
 
-        preisGroßField.setOnKeyPressed(new enterPressedTextFieldListener(preisFamilieField));
+        preisGrossField.setOnKeyPressed(new enterPressedTextFieldListener(preisFamilieField));
 
 
     }
 
-    public TextField getNameField() {
+    TextField getNameField() {
         return nameField;
     }
 
-    public void setNameField(TextField nameField) {
-        this.nameField = nameField;
-    }
-
-    public TextField getPreisKleinFiled() {
+    TextField getPreisKleinFiled() {
         return preisKleinFiled;
     }
 
-    public void setPreisKleinFiled(TextField preisKleinFiled) {
-        this.preisKleinFiled = preisKleinFiled;
-    }
-
-    public TextField getPreisMittelField() {
+    TextField getPreisMittelField() {
         return preisMittelField;
     }
 
-    public void setPreisMittelField(TextField preisMittelField) {
-        this.preisMittelField = preisMittelField;
+    TextField getPreisGrossField() {
+        return preisGrossField;
     }
 
-    public TextField getPreisGroßField() {
-        return preisGroßField;
-    }
-
-    public void setPreisGroßField(TextField preisGroßField) {
-        this.preisGroßField = preisGroßField;
-    }
-
-    public TextField getPreisFamilieField() {
+    TextField getPreisFamilieField() {
         return preisFamilieField;
-    }
-
-    public void setPreisFamilieField(TextField preisFamilieField) {
-        this.preisFamilieField = preisFamilieField;
-    }
-
-    public ListView<?> getZutatenView() {
-        return zutatenView;
     }
 
     public void setZutatenView(ListView<?> zutatenView) {
         this.zutatenView = zutatenView;
     }
 
-    public ListView<?> getHinzugefügteZutatenView() {
-        return hinzugefügteZutatenView;
+    public ListView<?> getHinzugefuegteZutatenView() {
+        return hinzugefuegteZutatenView;
     }
 
-    public void setHinzugefügteZutatenView(ListView<?> hinzugefügteZutatenView) {
-        this.hinzugefügteZutatenView = hinzugefügteZutatenView;
+    public void setHinzugefuegteZutatenView(ListView<?> hinzugefuegteZutatenView) {
+        this.hinzugefuegteZutatenView = hinzugefuegteZutatenView;
     }
 
     public Button getAbbrechenButton() {
@@ -164,14 +134,14 @@ public class InsertPizzaViewController {
         this.pizza = pizza;
     }
 
-    public void close() {
+    void close() {
         current.close();
     }
 
     private class enterPressedTextFieldListener implements EventHandler<KeyEvent> {
         TextField then;
 
-        public enterPressedTextFieldListener(TextField then) {
+        enterPressedTextFieldListener(TextField then) {
             this.then = then;
         }
 
