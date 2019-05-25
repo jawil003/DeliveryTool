@@ -19,7 +19,10 @@ public class SQLConnect {
     private final static String dbname = "deliverytool"; //name of the database
     private static Connection conn = null; //connection to the database
 
+    private boolean isRunning;
+
     public SQLConnect() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        isRunning = true;
         establishConnection();
     }
 
@@ -93,6 +96,7 @@ public class SQLConnect {
         System.out.println("* Verbindung abgebaut");
         String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbname;
         System.out.println(url);
+        isRunning = false;
     }
 
     public static String getHostname() {
@@ -121,5 +125,9 @@ public class SQLConnect {
 
     public static void setConn(Connection conn) {
         SQLConnect.conn = conn;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 }
