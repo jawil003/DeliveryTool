@@ -4,10 +4,12 @@ import Controller.WindowController;
 import Model.Kasse.Kassenverwaltung;
 import Model.PizzenDB.Pizzaverwaltung;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -50,5 +52,18 @@ public class JavaFXApplication extends Application {
         primaryStage.setResizable(false);
         primaryStage.requestFocus();
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(new closeRequestHandler());
+    }
+
+    private class closeRequestHandler implements EventHandler<WindowEvent> {
+
+        @Override
+        public void handle(WindowEvent event) {
+            if (verw.getSqlConnection().isRunning()) {
+                event.consume();
+            }
+
+        }
     }
 }

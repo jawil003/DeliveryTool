@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 
 public class Pizzaverwaltung {
     private ObservableList<Pizza> pizzen;
+    private SQLConnect sqlConnection;
 
     //Constructors:
 
@@ -29,8 +30,8 @@ public class Pizzaverwaltung {
             }
         }
 
-        SQLConnect conn = new SQLConnect();
-        this.pizzen = FXCollections.observableArrayList(conn.getPizzen());
+        sqlConnection = new SQLConnect();
+        this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzen());
         this.pizzen.sort(Comparator.comparing(ListenEintrag::getName));
     }
 
@@ -46,14 +47,14 @@ public class Pizzaverwaltung {
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                SQLConnect connect = null;
+                sqlConnection = null;
                 try {
-                    connect = new SQLConnect();
+                    sqlConnection = new SQLConnect();
                 } catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
                 try {
-                    connect.setPizza(pizza);
+                    sqlConnection.setPizza(pizza);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -62,4 +63,7 @@ public class Pizzaverwaltung {
 
     }
 
+    public SQLConnect getSqlConnection() {
+        return sqlConnection;
+    }
 }
