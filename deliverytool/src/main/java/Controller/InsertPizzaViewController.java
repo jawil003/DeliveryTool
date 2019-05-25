@@ -16,13 +16,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
 public class InsertPizzaViewController {
 
     @FXML
     private TextField nameField;
 
     @FXML
-    private TextField preisKleinFiled;
+    private TextField preisKleinField;
 
     @FXML
     private TextField preisMittelField;
@@ -50,6 +54,9 @@ public class InsertPizzaViewController {
 
     private Stage current;
 
+    /**
+     * @param pizza
+     */
     InsertPizzaViewController(Pizza pizza) {
         this.pizza = pizza;
     }
@@ -67,9 +74,9 @@ public class InsertPizzaViewController {
 
         abbrechenButton.setOnAction(event -> current.close());
 
-        nameField.setOnKeyPressed(new enterPressedTextFieldListener(preisKleinFiled));
+        nameField.setOnKeyPressed(new enterPressedTextFieldListener(preisKleinField));
 
-        preisKleinFiled.setOnKeyPressed(new enterPressedTextFieldListener(preisMittelField));
+        preisKleinField.setOnKeyPressed(new enterPressedTextFieldListener(preisMittelField));
 
         preisMittelField.setOnKeyPressed(new enterPressedTextFieldListener(preisGrossField));
 
@@ -78,42 +85,64 @@ public class InsertPizzaViewController {
 
     }
 
+    /**
+     * @return the TextField where the Pizzaname is entered
+     */
     TextField getNameField() {
         return nameField;
     }
 
-    TextField getPreisKleinFiled() {
-        return preisKleinFiled;
+    /**
+     * @return the TextField where the Price of the small Pizza is entered
+     */
+    TextField getPreisKleinField() {
+        return preisKleinField;
     }
 
+    /**
+     * @return the TextField where the Price of the middle Pizza is entered
+     */
     TextField getPreisMittelField() {
         return preisMittelField;
     }
 
+    /** @return the TextField where the Price of the big Pizza is entered */
     TextField getPreisGrossField() {
         return preisGrossField;
     }
 
+    /** @return the TextField where the Price of the family Pizza is entered */
     TextField getPreisFamilieField() {
         return preisFamilieField;
     }
 
+    /**
+     * @param zutatenView
+     */
     public void setZutatenView(ListView<?> zutatenView) {
         this.zutatenView = zutatenView;
     }
 
+    /**
+     * @return the ListView where the Zutatten are shown which are added to the Pizza
+     */
     public ListView<?> getHinzugefuegteZutatenView() {
         return hinzugefuegteZutatenView;
     }
 
+    /**
+     * @param hinzugefuegteZutatenView
+     */
     public void setHinzugefuegteZutatenView(ListView<?> hinzugefuegteZutatenView) {
         this.hinzugefuegteZutatenView = hinzugefuegteZutatenView;
     }
 
+    /** @return the button where the window is closed without adding the entry */
     public Button getAbbrechenButton() {
         return abbrechenButton;
     }
 
+    /** @param abbrechenButton */
     public void setAbbrechenButton(Button abbrechenButton) {
         this.abbrechenButton = abbrechenButton;
     }
@@ -122,18 +151,22 @@ public class InsertPizzaViewController {
         return okButton;
     }
 
+    /** @param okButton */
     public void setOkButton(Button okButton) {
         this.okButton = okButton;
     }
 
+    /** @return the pizza which is entered by the underlying mask/view */
     public Pizza getPizza() {
         return pizza;
     }
 
+    /** @param pizza */
     public void setPizza(Pizza pizza) {
         this.pizza = pizza;
     }
 
+    /** */
     void close() {
         current.close();
     }
@@ -145,6 +178,7 @@ public class InsertPizzaViewController {
             this.then = then;
         }
 
+        /** @param event */
         @Override
         public void handle(KeyEvent event) {
             if (event.getCode() == KeyCode.ENTER) {

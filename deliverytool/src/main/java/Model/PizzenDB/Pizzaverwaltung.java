@@ -10,16 +10,37 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Pizzaverwaltung {
+
+    /**
+     * @author Jannik Will
+     * @version 1.0
+     */
+
     private ObservableList<Pizza> pizzen;
     private SQLConnect sqlConnection;
 
-    //Constructors:
+    // Constructors:
 
+    /**
+     * This Constructor set the Pizzen List to zero (init empty)
+     *
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws ClassNotFoundException
+     */
     public Pizzaverwaltung()
             throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        this(null);
+        this(new LinkedList<>());
     }
 
+    /**
+     * @param pizzen
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     */
     private Pizzaverwaltung(LinkedList<Pizza> pizzen)
             throws SQLException, IllegalAccessException, ClassNotFoundException, InstantiationException {
 
@@ -36,8 +57,13 @@ public class Pizzaverwaltung {
         this.pizzen.sort(Comparator.comparing(ListenEintrag::getName));
     }
 
-    //method to add a new Pizza Entry (used by the eintraegeHinzufuegen Window)
+    // method to add a new Pizza Entry (used by the eintraegeHinzufuegen Window)
 
+    /**
+     * Add a new Pizza to database and to list
+     *
+     * @param pizza
+     */
     public void add(Pizza pizza) {
         this.pizzen.add(pizza);
         ExecutorService executor = Executors.newFixedThreadPool(10);
@@ -57,12 +83,18 @@ public class Pizzaverwaltung {
 
     }
 
-    //getters and setters:
+    // getters and setters:
 
+    /**
+     * @return the Oberservable List with Pizza Entries
+     */
     public ObservableList<Pizza> getPizzen() {
         return pizzen;
     }
 
+    /**
+     * @return the mySQL db connection
+     */
     public SQLConnect getSqlConnection() {
         return sqlConnection;
     }

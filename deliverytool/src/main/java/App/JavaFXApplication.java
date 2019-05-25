@@ -12,9 +12,15 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class JavaFXApplication extends Application {
+
+    /**
+     * @author Jannik Will
+     * @version 1.0
+     */
 
     //path to window fxml file
     private static final String FXML_PATH = "deliverytool/Fxml/Window.fxml";
@@ -29,8 +35,16 @@ public class JavaFXApplication extends Application {
         launch(args);
     }
 
+    /**
+     * @param primaryStage
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IOException
+     */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage)
+            throws IllegalAccessException, ClassNotFoundException, InstantiationException, IOException {
         FXMLLoader loader = new FXMLLoader(new File(FXML_PATH).toURI().toURL());
         try {
             verw = new Pizzaverwaltung();

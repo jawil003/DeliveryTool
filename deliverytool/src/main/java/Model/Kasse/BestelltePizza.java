@@ -3,30 +3,56 @@ package Model.Kasse;
 import java.util.Objects;
 
 public class BestelltePizza extends KassenEintrag {
+
+    /**
+     * @author Jannik Will
+     * @version 1.0
+     */
+
     char groeße;
 
+    /**
+     * Constructor where all values are empty or zero
+     */
     public BestelltePizza() {
         this("", 0.0, ' ');
 
     }
 
+    /**
+     * @param name
+     */
     public BestelltePizza(String name) {
         super(name);
     }
 
+    /**
+     * @param name
+     * @param preis
+     * @param groeße
+     */
     public BestelltePizza(String name, Double preis, char groeße) {
         super(name, preis);
         this.groeße = groeße;
     }
 
+    /**
+     * @return the Price of the Pizza which is ordered
+     */
     public Double getPreis() {
         return preis;
     }
 
+    /**
+     * @param preis
+     */
     public void setPreis(Double preis) {
         this.preis = preis;
     }
 
+    /**
+     * @return the Size which this Pizza has
+     */
     public char getGroeße() {
         return groeße;
     }
@@ -40,6 +66,9 @@ public class BestelltePizza extends KassenEintrag {
         }
     }
 
+    /**
+     * @return the Parameters as String Collection
+     */
     @Override
     public String toString() {
         return "BestelltePizza{" +
@@ -47,6 +76,10 @@ public class BestelltePizza extends KassenEintrag {
                 '}';
     }
 
+    /**
+     * @param o
+     * @return true (if the values of both compared BestelltePizza is matching), else false
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,8 +89,11 @@ public class BestelltePizza extends KassenEintrag {
         return groeße == that.groeße;
     }
 
+    /**
+     * @return the calculated hashCode value
+     */
     @Override
-    public int hashCode() {
+  public int hashCode() {
         return Objects.hash(super.hashCode(), groeße);
     }
 }

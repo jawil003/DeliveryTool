@@ -11,6 +11,11 @@ import java.util.LinkedList;
 
 public class SQLConnect {
 
+    /**
+     * @author Jannik Will
+     * @version 1.0
+     */
+
     //SQL Variables:
     private static final String hostname = "db4free.net"; //the webadress of the database
     private static final String port = "3306"; //the connection port of the mySQL Server
@@ -34,7 +39,67 @@ public class SQLConnect {
     }
 
     /**
-     * Set up the connection to the mySQL Database
+     * @return hostname of used database
+     */
+    public static String getHostname() {
+        return hostname;
+    }
+
+    /**
+     * @return port of the mySQL Server
+     */
+    public static String getPort() {
+        return port;
+    }
+
+    /**
+     * @return name of mySQL database
+     */
+    public static String getDbname() {
+        return dbname;
+    }
+
+    /**
+     * @return username for auth on the database
+     */
+    public static String getUser() {
+        return user;
+    }
+
+    /**
+     * @return passwort for mySQL database
+     */
+    public static String getPassword() {
+        return password;
+    }
+
+    /**
+     * @return SQLConnection with mySQL database
+     */
+    public static Connection getConn() {
+        return conn;
+    }
+
+    /**
+     * @param conn
+     */
+    public static void setConn(Connection conn) {
+        SQLConnect.conn = conn;
+    }
+
+    /**
+     * @throws SQLException
+     */
+    private void closeConnection() throws SQLException {
+        conn.close();
+        System.out.println("* Verbindung abgebaut");
+        String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbname;
+        System.out.println(url);
+        isRunning = false;
+    }
+
+    /**
+     * Set up the connection to the mySQL Database.
      *
      * @throws SQLException
      * @throws IllegalAccessException
@@ -64,10 +129,10 @@ public class SQLConnect {
     }
 
     /**
-     * Make a SQL SELECT Request to the mySQL Database
+     * Make a SQL SELECT Request to the mySQL Database.
      *
      * @param sqlStatement
-     * @return
+     * @return ResultSet
      * @throws SQLException
      */
     private ResultSet selectItems(String sqlStatement) throws SQLException {
@@ -78,7 +143,7 @@ public class SQLConnect {
     }
 
     /**
-     * Make a SQL INSERT Request to the mySQL Database
+     * Make a SQL INSERT Request to the mySQL Database.
      *
      * @param sqlStatement
      * @throws SQLException
@@ -88,9 +153,9 @@ public class SQLConnect {
     }
 
     /**
-     * Make a SQL SELECT Request to the mySQL DB and returns all Pizza Entries as a LinkedList
+     * Make a SQL SELECT Request to the mySQL DB and returns all Pizza Entries as a LinkedList.
      *
-     * @return LinkedList <Pizza>
+     * @return LinkedList of Pizza Entries
      * @throws SQLException
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -116,6 +181,7 @@ public class SQLConnect {
     }
 
     /**
+     * Add a new Pizza Entry to the database by inherit INSERT Statement in background
      * @param pizza
      * @throws SQLException
      */
@@ -134,44 +200,7 @@ public class SQLConnect {
     }
 
     /**
-     * @throws SQLException
-     */
-    private void closeConnection() throws SQLException {
-        conn.close();
-        System.out.println("* Verbindung abgebaut");
-        String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbname;
-        System.out.println(url);
-        isRunning = false;
-    }
-
-    public static String getHostname() {
-        return hostname;
-    }
-
-    public static String getPort() {
-        return port;
-    }
-
-    public static String getDbname() {
-        return dbname;
-    }
-
-    public static String getUser() {
-        return user;
-    }
-
-    public static String getPassword() {
-        return password;
-    }
-
-    public static Connection getConn() {
-        return conn;
-    }
-
-    public static void setConn(Connection conn) {
-        SQLConnect.conn = conn;
-    }
-
+     * @return true (if SQLConnection still runs), else false */
     public boolean isRunning() {
         return isRunning;
     }

@@ -24,11 +24,15 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.List;
 
 public class WindowController {
+
+  /**
+   * @author Jannik Will
+   * @version 1.0
+   */
 
   protected static final String ROW_FXML = "deliverytool/Fxml/Cells/RowPizzenListcell.fxml";
   protected static final String ROW2_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
@@ -63,7 +67,13 @@ public class WindowController {
   private Label gesamterPreisLabel;
   private Stage primaryStage;
   private Kassenverwaltung verwk;
+  private int size;
 
+  /**
+   * @param verw
+   * @param verwk
+   * @param primaryStage
+   */
   public WindowController(Pizzaverwaltung verw, Kassenverwaltung verwk, Stage primaryStage) {
 
     this.verw = verw;
@@ -71,14 +81,24 @@ public class WindowController {
     this.primaryStage = primaryStage;
   }
 
+  /** @return String for the source of the Pizza Row */
   public static String getRowFxml() {
     return ROW_FXML;
   }
 
+  // A Pizza is added
+
+  /** @return String for the source of the Kasse Row*/
   public static String getRow2Fxml() {
     return ROW2_FXML;
   }
 
+  /**
+   * Initalize the MainWindow
+   * @param primaryStage
+   * @param scene
+   * @param rootPane
+   */
   public void init(Stage primaryStage, Scene scene, Parent rootPane) {
 
     verwk.getKassenEintraege().addListener(new KasseViewListener());
@@ -89,33 +109,31 @@ public class WindowController {
 
       //Actions:
 
-        schließenItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Platform.exit();
-            }
-        });
+      schließenItem.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+          Platform.exit();
+        }
+      });
 
-      //FIXME: NeustartItem causes a loop and freeze of gui (DB Access is not yet a different thread
-
-        neustartItem.setOnAction(new EventHandler<ActionEvent>() {
+      neustartItem.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+          Platform.runLater(new Runnable() {
             @Override
-            public void handle(ActionEvent event) {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                      primaryStage.close();
-                      Platform.runLater(() -> {
-                        try {
-                          new JavaFXApplication().start(new Stage());
-                        } catch (Exception e) {
-                          e.printStackTrace();
-                        }
-                      });
-                    }
-                });
+            public void run() {
+              primaryStage.close();
+              Platform.runLater(() -> {
+                try {
+                  new JavaFXApplication().start(new Stage());
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              });
             }
-        });
+          });
+        }
+      });
 
       eintragHinzufuegenItem.setOnAction(new EintragHinzufuegenListener());
 
@@ -132,7 +150,7 @@ public class WindowController {
         }
       });
 
-        pizzenContr.getMittelButton().setOnAction(new EventHandler<ActionEvent>() {
+      pizzenContr.getMittelButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
           try {
@@ -155,7 +173,7 @@ public class WindowController {
         }
       });
 
-        pizzenContr.getGrossButton().setOnAction(new EventHandler<ActionEvent>() {
+      pizzenContr.getGrossButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
           try {
@@ -168,7 +186,7 @@ public class WindowController {
         }
       });
 
-        pizzenContr.getFamilieButton().setOnAction(new EventHandler<ActionEvent>() {
+      pizzenContr.getFamilieButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
           try {
@@ -196,9 +214,11 @@ public class WindowController {
     }
   }
 
-
-  //A Pizza is added
-
+  /**
+   * Add a new Row for a choosable Pizza
+   * @param pizza
+   * @param fxmlPath
+   */
   private void addPizzaRow(Pizza pizza, String fxmlPath) {
     // load fxml
     try {
@@ -220,6 +240,13 @@ public class WindowController {
     }
   }
 
+  /**
+   * Add a new Row for a choosed Pizza
+   * @param pizza
+   * @param size
+   * @throws IOException
+   * @throws InvalidEntryException
+   */
   private void addKasseneintrag(Pizza pizza, int size) throws IOException, InvalidEntryException {
     BestelltePizza bp = new BestelltePizza(pizza.getName());
     DecimalFormat df2 = new DecimalFormat("#,##");
@@ -266,6 +293,7 @@ public class WindowController {
 
   }
 
+  /** @throws IOException */
   private void eintragHinzufuegen() throws IOException {
     FXMLLoader loader = new FXMLLoader(new File("deliverytool/Fxml/InsertNewPizzaView.fxml").toURI().toURL());
     Pizza pizza = new Pizza();
@@ -278,31 +306,15 @@ public class WindowController {
 
   }
 
-  public ListView<Pane> getPizzenListview() {
-    return pizzenListview;
-  }
-
-  public void setPizzenListview(ListView<Pane> pizzenListview) {
-    this.pizzenListview = pizzenListview;
-  }
-
-  public ListView<Pane> getKasseListview() {
-    return kasseListview;
-  }
-
-  public void setKasseListview(ListView<Pane> kasseListview) {
-    this.kasseListview = kasseListview;
-  }
-
-  public MenuBar getMenuBar() {
-    return menuBar;
-  }
-
-  public void setMenuBar(MenuBar menuBar) {
-    this.menuBar = menuBar;
-  }
-
+  /**
+   * Get the name matching the number in the int siza param
+   *
+   * @param size
+   * @return
+   */
+  @org.jetbrains.annotations.NotNull
   private String whichSize(int size) {
+    this.size = size;
     switch (size) {
       case 1:
         return "(klein)";
@@ -318,6 +330,11 @@ public class WindowController {
 
   }
 
+  // Getters and setters:
+
+  /**
+   * Delete the selected row Entry in the KasseView
+   *  @param event */
   private void deleteSelected(KeyEvent event) {
     if (kasseListview.isFocused()) {
       if (event.getCode() == KeyCode.BACK_SPACE) {
@@ -326,6 +343,9 @@ public class WindowController {
     }
   }
 
+  /**
+   * Delete the selected Entry (like above)
+   * */
   public void deleteSelected() {
     final int selectedIndex = kasseListview.getSelectionModel().getSelectedIndex();
     final KassenEintrag kassenEintrag = verwk.removeKassenEintrag(selectedIndex);
@@ -339,15 +359,59 @@ public class WindowController {
     gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
   }
 
-  //Listener:
+  /**
+   * @return the ListView of choosable Pizza Entries
+   */
+  public ListView<Pane> getPizzenListview() {
+    return pizzenListview;
+  }
 
+  /**
+   * @param pizzenListview
+   */
+  public void setPizzenListview(ListView<Pane> pizzenListview) {
+    this.pizzenListview = pizzenListview;
+  }
+
+  /**
+   * @return the ListView of choosed Pizza Entries
+   */
+  public ListView<Pane> getKasseListview() {
+    return kasseListview;
+  }
+
+  /**
+   * @param kasseListview
+   */
+  public void setKasseListview(ListView<Pane> kasseListview) {
+    this.kasseListview = kasseListview;
+  }
+
+  /**
+   * @return the menuBar of the main View
+   */
+  public MenuBar getMenuBar() {
+    return menuBar;
+  }
+
+  /**
+   * @param menuBar
+   */
+  public void setMenuBar(MenuBar menuBar) {
+    this.menuBar = menuBar;
+  }
+
+  // Listener:
+
+  /**
+   * The Listener which is triggered when the OkButon is pressed */
   private class OkButtonListener implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {
       try {
         verw.add(new Pizza(parentController.getNameField().getText(), null,
-                Double.valueOf(parentController.getPreisKleinFiled().getText()),
+                Double.valueOf(parentController.getPreisKleinField().getText()),
                 Double.valueOf(parentController.getPreisMittelField().getText()),
                 Double.valueOf(parentController.getPreisGrossField().getText()),
                 Double.valueOf(parentController.getPreisFamilieField().getText())));
@@ -358,18 +422,13 @@ public class WindowController {
         alert.setTitle("Preis(e) ungültig");
         alert.setHeaderText("Bitte gültige Preis(e) eingeben und alle Felder ausfüllen");
         alert.showAndWait();
-      } catch (ClassNotFoundException e) {
-        e.printStackTrace();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      } catch (InstantiationException e) {
-        e.printStackTrace();
-      } catch (IllegalAccessException e) {
-        e.printStackTrace();
       }
     }
   }
 
+  /**
+   * The Listener which is triggered when the menuItem "EintragHinzufuegen" is pressed
+   * */
   private class EintragHinzufuegenListener implements EventHandler<ActionEvent> {
 
     @Override
@@ -382,6 +441,9 @@ public class WindowController {
     }
   }
 
+  /**
+   * The Listener is triggered when a new Item is added to the KasseView so that the gesamterPreis Label is increased automatically
+   * */
   private class KasseViewListener implements ListChangeListener<BestelltePizza> {
 
     @Override
