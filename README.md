@@ -9,6 +9,8 @@ Our project is a delivery tool for a big brand of pizzerias in Germany (as a sch
 | Benutzername  | Password      |
 | ------------- |:-------------:| 
 | delivery      | 34zy23npNZ    | 
+
+JavaDoc: [Doc](https://www.db4free.net/phpMyAdmin/index.php)
  
 
 
