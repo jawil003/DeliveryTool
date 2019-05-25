@@ -41,6 +41,8 @@ public class JavaFXApplication extends Application {
             e.printStackTrace();
         }
 
+        //MainWindow is build and controller added
+
         this.controller = new WindowController(verw, verwk, primaryStage);
         loader.setController(this.controller);
         Parent rootPane = loader.load();
@@ -52,6 +54,8 @@ public class JavaFXApplication extends Application {
         primaryStage.setResizable(false);
         primaryStage.requestFocus();
         primaryStage.show();
+
+        //triggered when mainwindow is tried to close with the x window button
 
         primaryStage.setOnCloseRequest(new closeRequestHandler());
     }

@@ -22,24 +22,23 @@ public class Pizzaverwaltung {
 
     private Pizzaverwaltung(LinkedList<Pizza> pizzen)
             throws SQLException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+
+        //if there is no initialized list the constructor will initialize a new one
+
         if (pizzen != null) {
-            this.pizzen = FXCollections.observableArrayList(pizzen);
+            //this.pizzen = FXCollections.observableArrayList(pizzen);
         } else {
             this.pizzen = FXCollections.observableArrayList();
-            {
-            }
         }
+
+        //pizzen are loaded out of the mysql database with the help of the heping class SQLConnect
 
         sqlConnection = new SQLConnect();
         this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzen());
         this.pizzen.sort(Comparator.comparing(ListenEintrag::getName));
     }
 
-    //getters and setters:
-
-    public ObservableList<Pizza> getPizzen() {
-        return pizzen;
-    }
+    //method to add a new Pizza Entry (used by the eintraegeHinzufuegen Window)
 
     public void add(Pizza pizza) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         this.pizzen.add(pizza);
@@ -61,6 +60,12 @@ public class Pizzaverwaltung {
             }
         });
 
+    }
+
+    //getters and setters:
+
+    public ObservableList<Pizza> getPizzen() {
+        return pizzen;
     }
 
     public SQLConnect getSqlConnection() {
