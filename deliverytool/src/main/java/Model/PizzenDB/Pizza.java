@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Jannik Will und Albert Munsch
+ */
+
 package Model.PizzenDB;
 
 import java.util.LinkedList;
@@ -115,9 +119,9 @@ public class Pizza extends ListenEintrag {
     }
 
     /** @param preisGroß */
-  public void setPreisGroß(Double preisGroß) {
-      this.preisGroß = Optional.ofNullable(preisGroß);
-  }
+    public void setPreisGroß(Double preisGroß) {
+        this.preisGroß = Optional.ofNullable(preisGroß);
+    }
 
     /**
      * @param e
@@ -131,7 +135,7 @@ public class Pizza extends ListenEintrag {
      */
     public Optional<Double> getPreisFamilie() {
         return preisFamilie;
-  }
+    }
 
     /**
      * @param preisFamilie
@@ -151,9 +155,9 @@ public class Pizza extends ListenEintrag {
     /**
      * @param o
      * @return true (if the values of both compared KasseEintrag is matching), else false
-   */
-  @Override
-  public boolean equals(Object o) {
+     */
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pizza pizza = (Pizza) o;
@@ -163,11 +167,11 @@ public class Pizza extends ListenEintrag {
                 Objects.equals(preisGroß, pizza.preisGroß) &&
                 Objects.equals(preisFamilie, pizza.preisFamilie) &&
                 Objects.equals(zutaten, pizza.zutaten);
-  }
+    }
 
     /** @return the hashCode value */
-  @Override
-  public int hashCode() {
+    @Override
+    public int hashCode() {
         return Objects.hash(name, preisKlein, preisMittel, preisGroß, preisFamilie, zutaten);
     }
 }

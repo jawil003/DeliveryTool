@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Jannik Will und Albert Munsch
+ */
+
 package Model.Kasse;
 
 import java.util.Objects;
@@ -76,7 +80,7 @@ public abstract class KassenEintrag {
      * @return true (if the values of both compared KasseEintrag is matching), else false
      */
     @Override
-  public boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         KassenEintrag that = (KassenEintrag) o;
@@ -88,7 +92,7 @@ public abstract class KassenEintrag {
      * @return the hashCode value
      */
     @Override
-  public int hashCode() {
+    public int hashCode() {
         return Objects.hash(preis, name);
     }
 }

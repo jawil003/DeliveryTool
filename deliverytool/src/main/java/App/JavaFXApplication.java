@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Jannik Will und Albert Munsch
+ */
+
 package App;
 
 import Controller.WindowController;

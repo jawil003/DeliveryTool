@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Jannik Will und Albert Munsch
+ */
+
 package Model.Kasse;
 
 import java.util.Objects;
@@ -91,7 +95,7 @@ public class BestelltePizza extends KassenEintrag {
      * @return the calculated hashCode value
      */
     @Override
-  public int hashCode() {
+    public int hashCode() {
         return Objects.hash(super.hashCode(), groeße);
     }
 }

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Jannik Will und Albert Munsch
+ */
+
 package Model.PizzenDB;
 
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Jannik Will und Albert Munsch
+ */
+
 package Controller;
 
 import App.JavaFXApplication;
@@ -37,7 +41,7 @@ public class WindowController {
     private RowPizzenController pizzenContr;
     private RowKasseController kasseContr;
     private double gesamterPreis = 0.00;
-  private Pizzaverwaltung verw;
+    private Pizzaverwaltung verw;
     @FXML
     private ListView<Pane> pizzenListview;
     @FXML
@@ -66,28 +70,28 @@ public class WindowController {
     private MenuItem neustartItem;
     @FXML
     private Label gesamterPreisLabel;
-  private Stage primaryStage;
-  private Kassenverwaltung verwk;
-  private int size;
+    private Stage primaryStage;
+    private Kassenverwaltung verwk;
+    private int size;
 
-  /**
-   * @param verw
-   * @param verwk
-   * @param primaryStage
-   */
-  public WindowController(Pizzaverwaltung verw, Kassenverwaltung verwk, Stage primaryStage) {
+    /**
+     * @param verw
+     * @param verwk
+     * @param primaryStage
+     */
+    public WindowController(Pizzaverwaltung verw, Kassenverwaltung verwk, Stage primaryStage) {
 
-    this.verw = verw;
-    this.verwk = verwk;
-    this.primaryStage = primaryStage;
-  }
+        this.verw = verw;
+        this.verwk = verwk;
+        this.primaryStage = primaryStage;
+    }
 
-  /** @return String for the source of the Pizza Row */
-  public static String getRowFxml() {
-    return ROW_FXML;
-  }
+    /** @return String for the source of the Pizza Row */
+    public static String getRowFxml() {
+        return ROW_FXML;
+    }
 
-  // A Pizza is added
+    // A Pizza is added
 
   /** @return String for the source of the Kasse Row*/
   public static String getRow2Fxml() {
@@ -102,11 +106,11 @@ public class WindowController {
    */
   public void init(Stage primaryStage, Scene scene, Parent rootPane) {
 
-    verwk.getKassenEintraege().addListener(new KasseViewListener());
+        verwk.getKassenEintraege().addListener(new KasseViewListener());
 
-    // create rows
-    for (Pizza pizza : this.verw.getPizzen()) {
-      addPizzaRow(pizza, ROW_FXML);
+        // create rows
+        for (Pizza pizza : this.verw.getPizzen()) {
+            addPizzaRow(pizza, ROW_FXML);
 
       //Actions:
 
@@ -136,7 +140,7 @@ public class WindowController {
         }
       });
 
-      eintragHinzufuegenItem.setOnAction(new EintragHinzufuegenListener());
+            eintragHinzufuegenItem.setOnAction(new EintragHinzufuegenListener());
 
       pizzenContr.getKleinButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
@@ -151,7 +155,7 @@ public class WindowController {
         }
       });
 
-      bonDruckenItem.setOnAction(new BonDruckenListener());
+            bonDruckenItem.setOnAction(new BonDruckenListener());
 
       pizzenContr.getMittelButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
@@ -227,21 +231,21 @@ public class WindowController {
     try {
       FXMLLoader loader = new FXMLLoader(new File(fxmlPath).toURI().toURL());
 
-      // set controller
-      pizzenContr = new RowPizzenController();
-      loader.setController(pizzenContr);
+            // set controller
+            pizzenContr = new RowPizzenController();
+            loader.setController(pizzenContr);
 
-      Pane rootPane = loader.load();
+            Pane rootPane = loader.load();
 
-      // initialize tab controller
-      pizzenContr.init(pizza);
+            // initialize tab controller
+            pizzenContr.init(pizza);
 
-      this.pizzenListview.getItems().add(rootPane);
-    } catch (IOException e) {
-      e.printStackTrace();
-      System.exit(1);
+            this.pizzenListview.getItems().add(rootPane);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
-  }
 
   /**
    * Add a new Row for a choosed Pizza
@@ -254,43 +258,43 @@ public class WindowController {
     BestelltePizza bp = new BestelltePizza(pizza.getName());
     DecimalFormat df2 = new DecimalFormat("#,##");
 
-    switch (size) {
-      case 1:
-        bp.setGroeße('k');
-        bp.setPreis(pizza.getPreisKlein().orElse(0.0));
-        break;
-      case 2:
-        bp.setGroeße('m');
-        bp.setPreis(pizza.getPreisMittel().orElse(0.0));
-        break;
-      case 3:
-        bp.setGroeße('g');
-        bp.setPreis(pizza.getPreisGroß().orElse(0.0));
-        break;
-      case 4:
-        bp.setGroeße('f');
-        bp.setPreis(pizza.getPreisFamilie().orElse(0.0));
-        break;
-    }
+        switch (size) {
+            case 1:
+                bp.setGroeße('k');
+                bp.setPreis(pizza.getPreisKlein().orElse(0.0));
+                break;
+            case 2:
+                bp.setGroeße('m');
+                bp.setPreis(pizza.getPreisMittel().orElse(0.0));
+                break;
+            case 3:
+                bp.setGroeße('g');
+                bp.setPreis(pizza.getPreisGroß().orElse(0.0));
+                break;
+            case 4:
+                bp.setGroeße('f');
+                bp.setPreis(pizza.getPreisFamilie().orElse(0.0));
+                break;
+        }
 
-    verwk.addKassenEintrag(bp);
+        verwk.addKassenEintrag(bp);
 
-    FXMLLoader loader = new FXMLLoader(new File(ROW2_FXML).toURI().toURL());
-    for (int i = 0; i < kasseListview.getItems().size(); i++) {
-      Pane p = kasseListview.getItems().get(i);
-      Label kasseAnzahlLabel = (Label) kasseListview.getItems().get(i).lookup("#kasseAnzahlLabel");
-      Label kasseAnzahlName = (Label) kasseListview.getItems().get(i).lookup("#kasseAnzahlName");
-      if ((pizza.getName() + " " + whichSize(size)).equals(kasseAnzahlName.getText())) {
-        int anzahl = Integer.valueOf(kasseAnzahlLabel.getText()) + 1;
-        kasseAnzahlLabel.setText(String.valueOf(anzahl));
-        return;
-      }
-    }
-    kasseContr = new RowKasseController();
-    loader.setController(kasseContr);
+        FXMLLoader loader = new FXMLLoader(new File(ROW2_FXML).toURI().toURL());
+        for (int i = 0; i < kasseListview.getItems().size(); i++) {
+            Pane p = kasseListview.getItems().get(i);
+            Label kasseAnzahlLabel = (Label) kasseListview.getItems().get(i).lookup("#kasseAnzahlLabel");
+            Label kasseAnzahlName = (Label) kasseListview.getItems().get(i).lookup("#kasseAnzahlName");
+            if ((pizza.getName() + " " + whichSize(size)).equals(kasseAnzahlName.getText())) {
+                int anzahl = Integer.valueOf(kasseAnzahlLabel.getText()) + 1;
+                kasseAnzahlLabel.setText(String.valueOf(anzahl));
+                return;
+            }
+        }
+        kasseContr = new RowKasseController();
+        loader.setController(kasseContr);
 
-    Pane rootPane = loader.load();
-    kasseContr.init(pizza, size);
+        Pane rootPane = loader.load();
+        kasseContr.init(pizza, size);
 
     this.kasseListview.getItems().add(rootPane);
 
@@ -309,31 +313,31 @@ public class WindowController {
 
   }
 
-  /**
-   * Get the name matching the number in the int siza param
-   *
-   * @param size
-   * @return
-   */
-  @org.jetbrains.annotations.NotNull
-  private String whichSize(int size) {
-    this.size = size;
-    switch (size) {
-      case 1:
-        return "(klein)";
-      case 2:
-        return "(mittel)";
-      case 3:
-        return "(groß)";
-      case 4:
-        return "(Familie)";
-    }
+    /**
+     * Get the name matching the number in the int siza param
+     *
+     * @param size
+     * @return
+     */
+    @org.jetbrains.annotations.NotNull
+    private String whichSize(int size) {
+        this.size = size;
+        switch (size) {
+            case 1:
+                return "(klein)";
+            case 2:
+                return "(mittel)";
+            case 3:
+                return "(groß)";
+            case 4:
+                return "(Familie)";
+        }
 
     return "";
 
   }
 
-  // Getters and setters:
+    // Getters and setters:
 
   /**
    * Delete the selected row Entry in the KasseView
@@ -404,7 +408,7 @@ public class WindowController {
     this.menuBar = menuBar;
   }
 
-  // Listener:
+    // Listener:
 
   /**
    * The Listener which is triggered when the OkButon is pressed */
@@ -434,14 +438,14 @@ public class WindowController {
    * */
   private class EintragHinzufuegenListener implements EventHandler<ActionEvent> {
 
-    @Override
-    public void handle(ActionEvent event) {
-      try {
-        eintragHinzufuegen();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                eintragHinzufuegen();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
   /**
@@ -464,7 +468,7 @@ public class WindowController {
     }
 
 
-  private class BonDruckenListener implements EventHandler<ActionEvent> {
+    private class BonDruckenListener implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {

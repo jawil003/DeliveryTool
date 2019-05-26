@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Jannik Will und Albert Munsch
+ */
+
 package Model.PizzenDB;
 
 import org.jetbrains.annotations.Contract;
@@ -74,7 +78,7 @@ public class Zutat {
      */
     @Contract(value = "null -> false", pure = true)
     @Override
-  public boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Zutat zutat = (Zutat) o;
@@ -87,7 +91,7 @@ public class Zutat {
      * @return the hashCode Value
      */
     @Override
-  public int hashCode() {
+    public int hashCode() {
         return Objects.hash(name, menge, mengeneinheit);
     }
 }
