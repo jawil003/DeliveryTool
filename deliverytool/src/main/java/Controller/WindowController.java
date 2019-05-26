@@ -475,6 +475,7 @@ public class WindowController {
       try {
         BonCreator creator = new BonCreator(verwk, gesamterPreis);
         creator.addPizzas(verwk.getKassenEintraege());
+        creator.close();
       } catch (IOException e) {
         e.printStackTrace();
       }

@@ -72,6 +72,18 @@ public class BonCreator {
     }
 
     /**
+     * Adding a List of Pizza Entries from Kassenverwaltung to the current PDF Page
+     *
+     * @throws IOException
+     */
+    public void addPizzas() throws IOException {
+        for (BestelltePizza e : verw.getKassenEintraege()) {
+            cont.showText(e.toString());
+            cont.newLine();
+        }
+    }
+
+    /**
      * Need to be called when no action of the BoxCreator is needed anymore
      *
      * @throws IOException
