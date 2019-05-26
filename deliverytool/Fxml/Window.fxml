@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.201">
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
     <children>
         <MenuBar fx:id="menuBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
             <menus>
@@ -20,6 +20,7 @@
                     <items>
                         <MenuItem fx:id="schließenItem" mnemonicParsing="false" text="Schließen"/>
                         <MenuItem fx:id="neustartItem" mnemonicParsing="false" text="Neustart"/>
+                        <MenuItem fx:id="bonDruckenItem" mnemonicParsing="false" text="Bon drucken"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Bearbeiten">
@@ -27,6 +28,13 @@
                         <MenuItem fx:id="ausgewähltLoeschen" mnemonicParsing="false" text="Ausgewählt löschen"/>
                         <MenuItem fx:id="allesLoeschenItem" mnemonicParsing="false" text="Alles löschen"/>
                         <MenuItem fx:id="eintragHinzufuegenItem" mnemonicParsing="false" text="Eintrag hinzufügen"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Ansicht">
+                    <items>
+                        <MenuItem fx:id="kasseAnsicht" mnemonicParsing="false" text="Kasse"/>
+                        <MenuItem fx:id="zubereitungAnsicht" mnemonicParsing="false" text="Zubereitung"/>
+                        <MenuItem fx:id="ServiceAnsicht" mnemonicParsing="false" text="Service"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Hilfe">

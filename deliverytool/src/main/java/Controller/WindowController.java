@@ -1,10 +1,7 @@
 package Controller;
 
 import App.JavaFXApplication;
-import Model.Kasse.BestelltePizza;
-import Model.Kasse.InvalidEntryException;
-import Model.Kasse.KassenEintrag;
-import Model.Kasse.Kassenverwaltung;
+import Model.Kasse.*;
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.Pizzaverwaltung;
 import javafx.application.Platform;
@@ -48,19 +45,24 @@ public class WindowController {
   private MenuBar menuBar;
   @FXML
   private MenuItem ausgewähltLoeschen;
-
+  @FXML
+  private MenuItem bonDruckenItem;
   @FXML
   private MenuItem allesLoeschenItem;
-
   @FXML
   private MenuItem eintragHinzufuegenItem;
-
   @FXML
   private MenuItem ueberItem;
-    @FXML
-    private MenuItem schließenItem;
-    @FXML
-    private MenuItem neustartItem;
+  @FXML
+  private MenuItem kasseAnsicht;
+  @FXML
+  private MenuItem zubereitungAnsicht;
+  @FXML
+  private MenuItem ServiceAnsicht;
+  @FXML
+  private MenuItem schließenItem;
+  @FXML
+  private MenuItem neustartItem;
 
   double gesamterPreis = 0.00;
   @FXML
@@ -149,6 +151,8 @@ public class WindowController {
           }
         }
       });
+
+      bonDruckenItem.setOnAction(new BonDruckenListener());
 
       pizzenContr.getMittelButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override
@@ -456,6 +460,23 @@ public class WindowController {
         }
         gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
 
+      }
+    }
+  }
+
+  /**
+   * @todo Fix the Bon Drucken Ability
+   * @body If the menuItem Bon drucken is pressed, no new PDF is created
+   */
+  private class BonDruckenListener implements EventHandler<ActionEvent> {
+
+    @Override
+    public void handle(ActionEvent event) {
+      try {
+        BonCreator creator = new BonCreator(verwk, gesamterPreis);
+        creator.addPizzas(verwk.getKassenEintraege());
+      } catch (IOException e) {
+        e.printStackTrace();
       }
     }
   }

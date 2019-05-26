@@ -68,9 +68,7 @@ public abstract class KassenEintrag {
      */
     @Override
     public String toString() {
-        return "KassenEintrag{" +
-                "name='" + name + '\'' +
-                '}';
+        return name + ": " + preis;
     }
 
     /**

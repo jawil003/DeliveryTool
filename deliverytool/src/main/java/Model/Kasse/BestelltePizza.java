@@ -71,9 +71,7 @@ public class BestelltePizza extends KassenEintrag {
      */
     @Override
     public String toString() {
-        return "BestelltePizza{" +
-                "groeße=" + groeße +
-                '}';
+        return super.toString();
     }
 
     /**
