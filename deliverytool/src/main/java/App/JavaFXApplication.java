@@ -31,6 +31,11 @@ public class JavaFXApplication extends Application {
     private Pizzaverwaltung verw;
     private Kassenverwaltung verwk;
 
+    /**
+     * The main Method for the RestartMenuItem
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
@@ -73,6 +78,9 @@ public class JavaFXApplication extends Application {
         primaryStage.setOnCloseRequest(new closeRequestHandler());
     }
 
+    /**
+     * Called when the mainWindow is closed
+     */
     private class closeRequestHandler implements EventHandler<WindowEvent> {
 
         @Override

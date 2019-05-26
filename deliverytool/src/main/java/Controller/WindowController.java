@@ -32,42 +32,40 @@ public class WindowController {
    * @version 1.0
    */
 
-  protected static final String ROW_FXML = "deliverytool/Fxml/Cells/RowPizzenListcell.fxml";
-  protected static final String ROW2_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
-  InsertPizzaViewController parentController;
+    private static final String ROW2_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
+    private InsertPizzaViewController parentController;
+    private RowPizzenController pizzenContr;
+    private RowKasseController kasseContr;
+    private double gesamterPreis = 0.00;
   private Pizzaverwaltung verw;
-  RowPizzenController pizzenContr;
-  RowKasseController kasseContr;
-  @FXML
-  private ListView<Pane> pizzenListview;
-  @FXML
-  private ListView<Pane> kasseListview;
-  @FXML
-  private MenuBar menuBar;
-  @FXML
-  private MenuItem ausgewähltLoeschen;
-  @FXML
-  private MenuItem bonDruckenItem;
-  @FXML
-  private MenuItem allesLoeschenItem;
-  @FXML
-  private MenuItem eintragHinzufuegenItem;
-  @FXML
-  private MenuItem ueberItem;
-  @FXML
-  private MenuItem kasseAnsicht;
-  @FXML
-  private MenuItem zubereitungAnsicht;
-  @FXML
-  private MenuItem ServiceAnsicht;
-  @FXML
-  private MenuItem schließenItem;
-  @FXML
-  private MenuItem neustartItem;
-
-  double gesamterPreis = 0.00;
-  @FXML
-  private Label gesamterPreisLabel;
+    @FXML
+    private ListView<Pane> pizzenListview;
+    @FXML
+    private ListView<Pane> kasseListview;
+    @FXML
+    private MenuBar menuBar;
+    @FXML
+    private MenuItem ausgewaehltLoeschen;
+    @FXML
+    private MenuItem bonDruckenItem;
+    @FXML
+    private MenuItem allesLoeschenItem;
+    @FXML
+    private MenuItem eintragHinzufuegenItem;
+    @FXML
+    private MenuItem ueberItem;
+    @FXML
+    private MenuItem kasseAnsicht;
+    @FXML
+    private MenuItem zubereitungAnsicht;
+    @FXML
+    private MenuItem ServiceAnsicht;
+    @FXML
+    private MenuItem schließenItem;
+    @FXML
+    private MenuItem neustartItem;
+    @FXML
+    private Label gesamterPreisLabel;
   private Stage primaryStage;
   private Kassenverwaltung verwk;
   private int size;
@@ -429,7 +427,7 @@ public class WindowController {
         alert.showAndWait();
       }
     }
-  }
+    }
 
   /**
    * The Listener which is triggered when the menuItem "EintragHinzufuegen" is pressed
@@ -444,7 +442,7 @@ public class WindowController {
         e.printStackTrace();
       }
     }
-  }
+    }
 
   /**
    * The Listener is triggered when a new Item is added to the KasseView so that the gesamterPreis Label is increased automatically
@@ -463,7 +461,7 @@ public class WindowController {
 
       }
     }
-  }
+    }
 
 
   private class BonDruckenListener implements EventHandler<ActionEvent> {
