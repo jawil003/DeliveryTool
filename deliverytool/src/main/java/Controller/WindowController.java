@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -464,10 +465,7 @@ public class WindowController {
     }
   }
 
-  /**
-   * @todo Fix the Bon Drucken Ability
-   * @body If the menuItem Bon drucken is pressed, no new PDF is created
-   */
+
   private class BonDruckenListener implements EventHandler<ActionEvent> {
 
     @Override
@@ -475,7 +473,9 @@ public class WindowController {
       try {
         BonCreator creator = new BonCreator(verwk, gesamterPreis);
         creator.addPizzas(verwk.getKassenEintraege());
-        creator.close();
+          FileChooser c = new FileChooser();
+          c.setInitialFileName("Rechnung.pdf");
+          creator.close(c.showSaveDialog(primaryStage).getAbsolutePath());
       } catch (IOException e) {
         e.printStackTrace();
       }

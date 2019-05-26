@@ -88,10 +88,10 @@ public class BonCreator {
      *
      * @throws IOException
      */
-    public void close() throws IOException {
+    public void close(String path) throws IOException {
         cont.endText();
         cont.close();
-        doc.save("Rechnung.pdf");
+        doc.save(path);
         doc.close();
     }
 
