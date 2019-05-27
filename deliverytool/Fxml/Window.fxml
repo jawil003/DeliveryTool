@@ -25,7 +25,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Bearbeiten">
                     <items>
-                        <MenuItem fx:id="ausgewähltLoeschen" mnemonicParsing="false" text="Ausgewählt löschen"/>
+                        <MenuItem fx:id="ausgewaehltLoeschen" mnemonicParsing="false" text="Ausgewählt löschen"/>
                         <MenuItem fx:id="allesLoeschenItem" mnemonicParsing="false" text="Alles löschen"/>
                         <MenuItem fx:id="eintragHinzufuegenItem" mnemonicParsing="false" text="Eintrag hinzufügen"/>
                     </items>

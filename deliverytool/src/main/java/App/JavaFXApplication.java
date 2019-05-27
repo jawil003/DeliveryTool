@@ -37,11 +37,26 @@ public class JavaFXApplication extends Application {
 
     /**
      * The main Method for the RestartMenuItem
-     *
      * @param args
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    /**
+     * Initialize the Pizza- and Kassenverwaltung
+     *
+     * @throws Exception
+     */
+    @Override
+    public void init() throws Exception {
+        super.init();
+        try {
+            verw = new Pizzaverwaltung();
+            verwk = new Kassenverwaltung();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -55,12 +70,6 @@ public class JavaFXApplication extends Application {
     public void start(Stage primaryStage)
             throws IllegalAccessException, ClassNotFoundException, InstantiationException, IOException {
         FXMLLoader loader = new FXMLLoader(new File(FXML_PATH).toURI().toURL());
-        try {
-            verw = new Pizzaverwaltung();
-            verwk = new Kassenverwaltung();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         //MainWindow is build and controller added
 
