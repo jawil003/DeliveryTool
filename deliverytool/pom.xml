@@ -61,7 +61,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>Main</mainClass>
+                            <mainClass>App.Main</mainClass>
                         </manifest>
                     </archive>
 
