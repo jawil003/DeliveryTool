@@ -25,12 +25,13 @@ public class BonCreator<T> {
     private PDPageContentStream cont;
     private String path;
 
-    int durchläufe = 0;
+    private int durchlaeufe = 0;
     private PDRectangle mediaBox;
     private PDFont fontÜberschrift;
     private PDFont fontNormal;
     private int fontSizeÜberschrift;
     private int fontSizeNormal;
+
     /**
      * @param verw
      * @param gesamterPreis
@@ -92,6 +93,16 @@ public class BonCreator<T> {
         doc.close();
     }
 
+    /**
+     * Center Listentries in a PDPage in a PDDocument (each Entry in a new Line)
+     *
+     * @param stream
+     * @param fontSize
+     * @param marginTop
+     * @param page
+     * @param list
+     * @throws IOException
+     */
     private void centerListAsText(PDPageContentStream stream, int fontSize, int marginTop, PDPage page, List<T> list) throws IOException {
         PDRectangle mediaBox = page.getMediaBox();
         stream.setFont(fontNormal, fontSize);
@@ -103,9 +114,9 @@ public class BonCreator<T> {
 
             float startX = (mediaBox.getWidth() - titleWidth) / 2;
             float startY = mediaBox.getHeight() - marginTop - titleHeight;
-            stream.newLineAtOffset(startX, startY - durchläufe * (5 + titleHeight));
+            stream.newLineAtOffset(startX, startY - durchlaeufe * (5 + titleHeight));
             stream.showText(data.toString());
-            durchläufe++;
+            durchlaeufe++;
             stream.endText();
 
 
@@ -114,6 +125,15 @@ public class BonCreator<T> {
 
     }
 
+    /**
+     * Adding a centered single Line Text to the PDPage with a fontSize a margin from the top (only relevant for the first line on a page)
+     * @param stream
+     * @param fontSize
+     * @param marginTop
+     * @param page
+     * @param text
+     * @throws IOException
+     */
     private void centerText(PDPageContentStream stream, int fontSize, int marginTop, PDPage page, String text) throws IOException {
         PDRectangle mediaBox = page.getMediaBox();
         stream.setFont(fontNormal, fontSize);
@@ -125,9 +145,9 @@ public class BonCreator<T> {
 
         float startX = (mediaBox.getWidth() - titleWidth) / 2;
         float startY = mediaBox.getHeight() - marginTop - titleHeight;
-        stream.newLineAtOffset(startX, startY - durchläufe * (5 + titleHeight));
+        stream.newLineAtOffset(startX, startY - durchlaeufe * (5 + titleHeight));
         stream.showText(text);
-        durchläufe++;
+        durchlaeufe++;
         stream.endText();
 
     }
