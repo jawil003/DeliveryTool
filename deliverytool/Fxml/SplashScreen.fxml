@@ -13,7 +13,7 @@
         <ImageView fx:id="image" fitHeight="300.0" fitWidth="485.0" layoutX="1.0" pickOnBounds="true"
                    preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <image>
-                <Image url="@../src/main/Resources/splashScreenImg.jpg"/>
+                <Image url="@../src/main/Resources/Classdependencies/Splashscreen/splashScreenImg.jpg"/>
             </image>
         </ImageView>
         <ProgressIndicator layoutX="199.0" layoutY="195.0" style="-fx-progress-color: white;"/>
