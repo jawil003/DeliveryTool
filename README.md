@@ -10,7 +10,6 @@ Our project is a delivery tool for a big brand of pizzerias in Germany (as a sch
 | ------------- |:-------------:| 
 | delivery      | 34zy23npNZ    | 
 
-JavaDoc: [Doc](https://github.com/jawil003/DeliveryTool/blob/master/deliverytool/docs/index.html)
  
 
 
