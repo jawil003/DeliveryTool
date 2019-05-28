@@ -13,14 +13,11 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.util.Matrix;
-import org.jetbrains.annotations.NotNull;
 
-import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.List;
 
-public class BonCreator {
+public class BonCreator<T> {
 
     private Kassenverwaltung verw;
     private PDDocument doc;
@@ -28,6 +25,12 @@ public class BonCreator {
     private PDPageContentStream cont;
     private String path;
 
+    int durchläufe = 0;
+    private PDRectangle mediaBox;
+    private PDFont fontÜberschrift;
+    private PDFont fontNormal;
+    private int fontSizeÜberschrift;
+    private int fontSizeNormal;
     /**
      * @param verw
      * @param gesamterPreis
@@ -51,39 +54,31 @@ public class BonCreator {
         });
 
         PDPage page = new PDPage();
+        mediaBox = page.getMediaBox();
         pages.add(page);
         cont = new PDPageContentStream(doc, page);
-        cont.beginText();
-        //addCenteredText("Rechnung", PDType1Font.TIMES_BOLD, 16, cont, page, new Point2D.Float());
-        cont.setFont(PDType1Font.TIMES_ROMAN, 12);
+        fontÜberschrift = PDType1Font.HELVETICA_BOLD;
+        fontNormal = PDType1Font.TIMES_ROMAN;
+        fontSizeÜberschrift = 20;
+        fontSizeNormal = 12;
+        cont.setFont(fontNormal, fontSizeNormal);
         cont.setLeading(14.5f);
-        cont.setTextMatrix(Matrix.getTranslateInstance(25, 700));
     }
 
     /**
      * Adding a List of Pizza Entries to the current PDF Page
      *
-     * @param pizzen
+     * @param datalist
      * @throws IOException
      */
-    public void addPizzas(List<BestelltePizza> pizzen) throws IOException {
-        for (BestelltePizza e : pizzen) {
-            cont.showText(e.toString());
-            cont.newLine();
-        }
+    public void addPizzas(ObservableList<T> datalist, double gesamterPreis) throws IOException {
+        centerText(cont, fontSizeÜberschrift, 30, pages.get(0), "Rechnung");
+        centerListAsText(cont, fontSizeNormal, 30, pages.get(0), datalist);
+        centerText(cont, fontSizeNormal, 30, pages.get(0), "-----------------------------------------");
+        centerText(cont, fontSizeNormal, 30, pages.get(0), "Gesamt: " + String.format("%.2f", gesamterPreis) + "€");
+
     }
 
-    /**
-     * Adding a List of Pizza Entries from Kassenverwaltung to the current PDF Page
-     *
-     * @throws IOException
-     */
-    public void addPizzas() throws IOException {
-        for (BestelltePizza e : verw.getKassenEintraege()) {
-            cont.showText(e.toString());
-            cont.newLine();
-        }
-    }
 
     /**
      * Need to be called when no action of the BoxCreator is needed anymore
@@ -97,80 +92,44 @@ public class BonCreator {
         doc.close();
     }
 
-    /**
-     * Adding text centered on a page (Cover like style)
-     *
-     * @param text
-     * @param font
-     * @param fontSize
-     * @param content
-     * @param page
-     * @param offset
-     * @throws IOException
-     */
-    private void addCenteredText(
-            @NotNull String text,
-            @NotNull PDFont font,
-            int fontSize,
-            @NotNull PDPageContentStream content,
-            @NotNull PDPage page,
-            @NotNull Point2D.Float offset)
-            throws IOException {
-        content.setFont(font, fontSize);
-        //content.beginText();
+    private void centerListAsText(PDPageContentStream stream, int fontSize, int marginTop, PDPage page, List<T> list) throws IOException {
+        PDRectangle mediaBox = page.getMediaBox();
+        stream.setFont(fontNormal, fontSize);
 
-        // Rotate the text according to the page orientation
-        boolean pageIsLandscape = isLandscape(page);
-        Point2D.Float pageCenter = getCenter(page);
+        for (T data : list) {
+            stream.beginText();
+            float titleWidth = fontNormal.getStringWidth(data.toString()) / 1000 * fontSize;
+            float titleHeight = fontNormal.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
 
-        // We use the text's width to place it at the center of the page
-        float stringWidth = getStringWidth(text, font, fontSize);
-        if (pageIsLandscape) {
-            float textX = pageCenter.x - stringWidth / 2F + offset.x;
-            float textY = pageCenter.y - offset.y;
-            // Swap X and Y due to the rotation
-            content.setTextMatrix(Matrix.getRotateInstance(Math.PI / 2, textY, textX));
-        } else {
-            float textX = pageCenter.x - stringWidth / 2F + offset.x;
-            float textY = pageCenter.y + offset.y;
-            content.setTextMatrix(Matrix.getTranslateInstance(textX, textY));
+            float startX = (mediaBox.getWidth() - titleWidth) / 2;
+            float startY = mediaBox.getHeight() - marginTop - titleHeight;
+            stream.newLineAtOffset(startX, startY - durchläufe * (5 + titleHeight));
+            stream.showText(data.toString());
+            durchläufe++;
+            stream.endText();
+
+
         }
 
-        content.showText(text);
+
     }
 
-    /**
-     * @param page
-     * @return true, if PdPage is in landscape mode, else false
-     */
-    private boolean isLandscape(@NotNull PDPage page) {
-        int rotation = page.getRotation();
-        final boolean isLandscape;
-        if (rotation == 90 || rotation == 270) {
-            isLandscape = true;
-        } else if (rotation == 0 || rotation == 360 || rotation == 180) {
-            isLandscape = false;
-        } else {
-      /*LOG.warn(
-          "Can only handle pages that are rotated in 90 degree steps. This page is rotated {} degrees. Will treat the page as in portrait format",
-          rotation);*/
-            isLandscape = false;
-        }
-        return isLandscape;
-    }
+    private void centerText(PDPageContentStream stream, int fontSize, int marginTop, PDPage page, String text) throws IOException {
+        PDRectangle mediaBox = page.getMediaBox();
+        stream.setFont(fontNormal, fontSize);
 
-    @NotNull
-    Point2D.Float getCenter(@NotNull PDPage page) {
-        PDRectangle pageSize = page.getMediaBox();
-        boolean rotated = isLandscape(page);
-        float pageWidth = rotated ? pageSize.getHeight() : pageSize.getWidth();
-        float pageHeight = rotated ? pageSize.getWidth() : pageSize.getHeight();
 
-        return new Point2D.Float(pageWidth / 2F, pageHeight / 2F);
-    }
+        stream.beginText();
+        float titleWidth = fontNormal.getStringWidth(text) / 1000 * fontSize;
+        float titleHeight = fontNormal.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
 
-    float getStringWidth(@NotNull String text, @NotNull PDFont font, int fontSize) throws IOException {
-        return font.getStringWidth(text) * fontSize / 1000F;
+        float startX = (mediaBox.getWidth() - titleWidth) / 2;
+        float startY = mediaBox.getHeight() - marginTop - titleHeight;
+        stream.newLineAtOffset(startX, startY - durchläufe * (5 + titleHeight));
+        stream.showText(text);
+        durchläufe++;
+        stream.endText();
+
     }
 
     /**

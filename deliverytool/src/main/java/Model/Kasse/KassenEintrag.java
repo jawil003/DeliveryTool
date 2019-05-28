@@ -72,7 +72,7 @@ public abstract class KassenEintrag {
      */
     @Override
     public String toString() {
-        return name + ": " + preis;
+        return "Pizza " + name + ": " + String.format("%.2f", preis) + "€";
     }
 
     /**
