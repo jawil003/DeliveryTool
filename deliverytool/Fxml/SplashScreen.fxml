@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,8 +16,7 @@
                 <Image url="@../src/main/Resources/splashScreenImg.jpg"/>
             </image>
         </ImageView>
-        <ProgressBar fx:id="progressbar" layoutX="125.0" layoutY="240.0" prefWidth="200.0" progress="0.0"
-                     visible="false"/>
+        <ProgressIndicator layoutX="199.0" layoutY="195.0" style="-fx-progress-color: white;"/>
         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="124.0" lineSpacing="1.0"
                text="DeliveryTool" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="123.0"
                AnchorPane.leftAnchor="98.0" AnchorPane.rightAnchor="98.0" AnchorPane.topAnchor="124.0">

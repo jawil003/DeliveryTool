@@ -13,12 +13,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
+/**
+ * Hero is the main entity we'll be using to . . .
+ * <p>
+ * Software test
+ *
+ * @author Captain America
+ */
 public class SQLConnect {
-
-    /**
-     * @author Jannik Will
-     * @version 1.0
-     */
 
     //SQL Variables:
     private static final String hostname = "db4free.net"; //the webadress of the database

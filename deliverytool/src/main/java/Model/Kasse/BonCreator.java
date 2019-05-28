@@ -26,28 +26,26 @@ public class BonCreator {
     private PDDocument doc;
     private ObservableList<PDPage> pages;
     private PDPageContentStream cont;
+    private String path;
 
     /**
      * @param verw
      * @param gesamterPreis
      * @throws IOException
      */
-    public BonCreator(Kassenverwaltung verw, double gesamterPreis) throws IOException {
+    public BonCreator(Kassenverwaltung verw, double gesamterPreis, String path) throws IOException {
 
 
         this.verw = verw;
-
         doc = new PDDocument();
         pages = FXCollections.observableArrayList();
+        this.path = path;
 
-        pages.addListener(new ListChangeListener<PDPage>() {
-            @Override
-            public void onChanged(Change<? extends PDPage> c) {
-                while (c.next()) {
-                    final List<? extends PDPage> addedSubList = c.getAddedSubList();
-                    for (PDPage e : addedSubList) {
-                        doc.addPage(e);
-                    }
+        pages.addListener((ListChangeListener<PDPage>) c -> {
+            while (c.next()) {
+                final List<? extends PDPage> addedSubList = c.getAddedSubList();
+                for (PDPage e : addedSubList) {
+                    doc.addPage(e);
                 }
             }
         });
