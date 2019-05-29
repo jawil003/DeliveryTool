@@ -7,6 +7,7 @@ package Model.Kasse;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import org.apache.pdfbox.multipdf.Overlay;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -15,6 +16,8 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
 
 public class BonCreator<T> {
@@ -37,7 +40,7 @@ public class BonCreator<T> {
      * @param gesamterPreis
      * @throws IOException
      */
-    public BonCreator(Kassenverwaltung verw, double gesamterPreis, String path) throws IOException {
+    public BonCreator(Kassenverwaltung verw, double gesamterPreis, String path) throws IOException, URISyntaxException {
 
 
         this.verw = verw;
@@ -55,6 +58,12 @@ public class BonCreator<T> {
         });
 
         PDPage page = new PDPage();
+
+        /**
+         *@todo Set background image
+         *@body Fix the setting of a background image
+         */
+        //setBackgroundImage(doc, getClass().getResource("Classdependencies/BonCreator/pizza-3007395_960_720.jpg").toURI().getPath());
         mediaBox = page.getMediaBox();
         pages.add(page);
         cont = new PDPageContentStream(doc, page);
@@ -150,6 +159,22 @@ public class BonCreator<T> {
         durchlaeufe++;
         stream.endText();
 
+    }
+
+    /**
+     * @param realDoc
+     * @param imagePath
+     */
+    private void setBackgroundImage(PDDocument realDoc, String imagePath) throws IOException {
+        HashMap<Integer, String> overlayGuide = new HashMap<Integer, String>();
+        for (int i = 0; i < realDoc.getNumberOfPages(); i++) {
+            overlayGuide.put(i + 1, imagePath);
+        }
+
+        Overlay overlay = new Overlay();
+        overlay.setInputPDF(realDoc);
+        overlay.setOverlayPosition(Overlay.Position.BACKGROUND);
+        overlay.overlay(overlayGuide);
     }
 
     /**
