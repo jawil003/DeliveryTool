@@ -159,6 +159,16 @@ public class SQLConnect {
     }
 
     /**
+     * Make a SQL DELETE Request to the mySQL Database.
+     *
+     * @param sqlStatement
+     * @throws SQLException
+     */
+    private void removeItems(String sqlStatement) throws SQLException {
+        conn.createStatement().executeUpdate(sqlStatement);
+    }
+
+    /**
      * Make a SQL SELECT Request to the mySQL DB and returns all Pizza Entries as a LinkedList.
      *
      * @return LinkedList of Pizza Entries
@@ -184,6 +194,17 @@ public class SQLConnect {
 
         closeConnection();
         return pizzen;
+    }
+
+    /**
+     * Delete the Pizza Entry drom Database
+     *
+     * @param p Pizza that should be deleted
+     * @throws SQLException
+     */
+    public void deletePizza(Pizza p) throws SQLException {
+        removeItems("DELETE FROM Pizza WHERE  Name = '" + p.getName() + "'");
+        closeConnection();
     }
 
     /**

@@ -87,6 +87,20 @@ public class Pizzaverwaltung {
 
     }
 
+    /**
+     * Delete a Entry in the Pizzaverwaltung
+     *
+     * @param number
+     * @return
+     */
+    public void delete(int number) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        sqlConnection = new SQLConnect();
+        final Pizza remove = pizzen.remove(number);
+        sqlConnection.deletePizza(remove);
+
+
+    }
+
     // getters and setters:
 
     /**
