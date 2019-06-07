@@ -82,7 +82,7 @@ public class JavaFXApplication extends Application {
         primaryStage.setScene(scene);
         controller.init(primaryStage, scene, rootPane);
         primaryStage.centerOnScreen();
-        primaryStage.setResizable(false);
+        //primaryStage.setResizable(false);
         primaryStage.requestFocus();
         primaryStage.show();
 

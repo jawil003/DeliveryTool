@@ -19,7 +19,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -46,6 +49,8 @@ public class WindowController {
     private Pizzaverwaltung verw;
     @FXML
     private ListView<Pane> pizzenListview;
+    @FXML
+    private GridPane gridpane;
     @FXML
     private ListView<Pane> kasseListview;
     @FXML
@@ -109,6 +114,7 @@ public class WindowController {
   public void init(Stage primaryStage, Scene scene, Parent rootPane) {
 
         verwk.getKassenEintraege().addListener(new KasseViewListener());
+        //change();
 
         // create rows
         for (Pizza pizza : this.verw.getPizzen()) {

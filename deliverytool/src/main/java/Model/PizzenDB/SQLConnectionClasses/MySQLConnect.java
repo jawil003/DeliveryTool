@@ -2,8 +2,10 @@
  * Copyright (c) 2019. Jannik Will und Albert Munsch
  */
 
-package Model.PizzenDB;
+package Model.PizzenDB.SQLConnectionClasses;
 
+import Model.PizzenDB.Pizza;
+import Model.PizzenDB.SQLConnection;
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import javafx.scene.control.Alert;
 
@@ -14,13 +16,11 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 
 /**
- * Hero is the main entity we'll be using to . . .
- * <p>
- * Software test
+ * SQL DB Connection
  *
- * @author Captain America
+ * @author Jannik Will
  */
-public class SQLConnect {
+public class MySQLConnect implements SQLConnection {
 
     //SQL Variables:
     private static final String hostname = "db4free.net"; //the webadress of the database
@@ -38,7 +38,7 @@ public class SQLConnect {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public SQLConnect()
+    public MySQLConnect()
             throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         isRunning = true;
         establishConnection();
@@ -90,7 +90,7 @@ public class SQLConnect {
      * @param conn
      */
     public static void setConn(Connection conn) {
-        SQLConnect.conn = conn;
+        MySQLConnect.conn = conn;
     }
 
     /**

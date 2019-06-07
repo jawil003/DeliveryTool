@@ -4,6 +4,8 @@
 
 package Model.PizzenDB;
 
+import Model.PizzenDB.SQLConnectionClasses.MySQLConnect;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -21,7 +23,7 @@ public class Pizzaverwaltung {
      */
 
     private ObservableList<Pizza> pizzen;
-    private SQLConnect sqlConnection;
+    private SQLConnection sqlConnection;
 
     // Constructors:
 
@@ -34,7 +36,7 @@ public class Pizzaverwaltung {
      * @throws ClassNotFoundException
      */
     public Pizzaverwaltung()
-            throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+            throws Exception {
         this(new LinkedList<>());
     }
 
@@ -46,7 +48,7 @@ public class Pizzaverwaltung {
      * @throws InstantiationException
      */
     private Pizzaverwaltung(LinkedList<Pizza> pizzen)
-            throws SQLException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+            throws Exception {
 
         //if there is no initialized list the constructor will initialize a new one
 
@@ -54,9 +56,9 @@ public class Pizzaverwaltung {
             this.pizzen = FXCollections.observableArrayList();
         }
 
-        //pizzen are loaded out of the mysql database with the help of the heping class SQLConnect
+        //pizzen are loaded out of the mysql database with the help of the heping class MySQLConnect
 
-        sqlConnection = new SQLConnect();
+        sqlConnection = new MySQLConnect();
         this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzen());
         this.pizzen.sort(Comparator.comparing(ListenEintrag::getName));
     }
@@ -64,7 +66,7 @@ public class Pizzaverwaltung {
     // method to add a new Pizza Entry (used by the eintraegeHinzufuegen Window)
 
     /**
-     * Add a new Pizza to database and to list
+     * Add a new Pizza to database annd to list
      *
      * @param pizza
      */
@@ -74,8 +76,10 @@ public class Pizzaverwaltung {
         executor.execute(() -> {
             sqlConnection = null;
             try {
-                sqlConnection = new SQLConnect();
+                sqlConnection = new MySQLConnect();
             } catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             try {
@@ -94,9 +98,24 @@ public class Pizzaverwaltung {
      * @return
      */
     public void delete(int number) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-        sqlConnection = new SQLConnect();
         final Pizza remove = pizzen.remove(number);
-        sqlConnection.deletePizza(remove);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    sqlConnection = new MySQLConnect();
+                    sqlConnection.deletePizza(remove);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
     }
@@ -113,7 +132,7 @@ public class Pizzaverwaltung {
     /**
      * @return the mySQL db connection
      */
-    public SQLConnect getSqlConnection() {
+    public SQLConnection getSqlConnection() {
         return sqlConnection;
     }
 }
