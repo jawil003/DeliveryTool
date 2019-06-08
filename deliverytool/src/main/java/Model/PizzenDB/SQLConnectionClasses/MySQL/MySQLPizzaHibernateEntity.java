@@ -2,21 +2,26 @@
  * Copyright (c) 2019. Jannik Will und Albert Munsch
  */
 
-package Model.PizzenDB.SQLConnectionClasses;
+package Model.PizzenDB.SQLConnectionClasses.MySQL;
+
+import Model.PizzenDB.Pizza;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "Pizza")
+@Entity(name = "Pizza")
 public class MySQLPizzaHibernateEntity {
-    private String id;
+    @Id
+    @Column(name = "Name")
     private String name;
+    @Column(name = "PreisKlein")
     private double smallPrice;
+    @Column(name = "PreisMittel")
     private double middlePrice;
+    @Column(name = "PreisGroß")
     private double bigPrice;
+    @Column(name = "PreisFamilie")
     private double familyPrice;
 
     public MySQLPizzaHibernateEntity(String name, double smallPrice, double middlePrice, double bigPrice, double familyPrice) {
@@ -30,7 +35,7 @@ public class MySQLPizzaHibernateEntity {
     public MySQLPizzaHibernateEntity() {
     }
 
-    @Column(name = "Name")
+
     public String getName() {
         return name;
     }
@@ -39,7 +44,6 @@ public class MySQLPizzaHibernateEntity {
         this.name = name;
     }
 
-    @Column(name = "PreisKlein")
     public double getSmallPrice() {
         return smallPrice;
     }
@@ -48,7 +52,6 @@ public class MySQLPizzaHibernateEntity {
         this.smallPrice = smallPrice;
     }
 
-    @Column(name = "PreisMittel")
     public double getMiddlePrice() {
         return middlePrice;
     }
@@ -57,7 +60,6 @@ public class MySQLPizzaHibernateEntity {
         this.middlePrice = middlePrice;
     }
 
-    @Column(name = "PreisGroß")
     public double getBigPrice() {
         return bigPrice;
     }
@@ -66,7 +68,6 @@ public class MySQLPizzaHibernateEntity {
         this.bigPrice = bigPrice;
     }
 
-    @Column(name = "PreisFamilie")
     public double getFamilyPrice() {
         return familyPrice;
     }
@@ -75,12 +76,7 @@ public class MySQLPizzaHibernateEntity {
         this.familyPrice = familyPrice;
     }
 
-    @Id
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public Pizza toPizza() {
+        return new Pizza(name, null, smallPrice, middlePrice, bigPrice, familyPrice);
     }
 }

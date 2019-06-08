@@ -2,7 +2,7 @@
  * Copyright (c) 2019. Jannik Will und Albert Munsch
  */
 
-package Model.PizzenDB.SQLConnectionClasses;
+package Model.PizzenDB.SQLConnectionClasses.MySQL;
 
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.SQLConnection;
@@ -212,18 +212,26 @@ public class MySQLConnect implements SQLConnection {
      * @param pizza
      * @throws SQLException
      */
-    public void addPizza(Pizza pizza) throws SQLException {
-        insertItems("INSERT INTO Pizza " +
-                "(Name, PreisKlein, PreisMittel, PreisGroß, PreisFamilie) " +
-                "VALUES " +
-                "(" +
-                "'" + pizza.getName() + "', " +
-                "'" + pizza.getPreisKlein().orElse(0.00) + "', " +
-                "'" + pizza.getPreisMittel().orElse(0.00) + "', " +
-                "'" + pizza.getPreisGroß().orElse(0.00) + "', " +
-                "'" + pizza.getPreisFamilie().orElse(0.00) + "'"
-                + ")");
-        closeConnection();
+    public void addPizza(Pizza pizza) {
+        try {
+            insertItems("INSERT INTO Pizza " +
+                    "(Name, PreisKlein, PreisMittel, PreisGroß, PreisFamilie) " +
+                    "VALUES " +
+                    "(" +
+                    "'" + pizza.getName() + "', " +
+                    "'" + pizza.getPreisKlein().orElse(0.00) + "', " +
+                    "'" + pizza.getPreisMittel().orElse(0.00) + "', " +
+                    "'" + pizza.getPreisGroß().orElse(0.00) + "', " +
+                    "'" + pizza.getPreisFamilie().orElse(0.00) + "'"
+                    + ")");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

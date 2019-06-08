@@ -120,6 +120,80 @@ public class WindowController {
         for (Pizza pizza : this.verw.getPizzen()) {
             addPizzaRow(pizza, ROW_FXML);
 
+            pizzenContr
+                    .getKleinButton()
+                    .setOnAction(
+                            event -> {
+                                try {
+                                    addKasseneintrag(pizza, 1);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (InvalidEntryException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+
+            bonDruckenItem.setOnAction(new BonDruckenListener());
+
+            pizzenContr
+                    .getMittelButton()
+                    .setOnAction(
+                            new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    try {
+                                        addKasseneintrag(pizza, 2);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    } catch (InvalidEntryException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+            allesLoeschenItem.setOnAction(
+                    new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            kasseListview.getItems().clear();
+                            verwk.getKassenEintraege().clear();
+                            gesamterPreis = 0.0;
+                            gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
+                        }
+                    });
+
+            pizzenContr
+                    .getGrossButton()
+                    .setOnAction(
+                            new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    try {
+                                        addKasseneintrag(pizza, 3);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    } catch (InvalidEntryException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+            pizzenContr
+                    .getFamilieButton()
+                    .setOnAction(
+                            new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    try {
+                                        addKasseneintrag(pizza, 4);
+                                    } catch (IOException | InvalidEntryException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+        }
+
       //Actions:
 
       schließenItem.setOnAction(new EventHandler<ActionEvent>() {

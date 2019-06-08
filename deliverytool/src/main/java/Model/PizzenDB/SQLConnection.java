@@ -13,7 +13,7 @@ public interface SQLConnection {
 
     void deletePizza(Pizza p) throws SQLException;
 
-    default void addPizza(Pizza pizza) throws SQLException {
+    default void addPizza(Pizza pizza) {
 
     }
 

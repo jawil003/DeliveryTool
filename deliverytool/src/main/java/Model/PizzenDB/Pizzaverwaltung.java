@@ -4,7 +4,7 @@
 
 package Model.PizzenDB;
 
-import Model.PizzenDB.SQLConnectionClasses.MySQLConnect;
+import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -58,7 +58,7 @@ public class Pizzaverwaltung {
 
         //pizzen are loaded out of the mysql database with the help of the heping class MySQLConnect
 
-        sqlConnection = new MySQLConnect();
+        sqlConnection = new MySQLConnectHibernate();
         this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzen());
         this.pizzen.sort(Comparator.comparing(ListenEintrag::getName));
     }
@@ -75,18 +75,9 @@ public class Pizzaverwaltung {
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.execute(() -> {
             sqlConnection = null;
-            try {
-                sqlConnection = new MySQLConnect();
-            } catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
+            sqlConnection = new MySQLConnectHibernate();
                 sqlConnection.addPizza(pizza);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+
         });
 
     }
@@ -103,15 +94,9 @@ public class Pizzaverwaltung {
             @Override
             public void run() {
                 try {
-                    sqlConnection = new MySQLConnect();
+                    sqlConnection = new MySQLConnectHibernate();
                     sqlConnection.deletePizza(remove);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

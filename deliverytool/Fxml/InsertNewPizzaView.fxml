@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            prefHeight="423.0" prefWidth="366.0" xmlns="http://javafx.com/javafx/8.0.201">
+            prefHeight="423.0" prefWidth="366.0" xmlns="http://javafx.com/javafx/11.0.1">
     <children>
         <GridPane alignment="CENTER" prefHeight="470.0" prefWidth="457.0" AnchorPane.bottomAnchor="0.0"
                   AnchorPane.rightAnchor="0.0">
@@ -48,7 +48,7 @@
                         <Insets right="10.0"/>
                     </GridPane.margin>
                     <children>
-                        <TextField fx:id="preisKleinFiled" promptText="Klein"/>
+                        <TextField fx:id="preisKleinField" promptText="Klein"/>
                         <TextField fx:id="preisMittelField" promptText="Mittel"/>
                         <TextField fx:id="preisGrossField" promptText="Groß"/>
                         <TextField fx:id="preisFamilieField" promptText="Familie"/>
