@@ -11,6 +11,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
+<!--
+  ~ Copyright (c) 2019. Jannik Will und Albert Munsch
+  -->
+
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
             prefHeight="423.0" prefWidth="366.0" xmlns="http://javafx.com/javafx/11.0.1">
     <children>

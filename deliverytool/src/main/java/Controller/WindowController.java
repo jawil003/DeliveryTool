@@ -117,7 +117,7 @@ public class WindowController {
         //change();
 
         // create rows
-        for (Pizza pizza : this.verw.getPizzen()) {
+        for (Pizza pizza : this.verw.getList()) {
             addPizzaRow(pizza, ROW_FXML);
 
             pizzenContr

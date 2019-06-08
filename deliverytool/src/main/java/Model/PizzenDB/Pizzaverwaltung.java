@@ -48,15 +48,7 @@ public class Pizzaverwaltung {
      */
     private Pizzaverwaltung(LinkedList<Pizza> pizzen) {
 
-        //if there is no initialized list the constructor will initialize a new one
-
-        if (pizzen == null) {
-            this.pizzen = FXCollections.observableArrayList();
-        } else {
             this.pizzen = FXCollections.observableArrayList(pizzen);
-        }
-
-
     }
 
     public void connectToDB() {
@@ -74,9 +66,10 @@ public class Pizzaverwaltung {
      * @param pizza
      */
     public void add(Pizza pizza) {
-        if (pizza == null) {
+        if (pizza == null | pizzen.contains(pizza)) {
             return;
         }
+
         this.pizzen.add(pizza);
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.execute(() -> {
@@ -99,28 +92,33 @@ public class Pizzaverwaltung {
             return;
         }
         final Pizza remove = pizzen.remove(number);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    sqlConnection = new MySQLConnectHibernate();
-                    sqlConnection.deletePizza(remove);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if (sqlConnection != null) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        sqlConnection = new MySQLConnectHibernate();
+                        sqlConnection.deletePizza(remove);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }
+    }
 
-
+    public void deleteAll() {
+        pizzen.clear();
     }
 
     // getters and setters:
 
-    /**
-     * @return the Oberservable List with Pizza Entries
-     */
-    public ObservableList<Pizza> getPizzen() {
-        return pizzen;
+    public int getSize() {
+        return pizzen.size();
+    }
+
+    public ObservableList<Pizza> getList() {
+        return FXCollections.unmodifiableObservableList(pizzen);
     }
 
     /**
