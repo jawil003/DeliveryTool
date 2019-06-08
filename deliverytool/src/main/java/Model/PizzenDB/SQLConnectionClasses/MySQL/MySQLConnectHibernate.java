@@ -6,6 +6,7 @@ package Model.PizzenDB.SQLConnectionClasses.MySQL;
 
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.SQLConnection;
+import Model.PizzenDB.Zutat;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -60,28 +61,28 @@ public class MySQLConnectHibernate implements SQLConnection {
 
 
     private void create(Pizza p) {
-        final MySQLPizzaHibernateEntity entity = executeTransaction(p);
+        final MySQLPizzaHibernateEntityPizza entity = executeTransaction(p);
         session.save(entity);
         session.getTransaction().commit();
     }
 
     private void update(Pizza p) {
-        final MySQLPizzaHibernateEntity entity = executeTransaction(p);
+        final MySQLPizzaHibernateEntityPizza entity = executeTransaction(p);
         session.update(entity);
         session.getTransaction().commit();
 
     }
 
     private void delete(Pizza p) {
-        MySQLPizzaHibernateEntity entity = executeTransaction(p);
+        MySQLPizzaHibernateEntityPizza entity = executeTransaction(p);
         session.delete(entity);
         session.getTransaction().commit();
     }
 
-    private MySQLPizzaHibernateEntity executeTransaction(Pizza p) {
+    private MySQLPizzaHibernateEntityPizza executeTransaction(Pizza p) {
         createSessionIfNecessary();
         beginTransaction();
-        MySQLPizzaHibernateEntity entity = new MySQLPizzaHibernateEntity(p.getName(), p.getPreisKlein().orElse(0.00), p.getPreisMittel().orElse(0.00), p.getPreisGroß().orElse(0.00), p.getPreisFamilie().orElse(0.00));
+        MySQLPizzaHibernateEntityPizza entity = new MySQLPizzaHibernateEntityPizza(p.getName(), p.getPreisKlein().orElse(0.00), p.getPreisMittel().orElse(0.00), p.getPreisGroß().orElse(0.00), p.getPreisFamilie().orElse(0.00));
         return entity;
     }
 
@@ -126,13 +127,22 @@ public class MySQLConnectHibernate implements SQLConnection {
      *
      * @return LinkedList of Pizza Entries
      */
-    public List getPizzen() {
-        final List<MySQLPizzaHibernateEntity> select_a_from_pizza_a = session.createQuery("SELECT a FROM Pizza a", MySQLPizzaHibernateEntity.class).getResultList();
+    public List<Pizza> getPizzen() {
+        final List<MySQLPizzaHibernateEntityPizza> select_a_from_pizza_a = session.createQuery("SELECT a FROM Pizza a", MySQLPizzaHibernateEntityPizza.class).getResultList();
         List<Pizza> pizzen = new LinkedList<>();
-        for (MySQLPizzaHibernateEntity e : select_a_from_pizza_a) {
+        for (MySQLPizzaHibernateEntityPizza e : select_a_from_pizza_a) {
             pizzen.add(e.toPizza());
         }
         return pizzen;
+    }
+
+    public List<Zutat> getZutaten() {
+        final List<MySQLPizzaHibernateEntityZutat> select_a_from_zutat_a = session.createQuery("SELECT a FROM Pizza a", MySQLPizzaHibernateEntityZutat.class).getResultList();
+        List<Zutat> zutaten = new LinkedList<>();
+        for (MySQLPizzaHibernateEntityZutat e : select_a_from_zutat_a) {
+            zutaten.add(e.toZutat());
+        }
+        return zutaten;
     }
 
     /**

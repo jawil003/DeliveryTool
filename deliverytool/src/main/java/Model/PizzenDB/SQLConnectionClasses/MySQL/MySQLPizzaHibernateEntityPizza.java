@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity(name = "Pizza")
-public class MySQLPizzaHibernateEntity {
+public class MySQLPizzaHibernateEntityPizza {
     @Id
     @Column(name = "Name")
     private String name;
@@ -24,7 +24,7 @@ public class MySQLPizzaHibernateEntity {
     @Column(name = "PreisFamilie")
     private double familyPrice;
 
-    public MySQLPizzaHibernateEntity(String name, double smallPrice, double middlePrice, double bigPrice, double familyPrice) {
+    public MySQLPizzaHibernateEntityPizza(String name, double smallPrice, double middlePrice, double bigPrice, double familyPrice) {
         this.name = name;
         this.smallPrice = smallPrice;
         this.middlePrice = middlePrice;
@@ -32,7 +32,7 @@ public class MySQLPizzaHibernateEntity {
         this.familyPrice = familyPrice;
     }
 
-    public MySQLPizzaHibernateEntity() {
+    public MySQLPizzaHibernateEntityPizza() {
     }
 
 

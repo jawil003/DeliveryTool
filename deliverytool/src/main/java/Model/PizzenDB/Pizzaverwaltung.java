@@ -35,8 +35,7 @@ public class Pizzaverwaltung {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    public Pizzaverwaltung()
-            throws Exception {
+    public Pizzaverwaltung() {
         this(new LinkedList<>());
     }
 
@@ -47,17 +46,21 @@ public class Pizzaverwaltung {
      * @throws ClassNotFoundException
      * @throws InstantiationException
      */
-    private Pizzaverwaltung(LinkedList<Pizza> pizzen)
-            throws Exception {
+    private Pizzaverwaltung(LinkedList<Pizza> pizzen) {
 
         //if there is no initialized list the constructor will initialize a new one
 
         if (pizzen == null) {
             this.pizzen = FXCollections.observableArrayList();
+        } else {
+            this.pizzen = FXCollections.observableArrayList(pizzen);
         }
 
-        //pizzen are loaded out of the mysql database with the help of the heping class MySQLConnect
 
+    }
+
+    public void connectToDB() {
+        //pizzen are loaded out of the mysql database with the help of the heping class MySQLConnect
         sqlConnection = new MySQLConnectHibernate();
         this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzen());
         this.pizzen.sort(Comparator.comparing(ListenEintrag::getName));
@@ -71,6 +74,9 @@ public class Pizzaverwaltung {
      * @param pizza
      */
     public void add(Pizza pizza) {
+        if (pizza == null) {
+            return;
+        }
         this.pizzen.add(pizza);
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.execute(() -> {
@@ -89,6 +95,9 @@ public class Pizzaverwaltung {
      * @return
      */
     public void delete(int number) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        if (number < 0) {
+            return;
+        }
         final Pizza remove = pizzen.remove(number);
         Platform.runLater(new Runnable() {
             @Override

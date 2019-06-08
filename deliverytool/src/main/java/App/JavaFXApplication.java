@@ -51,12 +51,11 @@ public class JavaFXApplication extends Application {
     @Override
     public void init() throws Exception {
         super.init();
-        try {
+
             verw = new Pizzaverwaltung();
+        verw.connectToDB();
             verwk = new Kassenverwaltung();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     /**

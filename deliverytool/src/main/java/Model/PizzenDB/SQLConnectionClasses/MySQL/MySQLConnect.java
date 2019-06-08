@@ -6,6 +6,7 @@ package Model.PizzenDB.SQLConnectionClasses.MySQL;
 
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.SQLConnection;
+import Model.PizzenDB.Zutat;
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import javafx.scene.control.Alert;
 
@@ -14,6 +15,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * SQL DB Connection
@@ -177,22 +179,41 @@ public class MySQLConnect implements SQLConnection {
      * @throws IllegalAccessException
      * @throws ClassNotFoundException
      */
-    public LinkedList<Pizza> getPizzen()
-            throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+    @Override
+    public LinkedList<Pizza> getPizzen() {
         LinkedList<Pizza> pizzen = new LinkedList<>();
 
         String sql;
-        ResultSet set = selectItems("SELECT * FROM Pizza");
+        ResultSet set = null;
+        try {
+            set = selectItems("SELECT * FROM Pizza");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        while (set.next()) {
-            Pizza pizza = new Pizza(set.getString(1),
-                    null, set.getDouble(2),
-                    set.getDouble(3), set.getDouble(4),
-                    set.getDouble(5));
+        while (true) {
+            try {
+                if (!set.next()) break;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            Pizza pizza = null;
+            try {
+                pizza = new Pizza(set.getString(1),
+                        null, set.getDouble(2),
+                        set.getDouble(3), set.getDouble(4),
+                        set.getDouble(5));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             pizzen.add(pizza);
         }
 
-        closeConnection();
+        try {
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return pizzen;
     }
 
@@ -238,5 +259,41 @@ public class MySQLConnect implements SQLConnection {
      * @return true (if SQLConnection still runs), else false */
     public boolean isRunning() {
         return isRunning;
+    }
+
+    @Override
+    public List<Zutat> getZutaten() {
+        LinkedList<Zutat> zutaten = new LinkedList<>();
+
+        String sql;
+        ResultSet set = null;
+        try {
+            set = selectItems("SELECT * FROM Pizza");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        while (true) {
+            try {
+                if (!set.next()) break;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            Zutat zutat = null;
+            try {
+                zutat = new Zutat(
+                        set.getString(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            zutaten.add(zutat);
+        }
+
+        try {
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return zutaten;
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SQLConnection {
 
-    List getPizzen() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException;
+    List getPizzen();
 
     void deletePizza(Pizza p) throws SQLException;
 
@@ -21,4 +21,5 @@ public interface SQLConnection {
         return false;
     }
 
+    List<Zutat> getZutaten();
 }

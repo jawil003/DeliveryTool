@@ -4,8 +4,6 @@
 
 package Model.PizzenDB;
 
-import org.jetbrains.annotations.Contract;
-
 import java.util.Objects;
 
 public class Zutat {
@@ -16,18 +14,13 @@ public class Zutat {
      */
 
     private String name;
-    private int menge;
-    private String mengeneinheit;
 
     /**
      * @param name
-     * @param menge
-     * @param mengeneinheit
      */
-    public Zutat(String name, int menge, String mengeneinheit) {
+    public Zutat(String name) {
         this.name = name;
-        this.menge = menge;
-        this.mengeneinheit = mengeneinheit;
+
     }
 
     /**
@@ -44,54 +37,16 @@ public class Zutat {
         this.name = name;
     }
 
-    /**
-     * @return the amount of the Zutat
-     */
-    public int getMenge() {
-        return menge;
-    }
-
-    /**
-     * @param menge
-     */
-    public void setMenge(int menge) {
-        this.menge = menge;
-    }
-
-    /**
-     * @return the unit of the Zutat
-     */
-    public String getMengeneinheit() {
-        return mengeneinheit;
-    }
-
-    /**
-     * @param mengeneinheit
-     */
-    public void setMengeneinheit(String mengeneinheit) {
-        this.mengeneinheit = mengeneinheit;
-    }
-
-    /**
-     * @param o
-     * @return true (if the values of both compared KasseEintrag is matching), else false
-     */
-    @Contract(value = "null -> false", pure = true)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Zutat zutat = (Zutat) o;
-        return menge == zutat.menge &&
-                Objects.equals(name, zutat.name) &&
-                Objects.equals(mengeneinheit, zutat.mengeneinheit);
+        return Objects.equals(name, zutat.name);
     }
 
-    /**
-     * @return the hashCode Value
-     */
     @Override
     public int hashCode() {
-        return Objects.hash(name, menge, mengeneinheit);
+        return Objects.hash(name);
     }
 }

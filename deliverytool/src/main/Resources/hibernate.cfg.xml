@@ -18,7 +18,8 @@
 
         <property name="hbm2ddl.auto">update</property>
 
-        <mapping class="Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntity"/>
+        <mapping class="Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntityPizza"/>
+        <mapping class="Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntityZutat"/>
 
     </session-factory>
 </hibernate-configuration>

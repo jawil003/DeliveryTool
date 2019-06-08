@@ -32,10 +32,12 @@ public class Pizza extends ListenEintrag {
         this("", new LinkedList<>());
     }
 
-    /**
-     * @param name
-     * @param zutaten
-     */
+    public Pizza(String name, Double preisKlein,
+                 Double preisMittel,
+                 Double preisGroß,
+                 Double preisFamilie) {
+        this(name, new LinkedList<>(), preisKlein, preisMittel, preisGroß, preisGroß);
+    }
     public Pizza(String name, LinkedList<Zutat> zutaten) {
         this(name, zutaten, null, null, null, null);
     }
