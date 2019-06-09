@@ -6,7 +6,7 @@ package Model.Kasse;
 
 import java.util.Objects;
 
-public class BestelltePizza extends KassenEintrag {
+public class OrderedPizza extends RegisterEntry {
 
     /**
      * @author Jannik Will
@@ -18,7 +18,7 @@ public class BestelltePizza extends KassenEintrag {
     /**
      * Constructor where all values are empty or zero
      */
-    public BestelltePizza() {
+    public OrderedPizza() {
         this("", 0.0, ' ');
 
     }
@@ -26,7 +26,7 @@ public class BestelltePizza extends KassenEintrag {
     /**
      * @param name
      */
-    public BestelltePizza(String name) {
+    public OrderedPizza(String name) {
         super(name);
     }
 
@@ -35,7 +35,7 @@ public class BestelltePizza extends KassenEintrag {
      * @param preis
      * @param groeße
      */
-    public BestelltePizza(String name, Double preis, char groeße) {
+    public OrderedPizza(String name, Double preis, char groeße) {
         super(name, preis);
         this.groeße = groeße;
     }
@@ -80,14 +80,14 @@ public class BestelltePizza extends KassenEintrag {
 
     /**
      * @param o
-     * @return true (if the values of both compared BestelltePizza is matching), else false
+     * @return true (if the values of both compared OrderedPizza is matching), else false
      */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        BestelltePizza that = (BestelltePizza) o;
+        OrderedPizza that = (OrderedPizza) o;
         return groeße == that.groeße;
     }
 

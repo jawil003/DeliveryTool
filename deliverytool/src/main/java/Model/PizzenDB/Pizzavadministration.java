@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Pizzaverwaltung {
+public class Pizzavadministration {
 
     /**
      * @author Jannik Will
@@ -35,7 +35,7 @@ public class Pizzaverwaltung {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    public Pizzaverwaltung() {
+    public Pizzavadministration() {
         this(new LinkedList<>());
     }
 
@@ -46,7 +46,7 @@ public class Pizzaverwaltung {
      * @throws ClassNotFoundException
      * @throws InstantiationException
      */
-    private Pizzaverwaltung(LinkedList<Pizza> pizzen) {
+    private Pizzavadministration(LinkedList<Pizza> pizzen) {
 
             this.pizzen = FXCollections.observableArrayList(pizzen);
     }
@@ -55,7 +55,7 @@ public class Pizzaverwaltung {
         //pizzen are loaded out of the mysql database with the help of the heping class MySQLConnect
         sqlConnection = new MySQLConnectHibernate();
         this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzen());
-        this.pizzen.sort(Comparator.comparing(ListenEintrag::getName));
+        this.pizzen.sort(Comparator.comparing(ListEntry::getName));
     }
 
     // method to add a new Pizza Entry (used by the eintraegeHinzufuegen Window)
@@ -82,7 +82,7 @@ public class Pizzaverwaltung {
     }
 
     /**
-     * Delete a Entry in the Pizzaverwaltung
+     * Delete a Entry in the Pizzavadministration
      *
      * @param number
      * @return

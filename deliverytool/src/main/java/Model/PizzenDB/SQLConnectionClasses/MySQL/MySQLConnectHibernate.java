@@ -4,9 +4,9 @@
 
 package Model.PizzenDB.SQLConnectionClasses.MySQL;
 
+import Model.PizzenDB.Ingredient;
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.SQLConnection;
-import Model.PizzenDB.Zutat;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -136,9 +136,9 @@ public class MySQLConnectHibernate implements SQLConnection {
         return pizzen;
     }
 
-    public List<Zutat> getZutaten() {
+    public List<Ingredient> getZutaten() {
         final List<MySQLPizzaHibernateEntityZutat> select_a_from_zutat_a = session.createQuery("SELECT a FROM Pizza a", MySQLPizzaHibernateEntityZutat.class).getResultList();
-        List<Zutat> zutaten = new LinkedList<>();
+        List<Ingredient> zutaten = new LinkedList<>();
         for (MySQLPizzaHibernateEntityZutat e : select_a_from_zutat_a) {
             zutaten.add(e.toZutat());
         }

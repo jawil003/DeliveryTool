@@ -4,7 +4,7 @@
 
 package Model.PizzenDB.SQLConnectionClasses.MySQL;
 
-import Model.PizzenDB.Zutat;
+import Model.PizzenDB.Ingredient;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +28,7 @@ public class MySQLPizzaHibernateEntityZutat {
     }
 
 
-    public Zutat toZutat() {
-        return new Zutat(name);
+    public Ingredient toZutat() {
+        return new Ingredient(name);
     }
 }

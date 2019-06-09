@@ -4,7 +4,7 @@
 
 package Model.PizzenDB;
 
-public abstract class ListenEintrag {
+public abstract class ListEntry {
 
     /**
      * @author Jannik Will
@@ -16,12 +16,12 @@ public abstract class ListenEintrag {
     /**
      * @param name
      */
-    public ListenEintrag(String name) {
+    public ListEntry(String name) {
         this.name = name;
     }
 
     /**
-     * @return the name of the ListenEintrag
+     * @return the name of the ListEntry
      */
     public String getName() {
         return name;
@@ -39,7 +39,7 @@ public abstract class ListenEintrag {
      */
     @Override
     public String toString() {
-        return "ListenEintrag{" +
+        return "ListEntry{" +
                 "name='" + name + '\'' +
                 '}';
     }

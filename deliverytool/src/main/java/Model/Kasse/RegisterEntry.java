@@ -6,7 +6,7 @@ package Model.Kasse;
 
 import java.util.Objects;
 
-public abstract class KassenEintrag {
+public abstract class RegisterEntry {
 
     /**
      * @author Jannik Will
@@ -19,14 +19,14 @@ public abstract class KassenEintrag {
     /**
      * The Constructor where all values are empty or zero
      */
-    public KassenEintrag() {
+    public RegisterEntry() {
         this("", 0.0);
     }
 
     /**
      * @param name
      */
-    public KassenEintrag(String name) {
+    public RegisterEntry(String name) {
         this.name = name;
     }
 
@@ -34,7 +34,7 @@ public abstract class KassenEintrag {
      * @param name
      * @param preis
      */
-    public KassenEintrag(String name, Double preis) {
+    public RegisterEntry(String name, Double preis) {
         this.name = name;
         this.preis = preis;
     }
@@ -83,7 +83,7 @@ public abstract class KassenEintrag {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        KassenEintrag that = (KassenEintrag) o;
+        RegisterEntry that = (RegisterEntry) o;
         return Objects.equals(preis, that.preis) &&
                 Objects.equals(name, that.name);
     }

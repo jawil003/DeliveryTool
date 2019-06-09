@@ -17,7 +17,7 @@ import javafx.scene.image.ImageView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RowPizzenController implements Initializable {
+public class RowPizzasController implements Initializable {
 
     @FXML
     private ImageView pizzaImageview;

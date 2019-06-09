@@ -7,7 +7,7 @@ package Controller;
 import App.JavaFXApplication;
 import Model.Kasse.*;
 import Model.PizzenDB.Pizza;
-import Model.PizzenDB.Pizzaverwaltung;
+import Model.PizzenDB.Pizzavadministration;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -41,10 +41,10 @@ public class WindowController {
 
     private static final String ROW2_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
     private InsertPizzaViewController parentController;
-    private RowPizzenController pizzenContr;
-    private RowKasseController kasseContr;
+    private RowPizzasController pizzenContr;
+    private RowRegisterController kasseContr;
     private double gesamterPreis = 0.00;
-    private Pizzaverwaltung verw;
+    private Pizzavadministration verw;
     @FXML
     private ListView<Pane> pizzenListview;
     @FXML
@@ -76,7 +76,7 @@ public class WindowController {
     @FXML
     private Label gesamterPreisLabel;
     private Stage primaryStage;
-    private Kassenverwaltung verwk;
+    private Registryadministration verwk;
     private int size;
 
     private Parent pane;
@@ -86,8 +86,8 @@ public class WindowController {
      */
     public WindowController() {
 
-        this.verw = new Pizzaverwaltung();
-        this.verwk = new Kassenverwaltung();
+        this.verw = new Pizzavadministration();
+        this.verwk = new Registryadministration();
     }
 
     /**
@@ -107,7 +107,7 @@ public class WindowController {
     // A Pizza is added
 
     public void loadFXMLItemsAgain() throws IOException {
-        FXMLLoader loader = new FXMLLoader(new File("deliverytool/Fxml/Window.fxml").toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File("./deliverytool/Fxml/Window.fxml").toURI().toURL());
         if (loader.getController() == null) {
             loader.setController(this);
         }
@@ -333,7 +333,7 @@ public class WindowController {
       FXMLLoader loader = new FXMLLoader(new File(fxmlPath).toURI().toURL());
 
             // set controller
-            pizzenContr = new RowPizzenController();
+            pizzenContr = new RowPizzasController();
             loader.setController(pizzenContr);
 
             Pane rootPane = loader.load();
@@ -348,16 +348,17 @@ public class WindowController {
         }
     }
 
-  /**
-   * Add a new Row for a choosed Pizza
-   * @param pizza
-   * @param size
-   * @throws IOException
-   * @throws InvalidEntryException
-   */
-  private void addKasseneintrag(Pizza pizza, int size) throws IOException, InvalidEntryException {
-    BestelltePizza bp = new BestelltePizza(pizza.getName());
-    DecimalFormat df2 = new DecimalFormat("#,##");
+    /**
+     * Add a new Row for a choosed Pizza
+     *
+     * @param pizza
+     * @param size
+     * @throws IOException
+     * @throws InvalidEntryException
+     */
+    private void addKasseneintrag(Pizza pizza, int size) throws IOException, InvalidEntryException {
+        OrderedPizza bp = new OrderedPizza(pizza.getName());
+        DecimalFormat df2 = new DecimalFormat("#,##");
 
         switch (size) {
             case 1:
@@ -391,7 +392,7 @@ public class WindowController {
                 return;
             }
         }
-        kasseContr = new RowKasseController();
+        kasseContr = new RowRegisterController();
         loader.setController(kasseContr);
 
         Pane rootPane = loader.load();
@@ -549,40 +550,41 @@ public class WindowController {
         }
     }
 
-  /**
-   * The Listener is triggered when a new Item is added to the KasseView so that the gesamterPreis Label is increased automatically
-   * */
-  private class KasseViewListener implements ListChangeListener<BestelltePizza> {
+    /**
+     * The Listener is triggered when a new Item is added to the KasseView so that the gesamterPreis
+     * Label is increased automatically
+     */
 
-    @Override
-    public void onChanged(Change<? extends BestelltePizza> c) {
-      while (c.next()) {
-        final List<? extends BestelltePizza> addedSubList = c.getAddedSubList();
-        for (BestelltePizza p : addedSubList) {
-          gesamterPreis += p.getPreis();
 
+    private class KasseViewListener implements ListChangeListener<OrderedPizza> {
+
+        @Override
+        public void onChanged(Change<? extends OrderedPizza> c) {
+            while (c.next()) {
+                final List<? extends OrderedPizza> addedSubList = c.getAddedSubList();
+                for (OrderedPizza p : addedSubList) {
+                    gesamterPreis += p.getPreis();
+                }
+                gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
+            }
         }
-        gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
-
-      }
-    }
     }
 
 
     private class BonDruckenListener implements EventHandler<ActionEvent> {
 
-    @Override
-    public void handle(ActionEvent event) {
-      try {
-        BonCreator creator = new BonCreator(verwk, gesamterPreis);
-        creator.addPizzas(verwk.getKassenEintraege());
-          FileChooser c = new FileChooser();
-          c.setInitialFileName("Rechnung.pdf");
-          creator.close(c.showSaveDialog(primaryStage).getAbsolutePath());
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+        @Override
+        public void handle(ActionEvent event) {
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle("Rechnung speichern unter");
+            chooser.setInitialFileName("Rechnung.pdf");
+            try {
+                BonCreator<OrderedPizza> creator = new BonCreator<>(verwk, gesamterPreis, (chooser.showSaveDialog(primaryStage.getScene().getWindow())).getAbsolutePath());
+                creator.addPizzas(verwk.getKassenEintraege(), gesamterPreis);
+                creator.close();
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
     }
-  }
-
 }

@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 
-public class Pizza extends ListenEintrag implements Comparable<Pizza> {
+public class Pizza extends ListEntry implements Comparable<Pizza> {
 
     /**
      * @author Jannik Will
@@ -23,7 +23,7 @@ public class Pizza extends ListenEintrag implements Comparable<Pizza> {
     private Optional<Double> preisMittel;
     private Optional<Double> preisGroß;
     private Optional<Double> preisFamilie;
-    private LinkedList<Zutat> zutaten;
+    private LinkedList<Ingredient> zutaten;
 
     // Constructors:
 
@@ -40,7 +40,8 @@ public class Pizza extends ListenEintrag implements Comparable<Pizza> {
                  Double preisFamilie) {
         this(name, new LinkedList<>(), preisKlein, preisMittel, preisGroß, preisGroß);
     }
-    public Pizza(String name, LinkedList<Zutat> zutaten) {
+
+    public Pizza(String name, LinkedList<Ingredient> zutaten) {
         this(name, zutaten, null, null, null, null);
     }
 
@@ -54,7 +55,7 @@ public class Pizza extends ListenEintrag implements Comparable<Pizza> {
      */
     public Pizza(
             String name,
-            LinkedList<Zutat> zutaten,
+            LinkedList<Ingredient> zutaten,
             Double preisKlein,
             Double preisMittel,
             Double preisGroß,
@@ -71,21 +72,21 @@ public class Pizza extends ListenEintrag implements Comparable<Pizza> {
     // Getters and Setters:
 
     /**
-     * @return the LinkedList of Zutat Items of this Pizza
+     * @return the LinkedList of Ingredient Items of this Pizza
      */
-    public LinkedList<Zutat> getZutaten() {
+    public LinkedList<Ingredient> getZutaten() {
         return zutaten;
     }
 
     /**
-     * @param zutat
+     * @param ingredient
      */
-    public void addZutat(Zutat zutat) {
+    public void addZutat(Ingredient ingredient) {
         if (this.zutaten == null) {
             this.zutaten = new LinkedList<>();
         }
 
-        this.zutaten.add(zutat);
+        this.zutaten.add(ingredient);
     }
 
     /**
@@ -131,7 +132,7 @@ public class Pizza extends ListenEintrag implements Comparable<Pizza> {
     /**
      * @param e
      */
-    public void addZutaten(Zutat e) {
+    public void addZutaten(Ingredient e) {
         zutaten.add(e);
     }
 

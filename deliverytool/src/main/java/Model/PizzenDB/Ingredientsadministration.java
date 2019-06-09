@@ -14,14 +14,14 @@ import java.util.List;
 /**
  *
  */
-public class Zutatenverwaltung {
-    private ObservableList<Zutat> zutaten;
+public class Ingredientsadministration {
+    private ObservableList<Ingredient> zutaten;
     private SQLConnection sqlConnection;
 
     /**
      *
      */
-    public Zutatenverwaltung() {
+    public Ingredientsadministration() {
         this.zutaten = FXCollections.observableArrayList();
 
     }
@@ -37,21 +37,24 @@ public class Zutatenverwaltung {
     /**
      * @param e
      */
-    public void add(Zutat e) {
+    public void add(Ingredient e) {
+        if (zutaten.contains(e)) {
+            return;
+        }
         zutaten.add(e);
     }
 
     /**
      * @param zutaten
      */
-    public void addAll(List<Zutat> zutaten) {
+    public void addAll(List<Ingredient> zutaten) {
         this.zutaten.addAll(zutaten);
     }
 
     /**
      * @param zutaten
      */
-    public void addAll(ObservableList<Zutat> zutaten) {
+    public void addAll(ObservableList<Ingredient> zutaten) {
         assert false;
         this.zutaten.addAll(zutaten);
     }
@@ -65,10 +68,10 @@ public class Zutatenverwaltung {
     }
 
     /**
-     * @param zutat
+     * @param ingredient
      */
-    public void delete(Zutat zutat) {
-        zutaten.remove(zutat);
+    public void delete(Ingredient ingredient) {
+        zutaten.remove(ingredient);
     }
 
     /**
@@ -82,7 +85,7 @@ public class Zutatenverwaltung {
      * @param number
      * @return
      */
-    public Zutat get(int number) {
+    public Ingredient get(int number) {
         return zutaten.get(number);
     }
 

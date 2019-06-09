@@ -4,9 +4,9 @@
 
 package Model.PizzenDB.SQLConnectionClasses.MySQL;
 
+import Model.PizzenDB.Ingredient;
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.SQLConnection;
-import Model.PizzenDB.Zutat;
 import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import javafx.scene.control.Alert;
 
@@ -262,8 +262,8 @@ public class MySQLConnect implements SQLConnection {
     }
 
     @Override
-    public List<Zutat> getZutaten() {
-        LinkedList<Zutat> zutaten = new LinkedList<>();
+    public List<Ingredient> getZutaten() {
+        LinkedList<Ingredient> zutaten = new LinkedList<>();
 
         String sql;
         ResultSet set = null;
@@ -279,14 +279,14 @@ public class MySQLConnect implements SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            Zutat zutat = null;
+            Ingredient ingredient = null;
             try {
-                zutat = new Zutat(
+                ingredient = new Ingredient(
                         set.getString(1));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            zutaten.add(zutat);
+            zutaten.add(ingredient);
         }
 
         try {

@@ -6,7 +6,7 @@ package Model.PizzenDB;
 
 import java.util.Objects;
 
-public class Zutat {
+public class Ingredient {
 
     /**
      * @author Jannik Will
@@ -18,13 +18,13 @@ public class Zutat {
     /**
      * @param name
      */
-    public Zutat(String name) {
+    public Ingredient(String name) {
         this.name = name;
 
     }
 
     /**
-     * @return the name of the Zutat
+     * @return the name of the Ingredient
      */
     public String getName() {
         return name;
@@ -41,8 +41,8 @@ public class Zutat {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Zutat zutat = (Zutat) o;
-        return Objects.equals(name, zutat.name);
+        Ingredient ingredient = (Ingredient) o;
+        return Objects.equals(name, ingredient.name);
     }
 
     @Override

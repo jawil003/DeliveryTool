@@ -5,8 +5,8 @@
 package App;
 
 import Controller.WindowController;
-import Model.Kasse.Kassenverwaltung;
-import Model.PizzenDB.Pizzaverwaltung;
+import Model.Kasse.Registryadministration;
+import Model.PizzenDB.Pizzavadministration;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -27,13 +27,13 @@ public class JavaFXApplication extends Application {
      */
 
     //path to window fxml file
-    private static final String FXML_PATH = "deliverytool/Fxml/Window.fxml";
+    //private static final String FXML_PATH = "deliverytool/Fxml/Window.fxml";
 
     //JavaFX scene
     protected Scene scene = null;
 
-    private Pizzaverwaltung verw;
-    private Kassenverwaltung verwk;
+    private Pizzavadministration verw;
+    private Registryadministration verwk;
 
     /**
      * The main Method for the RestartMenuItem
@@ -44,7 +44,7 @@ public class JavaFXApplication extends Application {
     }
 
     /**
-     * Initialize the Pizza- and Kassenverwaltung
+     * Initialize the Pizza- and Registryadministration
      *
      * @throws Exception
      */
@@ -52,9 +52,9 @@ public class JavaFXApplication extends Application {
     public void init() throws Exception {
         super.init();
 
-            verw = new Pizzaverwaltung();
+        verw = new Pizzavadministration();
         verw.connectToDB();
-            verwk = new Kassenverwaltung();
+        verwk = new Registryadministration();
 
     }
 
@@ -77,10 +77,8 @@ public class JavaFXApplication extends Application {
         controller.setVerw(verw);
         controller.setVerwk(verwk);
         controller.loadFXMLItemsAgain();
-        Parent rootPane = loader.load();
         primaryStage.setTitle("Deliverytool");
-        this.scene = new Scene(rootPane);
-        controller.init(primaryStage, scene);
+        controller.init(primaryStage);
         controller.show();
 
         //triggered when mainwindow is tried to close with the x window button

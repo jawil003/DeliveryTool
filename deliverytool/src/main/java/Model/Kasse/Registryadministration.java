@@ -7,48 +7,48 @@ package Model.Kasse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class Kassenverwaltung {
+public class Registryadministration {
 
     /**
      * @author Jannik Will
      * @version 1.0
      */
 
-    private ObservableList<BestelltePizza> kassenEintraege;
+    private ObservableList<OrderedPizza> kassenEintraege;
 
     /**
-     * Contructor where the Kassenverwaltung is initalized
+     * Contructor where the Registryadministration is initalized
      */
-    public Kassenverwaltung() {
+    public Registryadministration() {
         kassenEintraege = FXCollections.observableArrayList();
     }
 
     /**
      * @return the Obervablelist of KassenEintraege
      */
-    public ObservableList<BestelltePizza> getKassenEintraege() {
+    public ObservableList<OrderedPizza> getKassenEintraege() {
         return kassenEintraege;
     }
 
     /**
-     * Add a new KassenEintrag to the List
+     * Add a new RegisterEntry to the List
      *
      * @param kassenEintrag
      */
-    public void addKassenEintrag(BestelltePizza kassenEintrag) {
+    public void addKassenEintrag(OrderedPizza kassenEintrag) {
         this.kassenEintraege.add(kassenEintrag);
     }
 
-    public KassenEintrag removeKassenEintrag(int index) {
+    public RegisterEntry removeKassenEintrag(int index) {
         return kassenEintraege.remove(index);
     }
 
     /**
-     * Remove a matching KassenEintrag
+     * Remove a matching RegisterEntry
      *
      * @param kassenEintrag
      */
-    public void removeKassenEintrag(BestelltePizza kassenEintrag) {
+    public void removeKassenEintrag(OrderedPizza kassenEintrag) {
         kassenEintraege.remove(kassenEintrag);
     }
 
@@ -57,7 +57,7 @@ public class Kassenverwaltung {
      */
     @Override
     public String toString() {
-        return "Kassenverwaltung{" +
+        return "Registryadministration{" +
                 "kassenEintraege=" + kassenEintraege +
                 '}';
     }

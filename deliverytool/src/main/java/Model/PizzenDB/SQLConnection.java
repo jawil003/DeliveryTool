@@ -21,5 +21,5 @@ public interface SQLConnection {
         return false;
     }
 
-    List<Zutat> getZutaten();
+    List<Ingredient> getZutaten();
 }
