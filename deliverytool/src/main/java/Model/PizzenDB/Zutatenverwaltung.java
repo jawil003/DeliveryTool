@@ -60,7 +60,8 @@ public class Zutatenverwaltung {
      * @param number
      */
     public void delete(int number) {
-        zutaten.remove(number);
+        if (number >= 0)
+            zutaten.remove(number);
     }
 
     /**

@@ -1101,91 +1101,109 @@
     </collation>
     <table id="275" parent="2" name="Factory"/>
     <table id="276" parent="2" name="Pizza"/>
-    <table id="277" parent="2" name="Zutaten"/>
-    <column id="278" parent="275" name="ControlName">
+    <table id="277" parent="2" name="ZutatPizza"/>
+    <table id="278" parent="2" name="Zutatenliste"/>
+    <column id="279" parent="275" name="ControlName">
       <Position>1</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="279" parent="275" name="ControlText">
+    <column id="280" parent="275" name="ControlText">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="280" parent="275" name="ControlName">
+    <index id="281" parent="275" name="ControlName">
       <ColNames>ControlName</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="281" parent="275" name="PRIMARY">
+    <key id="282" parent="275" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ControlName</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="282" parent="275" name="ControlName">
+    <key id="283" parent="275" name="ControlName">
       <ColNames>ControlName</ColNames>
       <UnderlyingIndexName>ControlName</UnderlyingIndexName>
     </key>
-    <column id="283" parent="276" name="Name">
+    <column id="284" parent="276" name="Name">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="284" parent="276" name="PreisKlein">
+    <column id="285" parent="276" name="PreisKlein">
       <Position>2</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="285" parent="276" name="PreisMittel">
+    <column id="286" parent="276" name="PreisMittel">
       <Position>3</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="286" parent="276" name="PreisGroß">
+    <column id="287" parent="276" name="PreisGroß">
       <Position>4</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="287" parent="276" name="PreisFamilie">
+    <column id="288" parent="276" name="PreisFamilie">
       <Position>5</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="288" parent="276" name="PRIMARY">
+    <key id="289" parent="276" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Name</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="289" parent="277" name="Pizzaname">
+    <column id="290" parent="277" name="PizzaId">
       <Position>1</Position>
-      <DataType>varchar(20)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="290" parent="277" name="Zutatname">
+    <column id="291" parent="277" name="ZutatId">
       <Position>2</Position>
-      <DataType>varchar(20)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="291" parent="277" name="Menge">
+    <column id="292" parent="277" name="Menge">
       <Position>3</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="292" parent="277" name="Mengeneinheit">
+    <column id="293" parent="277" name="Mengeneinheit">
       <Position>4</Position>
       <DataType>varchar(2)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
+    <column id="294" parent="278" name="Id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="295" parent="278" name="Name">
+      <Position>2</Position>
+      <DataType>varchar(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="296" parent="278" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>Id</ColNames>
+      <Primary>1</Primary>
+    </key>
   </database-model>
 </dataSource>

@@ -19,10 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -81,16 +79,39 @@ public class WindowController {
     private Kassenverwaltung verwk;
     private int size;
 
-    /**
-     * @param verw
-     * @param verwk
-     * @param primaryStage
-     */
-    public WindowController(Pizzaverwaltung verw, Kassenverwaltung verwk, Stage primaryStage) {
+    private Parent pane;
+    private Scene scene;
 
-        this.verw = verw;
-        this.verwk = verwk;
-        this.primaryStage = primaryStage;
+    /**
+     */
+    public WindowController() {
+
+        this.verw = new Pizzaverwaltung();
+        this.verwk = new Kassenverwaltung();
+    }
+
+    /**
+     * @return String for the source of the Kasse Row
+     */
+    public static String getRow2Fxml() {
+        return ROW2_FXML;
+    }
+
+    /**
+     * @return String for the source of the Pizza Row
+     */
+    public static String getRowFxml() {
+        return ROW_FXML;
+    }
+
+    // A Pizza is added
+
+    public void loadFXMLItemsAgain() throws IOException {
+        FXMLLoader loader = new FXMLLoader(new File("deliverytool/Fxml/Window.fxml").toURI().toURL());
+        if (loader.getController() == null) {
+            loader.setController(this);
+        }
+        pane = loader.load();
     }
 
     /** @return String for the source of the Pizza Row */
@@ -170,9 +191,7 @@ public class WindowController {
                                 public void handle(ActionEvent event) {
                                     try {
                                         addKasseneintrag(pizza, 3);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    } catch (InvalidEntryException e) {
+                                    } catch (IOException | InvalidEntryException e) {
                                         e.printStackTrace();
                                     }
                                 }
@@ -222,7 +241,7 @@ public class WindowController {
         }
       });
 
-            eintragHinzufuegenItem.setOnAction(new EintragHinzufuegenListener());
+        eintragHinzufuegenItem.setOnAction(new EintragHinzufuegenListener());
 
       pizzenContr.getKleinButton().setOnAction(new EventHandler<ActionEvent>() {
         @Override

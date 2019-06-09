@@ -73,17 +73,15 @@ public class JavaFXApplication extends Application {
         //MainWindow is build and controller added
 
         //JavaFX window controller (MVC principle)
-        WindowController controller = new WindowController(verw, verwk, primaryStage);
-        loader.setController(controller);
+        WindowController controller = new WindowController();
+        controller.setVerw(verw);
+        controller.setVerwk(verwk);
+        controller.loadFXMLItemsAgain();
         Parent rootPane = loader.load();
         primaryStage.setTitle("Deliverytool");
         this.scene = new Scene(rootPane);
-        primaryStage.setScene(scene);
-        controller.init(primaryStage, scene, rootPane);
-        primaryStage.centerOnScreen();
-        //primaryStage.setResizable(false);
-        primaryStage.requestFocus();
-        primaryStage.show();
+        controller.init(primaryStage, scene);
+        controller.show();
 
         //triggered when mainwindow is tried to close with the x window button
 
