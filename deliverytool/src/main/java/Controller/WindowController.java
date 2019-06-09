@@ -5,7 +5,10 @@
 package Controller;
 
 import App.JavaFXApplication;
-import Model.Kasse.*;
+import Model.Kasse.InvalidEntryException;
+import Model.Kasse.OrderedPizza;
+import Model.Kasse.RegisterEntry;
+import Model.Kasse.Registryadministration;
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.Pizzavadministration;
 import javafx.application.Platform;
@@ -107,7 +110,7 @@ public class WindowController {
     // A Pizza is added
 
     public void loadFXMLItemsAgain() throws IOException {
-        FXMLLoader loader = new FXMLLoader(new File("./deliverytool/Fxml/Window.fxml").toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File("Fxml/Window.fxml").toURI().toURL());
         if (loader.getController() == null) {
             loader.setController(this);
         }

@@ -48,9 +48,10 @@ class PizzavadministrationTest {
     public void addAndDeleteAllPizzenEachByEach() throws Exception {
         addPizzen();
 
-        for (int i = 0; i < pizzavadministration.getSize(); i++) {
+        for (int i = pizzavadministration.getSize() - 1; i >= 0; i--) {
             pizzavadministration.delete(i);
         }
+
         assertEquals(0, pizzavadministration.getSize());
     }
 

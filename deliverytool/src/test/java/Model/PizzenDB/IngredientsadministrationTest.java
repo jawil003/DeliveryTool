@@ -58,7 +58,7 @@ public class IngredientsadministrationTest {
     public void addAndDeleteAllPizzenEachByEach() throws Exception {
         addZutaten();
 
-        for (int i = 0; i < ingredientsadministration.getSize(); i++) {
+        for (int i = ingredientsadministration.getSize() - 1; i >= 0; i--) {
             ingredientsadministration.delete(i);
         }
         assertEquals(0, ingredientsadministration.getSize());

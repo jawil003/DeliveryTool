@@ -32,6 +32,8 @@ public class JavaFXApplication extends Application {
     //JavaFX scene
     protected Scene scene = null;
 
+    WindowController controller;
+
     private Pizzavadministration verw;
     private Registryadministration verwk;
 
@@ -73,7 +75,8 @@ public class JavaFXApplication extends Application {
         //MainWindow is build and controller added
 
         //JavaFX window controller (MVC principle)
-        WindowController controller = new WindowController();
+        if (controller == null)
+            controller = new WindowController();
         controller.setVerw(verw);
         controller.setVerwk(verwk);
         controller.loadFXMLItemsAgain();
@@ -98,5 +101,37 @@ public class JavaFXApplication extends Application {
             }
 
         }
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
+    }
+
+    public WindowController getController() {
+        return controller;
+    }
+
+    public void setController(WindowController controller) {
+        this.controller = controller;
+    }
+
+    public Pizzavadministration getVerw() {
+        return verw;
+    }
+
+    public void setVerw(Pizzavadministration verw) {
+        this.verw = verw;
+    }
+
+    public Registryadministration getVerwk() {
+        return verwk;
+    }
+
+    public void setVerwk(Registryadministration verwk) {
+        this.verwk = verwk;
     }
 }

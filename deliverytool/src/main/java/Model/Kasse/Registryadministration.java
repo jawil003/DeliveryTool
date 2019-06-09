@@ -7,6 +7,9 @@ package Model.Kasse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 public class Registryadministration {
 
     /**
@@ -60,5 +63,12 @@ public class Registryadministration {
         return "Registryadministration{" +
                 "kassenEintraege=" + kassenEintraege +
                 '}';
+    }
+
+    public void createPDF(String path, double gesamterPreis) throws IOException, URISyntaxException {
+
+        BonCreator<OrderedPizza> creator = new BonCreator<>(this, gesamterPreis, path);
+        creator.addPizzas(kassenEintraege, gesamterPreis);
+        creator.close();
     }
 }

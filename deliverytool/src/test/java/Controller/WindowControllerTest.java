@@ -4,22 +4,22 @@
 
 package Controller;
 
-import org.junit.jupiter.api.BeforeEach;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class WindowControllerTest {
-    WindowController controller = new WindowController();
+public class WindowControllerTest extends ApplicationTest {
+    WindowController controller;
 
-    @BeforeEach
-    public void init() throws IOException {
-        /**
-         *@todo FXMLLoading error
-         *@body Loading of FXML File fails because path is different than when calling same method from JavaFXApplication
-         */
+
+    @Start
+    public void start(Stage primaryStage) throws Exception {
+        controller = new WindowController();
         controller.loadFXMLItemsAgain();
     }
 
@@ -62,6 +62,4 @@ public class WindowControllerTest {
     public void kassenListviewNotNull() {
         assertNotNull(controller.getKasseListview());
     }
-
-
 }
