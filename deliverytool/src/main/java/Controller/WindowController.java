@@ -149,6 +149,19 @@ public class WindowController {
         }
         // Actions:
 
+        ServiceAnsicht.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                WindowServiceController controller = new WindowServiceController();
+                try {
+                    controller.loadFXMLItemsAgain();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                controller.init(primaryStage, verwk);
+            }
+        });
+
       schließenItem.setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {

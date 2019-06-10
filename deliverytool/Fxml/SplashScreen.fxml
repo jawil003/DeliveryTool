@@ -34,5 +34,11 @@
                 <Font size="12.0"/>
             </font>
         </Label>
+        <Label fx:id="versionLabel1" alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="281.0"
+               lineSpacing="1.0" text="©Jannik Will and Albert Munsch" textAlignment="CENTER" textFill="WHITE">
+            <font>
+                <Font size="8.0"/>
+            </font>
+        </Label>
     </children>
 </AnchorPane>
