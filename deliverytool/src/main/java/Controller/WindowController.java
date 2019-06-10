@@ -140,85 +140,14 @@ public class WindowController {
 
         verwk.getKassenEintraege().addListener(new KasseViewListener());
 
-        verw.getList().addListener(new PizzenViewListener());
+        verw.addListener(new PizzenViewListener());
 
         // create rows
         for (Pizza pizza : this.verw.getList()) {
-            addPizzaRow(pizza, ROW_FXML);
-
-            pizzenContr
-                    .getKleinButton()
-                    .setOnAction(
-                            event -> {
-                                try {
-                                    addKasseneintrag(pizza, 1);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (InvalidEntryException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-
-            bonDruckenItem.setOnAction(new BonDruckenListener());
-
-            pizzenContr
-                    .getMittelButton()
-                    .setOnAction(
-                            new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    try {
-                                        addKasseneintrag(pizza, 2);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    } catch (InvalidEntryException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-
-            allesLoeschenItem.setOnAction(
-                    new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            kasseListview.getItems().clear();
-                            verwk.getKassenEintraege().clear();
-                            gesamterPreis = 0.0;
-                            gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
-                        }
-                    });
-
-            pizzenContr
-                    .getGrossButton()
-                    .setOnAction(
-                            new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    try {
-                                        addKasseneintrag(pizza, 3);
-                                    } catch (IOException | InvalidEntryException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-
-            pizzenContr
-                    .getFamilieButton()
-                    .setOnAction(
-                            new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    try {
-                                        addKasseneintrag(pizza, 4);
-                                    } catch (IOException | InvalidEntryException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-
+            addPizzaRow(pizza);
+            addListenerPizzaRow(pizza);
         }
-
-      //Actions:
+        // Actions:
 
       schließenItem.setOnAction(new EventHandler<ActionEvent>() {
         @Override
@@ -341,6 +270,7 @@ public class WindowController {
             pizzenContr = new RowPizzasController();
             loader.setController(pizzenContr);
 
+
             Pane rootPane = loader.load();
 
             // initialize tab controller
@@ -351,6 +281,53 @@ public class WindowController {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    private void addListenerPizzaRow(Pizza pizza) {
+        pizzenContr
+                .getKleinButton()
+                .setOnAction(
+                        event -> {
+                            try {
+                                addKasseneintrag(pizza, 1);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+        pizzenContr
+                .getMittelButton()
+                .setOnAction(
+                        event -> {
+                            try {
+                                addKasseneintrag(pizza, 2);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+
+        pizzenContr
+                .getGrossButton()
+                .setOnAction(
+                        event -> {
+                            try {
+                                addKasseneintrag(pizza, 3);
+                            } catch (AddingKassenEintragException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+        pizzenContr
+                .getFamilieButton()
+                .setOnAction(
+                        event -> {
+                            try {
+                                addKasseneintrag(pizza, 4);
+                            } catch (AddingKassenEintragException e) {
+                                e.printStackTrace();
+                            }
+                        });
     }
 
     /**
@@ -567,6 +544,7 @@ public class WindowController {
                 final List<? extends Pizza> addedSubList = c.getAddedSubList();
                 for (Pizza p : addedSubList) {
                     addPizzaRow(p);
+                    addListenerPizzaRow(p);
                 }
             }
         }

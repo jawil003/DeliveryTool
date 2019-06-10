@@ -7,6 +7,7 @@ package Model.PizzenDB;
 import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
@@ -49,6 +50,10 @@ public class Pizzavadministration {
     private Pizzavadministration(LinkedList<Pizza> pizzen) {
 
             this.pizzen = FXCollections.observableArrayList(pizzen);
+    }
+
+    public void addListener(ListChangeListener e) {
+        pizzen.addListener(e);
     }
 
     public void connectToDB() {
