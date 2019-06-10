@@ -35,7 +35,7 @@ public class WindowControllerTest extends ApplicationTest {
 
     @Test
     public void schließenItemNotNull() {
-        assertNotNull(controller.getSchließenItem());
+        assertNotNull(controller.getSchliessenItem());
     }
 
     @Test
@@ -61,5 +61,30 @@ public class WindowControllerTest extends ApplicationTest {
     @Test
     public void kassenListviewNotNull() {
         assertNotNull(controller.getKasseListview());
+    }
+
+    @Test
+    public void überMenuItemNotNull() {
+        assertNotNull(controller.getUeberItem());
+    }
+
+    @Test
+    public void KasseAnsichtItemNotNull() {
+        assertNotNull(controller.getKasseAnsicht());
+    }
+
+    @Test
+    public void zubereitungAnsichtItemNotNull() {
+        assertNotNull(controller.getZubereitungAnsicht());
+    }
+
+    @Test
+    public void servicegAnsichtItemNotNull() {
+        assertNotNull(controller.getServiceAnsicht());
+    }
+
+    @Test
+    public void gesamterPreisLabelNotNull() {
+        assertNotNull(controller.getGesamterPreisLabel());
     }
 }

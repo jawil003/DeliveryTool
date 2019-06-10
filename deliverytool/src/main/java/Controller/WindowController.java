@@ -31,8 +31,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class WindowController {
@@ -45,7 +45,6 @@ public class WindowController {
     private static final String ROW2_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
     private InsertPizzaViewController parentController;
     private RowPizzasController pizzenContr;
-    private RowRegisterController kasseContr;
     private double gesamterPreis = 0.00;
     private Pizzavadministration verw;
     @FXML
@@ -73,14 +72,13 @@ public class WindowController {
     @FXML
     private MenuItem ServiceAnsicht;
     @FXML
-    private MenuItem schließenItem;
+    private MenuItem schliessenItem;
     @FXML
     private MenuItem neustartItem;
     @FXML
     private Label gesamterPreisLabel;
     private Stage primaryStage;
     private Registryadministration verwk;
-    private int size;
 
     private Parent pane;
     private Scene scene;
@@ -110,7 +108,9 @@ public class WindowController {
     // A Pizza is added
 
     public void loadFXMLItemsAgain() throws IOException {
-        FXMLLoader loader = new FXMLLoader(new File("Fxml/Window.fxml").toURI().toURL());
+
+        final String s = normalizePath(Paths.get("deliverytool/Fxml/Window.fxml").normalize().toAbsolutePath().toString());
+        FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         if (loader.getController() == null) {
             loader.setController(this);
         }
@@ -354,18 +354,18 @@ public class WindowController {
     /**
      * Add a new Row for a choosed Pizza
      *
-     * @param pizza
-     * @param size
-     * @throws IOException
-     * @throws InvalidEntryException
+     * @param pizza Pizza Entry where the price is extracted from
+     * @param size the Size of the Pizza (1-4 as little - family)
+     * @throws AddingKassenEintragException When adding the entry gone wrong
      */
-    private void addKasseneintrag(Pizza pizza, int size) throws IOException, InvalidEntryException {
+    private void addKasseneintrag(Pizza pizza, int size) throws AddingKassenEintragException {
         OrderedPizza bp = new OrderedPizza(pizza.getName());
-        DecimalFormat df2 = new DecimalFormat("#,##");
-
-        switch (size) {
+        //DecimalFormat df2 = new DecimalFormat("#,##");
+        try {
+            switch (size) {
             case 1:
                 bp.setGroeße('k');
+
                 bp.setPreis(pizza.getPreisKlein().orElse(0.0));
                 break;
             case 2:
@@ -395,8 +395,8 @@ public class WindowController {
                 return;
             }
         }
-        kasseContr = new RowRegisterController();
-        loader.setController(kasseContr);
+            RowRegisterController kasseContr = new RowRegisterController();
+            loader.setController(kasseContr);
 
         Pane rootPane = loader.load();
         kasseContr.init(pizza, size);
@@ -419,14 +419,13 @@ public class WindowController {
   }
 
     /**
-     * Get the name matching the number in the int siza param
+     * Get the name matching the number in the int size param
      *
-     * @param size
-     * @return
+     * @param size the Size of a Pizza (1-4 means Little-FamilyPizza)
+     * @return the String which needs to be inserted in the addkasseneintrag method for filling the Label in the Row of KassenListView
      */
     @org.jetbrains.annotations.NotNull
     private String whichSize(int size) {
-        this.size = size;
         switch (size) {
             case 1:
                 return "(klein)";
@@ -538,21 +537,6 @@ public class WindowController {
     }
     }
 
-  /**
-   * The Listener which is triggered when the menuItem "EintragHinzufuegen" is pressed
-   * */
-  private class EintragHinzufuegenListener implements EventHandler<ActionEvent> {
-
-        @Override
-        public void handle(ActionEvent event) {
-            try {
-                eintragHinzufuegen();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     /**
      * The Listener is triggered when a new Item is added to the KasseView so that the gesamterPreis
      * Label is increased automatically
@@ -590,4 +574,17 @@ public class WindowController {
             }
         }
     }
+
+    class AddingKassenEintragException extends Exception {
+        AddingKassenEintragException(String message) {
+            super(message);
+        }
+    }
+
+    class InvalidInstanciationInsertPizzaViewController extends Exception {
+        InvalidInstanciationInsertPizzaViewController(String message) {
+            super(message);
+        }
+    }
+
 }

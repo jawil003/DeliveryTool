@@ -223,6 +223,11 @@
             <version>4.0.15-alpha</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-core</artifactId>
+            <version>3.0.4</version>
+        </dependency>
     </dependencies>
 
 

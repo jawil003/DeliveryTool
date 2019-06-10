@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -25,6 +26,8 @@ import java.io.IOException;
  * @version 1.0
  */
 public class InsertPizzaViewController {
+
+    Pane root;
 
     @FXML
     private TextField nameField;
@@ -65,12 +68,18 @@ public class InsertPizzaViewController {
         this.pizza = pizza;
     }
 
-    void init(FXMLLoader loader, Stage parent) throws IOException {
-        final Pane load = loader.load();
+    public void loadFXMLItemsAgain() throws IOException {
+        FXMLLoader loader = new FXMLLoader(new File(new File("./FXML/InsertNewPizzaView.fxml").getCanonicalPath()).toURI().toURL());
+        if (loader.getController() == null)
+            loader.setController(this);
+        root = loader.load();
+    }
+
+    void init(Stage parent) throws IOException {
         current = new Stage();
         current.initOwner(parent);
         current.initModality(Modality.WINDOW_MODAL);
-        final Scene scene = new Scene(load);
+        final Scene scene = new Scene(root);
         current.setScene(scene);
         current.centerOnScreen();
         current.setResizable(false);
@@ -127,6 +136,10 @@ public class InsertPizzaViewController {
         this.zutatenView = zutatenView;
     }
 
+    public ListView<?> getZutatenView() {
+        return this.zutatenView;
+    }
+
     /**
      * @return the ListView where the Zutatten are shown which are added to the Pizza
      */
@@ -170,7 +183,7 @@ public class InsertPizzaViewController {
         this.pizza = pizza;
     }
 
-    /** */
+
     void close() {
         current.close();
     }
