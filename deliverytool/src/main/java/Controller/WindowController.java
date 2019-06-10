@@ -11,6 +11,7 @@ import Model.Kasse.RegisterEntry;
 import Model.Kasse.Registryadministration;
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.Pizzavadministration;
+import Tools.LinkFetcher;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -109,7 +110,7 @@ public class WindowController {
 
     public void loadFXMLItemsAgain() throws IOException {
 
-        final String s = normalizePath(Paths.get("deliverytool/Fxml/Window.fxml").normalize().toAbsolutePath().toString());
+        final String s = LinkFetcher.normalizePath(Paths.get("deliverytool/Fxml/Window.fxml").normalize().toAbsolutePath().toString(), "/deliverytool");
         FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         if (loader.getController() == null) {
             loader.setController(this);
@@ -138,7 +139,8 @@ public class WindowController {
   public void init(Stage primaryStage, Scene scene, Parent rootPane) {
 
         verwk.getKassenEintraege().addListener(new KasseViewListener());
-        //change();
+
+        verw.getList().addListener(new PizzenViewListener());
 
         // create rows
         for (Pizza pizza : this.verw.getList()) {
@@ -553,6 +555,19 @@ public class WindowController {
                     gesamterPreis += p.getPreis();
                 }
                 gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
+            }
+        }
+    }
+
+    private class PizzenViewListener implements ListChangeListener<Pizza> {
+
+        @Override
+        public void onChanged(Change<? extends Pizza> c) {
+            while (c.next()) {
+                final List<? extends Pizza> addedSubList = c.getAddedSubList();
+                for (Pizza p : addedSubList) {
+                    addPizzaRow(p);
+                }
             }
         }
     }

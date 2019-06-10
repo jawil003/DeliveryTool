@@ -28,8 +28,8 @@
                 <Font name="System Font" size="43.0"/>
             </font>
         </Label>
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="409.0" layoutY="271.0" lineSpacing="1.0" text="v.1.0"
-               textAlignment="CENTER" textFill="WHITE">
+        <Label fx:id="versionLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="409.0" layoutY="271.0"
+               lineSpacing="1.0" text="v.1.0" textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font size="12.0"/>
             </font>

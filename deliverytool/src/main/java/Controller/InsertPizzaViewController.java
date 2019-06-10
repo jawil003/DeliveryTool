@@ -6,6 +6,7 @@ package Controller;
 
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntityPizza;
+import Tools.LinkFetcher;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,7 +67,8 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
     }
 
     public void loadFXMLItemsAgain() throws IOException {
-        FXMLLoader loader = new FXMLLoader(new File(new File("./FXML/InsertNewPizzaView.fxml").getCanonicalPath()).toURI().toURL());
+        final String s = LinkFetcher.normalizePath("./deliverytool/Fxml/InsertNewPizzaView.fxml", "/deliverytool");
+        FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         if (loader.getController() == null)
             loader.setController(this);
         root = loader.load();
@@ -74,6 +76,7 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
 
     void init(Stage parent) throws IOException {
         current = new Stage();
+        current.setTitle("Pizza hinzufügen");
         current.initOwner(parent);
         current.initModality(Modality.WINDOW_MODAL);
         final Scene scene = new Scene(root);
