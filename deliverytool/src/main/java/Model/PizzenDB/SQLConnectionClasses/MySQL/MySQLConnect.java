@@ -180,7 +180,7 @@ public class MySQLConnect implements SQLConnection {
      * @throws ClassNotFoundException
      */
     @Override
-    public LinkedList<Pizza> getPizzen() {
+    public LinkedList<Pizza> getPizzas() {
         LinkedList<Pizza> pizzen = new LinkedList<>();
 
         String sql;

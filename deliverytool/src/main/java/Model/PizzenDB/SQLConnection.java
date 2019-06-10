@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SQLConnection {
 
-    List getPizzen();
+    List<Pizza> getPizzas();
 
     void deletePizza(Pizza p) throws SQLException;
 

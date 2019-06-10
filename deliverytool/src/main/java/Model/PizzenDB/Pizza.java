@@ -74,14 +74,14 @@ public class Pizza extends ListEntry implements Comparable<Pizza> {
     /**
      * @return the LinkedList of Ingredient Items of this Pizza
      */
-    public LinkedList<Ingredient> getZutaten() {
+    public LinkedList<Ingredient> getIngridience() {
         return zutaten;
     }
 
     /**
      * @param ingredient
      */
-    public void addZutat(Ingredient ingredient) {
+    public void addIngridience(Ingredient ingredient) {
         if (this.zutaten == null) {
             this.zutaten = new LinkedList<>();
         }

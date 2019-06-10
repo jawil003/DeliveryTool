@@ -127,7 +127,7 @@ public class MySQLConnectHibernate implements SQLConnection {
      *
      * @return LinkedList of Pizza Entries
      */
-    public List<Pizza> getPizzen() {
+    public List<Pizza> getPizzas() {
         final List<MySQLPizzaHibernateEntityPizza> select_a_from_pizza_a = session.createQuery("SELECT a FROM Pizza a", MySQLPizzaHibernateEntityPizza.class).getResultList();
         List<Pizza> pizzen = new LinkedList<>();
         for (MySQLPizzaHibernateEntityPizza e : select_a_from_pizza_a) {

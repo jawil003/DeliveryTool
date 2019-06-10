@@ -54,7 +54,7 @@ public class Pizzavadministration {
     public void connectToDB() {
         //pizzen are loaded out of the mysql database with the help of the heping class MySQLConnect
         sqlConnection = new MySQLConnectHibernate();
-        this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzen());
+        this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzas());
         this.pizzen.sort(Comparator.comparing(ListEntry::getName));
     }
 
