@@ -5,6 +5,7 @@
 package Controller;
 
 import Model.PizzenDB.Pizza;
+import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntityPizza;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,11 +22,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * @author Jannik Will
- * @version 1.0
- */
-public class InsertPizzaViewController {
+public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
 
     Pane root;
 

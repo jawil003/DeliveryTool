@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="992.0">Model.PizzenDB.Pizzavadministration</node>
+    <node x="1167.5050213227787" y="404.0">Controller.RowRegisterController</node>
+    <node x="333.0" y="992.0">Model.Kasse.Registryadministration</node>
+    <node x="772.0" y="992.0">Model.PizzenDB.SQLConnection</node>
+    <node x="819.5050213227786" y="404.0">App.JavaFXApplication</node>
+    <node x="696.0908493633791" y="0.0">Controller.RowPizzasController</node>
+    <node x="0.0" y="132.0">Model.PizzenDB.ListEntry</node>
+    <node x="740.0" y="720.0">Model.Kasse.RegisterEntry</node>
+    <node x="0.0" y="1220.0">Controller.WindowController</node>
+    <node x="1152.0" y="1220.0">App.Main</node>
+    <node x="1069.3027031734566" y="720.0">Model.Kasse.OrderedPizza</node>
+    <node x="854.0" y="1220.0">Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntityZutat</node>
+    <node x="1108.9181067831028" y="992.0">Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate</node>
+    <node x="342.0908493633791" y="0.0">Model.PizzenDB.Pizza</node>
+    <node x="0.0" y="404.0">Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntityPizza</node>
+    <node x="348.0" y="1220.0">Model.PizzenDB.Ingredient</node>
+    <node x="380.0" y="720.0">Model.PizzenDB.Ingredientsadministration</node>
+    <node x="404.5050213227786" y="404.0">Controller.InsertPizzaViewController</node>
+    <node x="0.0" y="720.0">Model.Kasse.BonCreator</node>
+    <node x="604.0" y="1220.0">Model.Kasse.InvalidEntryException</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Controller.InsertPizzaViewController" target="Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntityPizza">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="Model.PizzenDB.Pizza" target="Model.PizzenDB.ListEntry">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate" target="Model.PizzenDB.SQLConnection">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="Model.Kasse.OrderedPizza" target="Model.Kasse.RegisterEntry">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8166977611940298" x="704.1439177612792" y="2753.6984580239864" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+
