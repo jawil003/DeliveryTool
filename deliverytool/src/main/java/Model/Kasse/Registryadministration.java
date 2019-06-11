@@ -4,12 +4,14 @@
 
 package Model.Kasse;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import com.sun.javafx.collections.ObservableListWrapper;
+import javafx.collections.*;
+import org.hibernate.criterion.Order;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Registryadministration {
@@ -21,42 +23,30 @@ public class Registryadministration {
 
     private double gesamterPreis;
 
-    private ObservableList<OrderedPizza> kassenEintraege;
+    private ObservableMap<OrderedPizza,Integer> kassenEintraege;
 
     /**
      * Contructor where the Registryadministration is initalized
      */
     public Registryadministration() {
-        kassenEintraege = FXCollections.observableArrayList();
+        kassenEintraege = FXCollections.observableHashMap();
         addListener();
     }
 
     private void addListener() {
-        kassenEintraege.addListener(new ListChangeListener<OrderedPizza>() {
+        kassenEintraege.addListener(new MapChangeListener<RegisterEntry, Integer>() {
             @Override
-            public void onChanged(Change<? extends OrderedPizza> c) {
-                while (c.next()) {
-                    final List<? extends OrderedPizza> addedSubList = c.getAddedSubList();
-                    for (OrderedPizza e : addedSubList) {
-                        gesamterPreis += e.getPreis();
-                    }
+            public void onChanged(Change<? extends RegisterEntry, ? extends Integer> change) {
 
-                    final List<? extends OrderedPizza> removed = c.getRemoved();
-                    for (OrderedPizza e : removed) {
-                        gesamterPreis -= e.getPreis();
-                    }
-
-
-                }
             }
-        });
+        }
     }
 
     /**
      * @return the Obervablelist of KassenEintraege
      */
     public ObservableList<OrderedPizza> getKassenEintraege() {
-        return kassenEintraege;
+        return FXCollections.observableArrayList(new ArrayList<OrderedPizza>(kassenEintraege.keySet()));
     }
 
     /**
@@ -65,11 +55,28 @@ public class Registryadministration {
      * @param kassenEintrag
      */
     public void addKassenEintrag(OrderedPizza kassenEintrag) {
-        this.kassenEintraege.add(kassenEintrag);
+        if(kassenEintraege.containsKey(kassenEintrag)){
+            kassenEintraege.put(kassenEintrag, kassenEintraege.get(kassenEintraege)+1);
+        }else{
+            kassenEintraege.put(kassenEintrag, 1);
+        }
+
     }
 
     public RegisterEntry removeKassenEintrag(int index) {
-        return kassenEintraege.remove(index);
+        final Iterator<OrderedPizza> iterator = kassenEintraege.keySet().iterator();
+        OrderedPizza value = null;
+        for(int i=0; i<index;i++){
+            if(iterator.hasNext()){
+                value = iterator.next();
+            }else{
+                return null;
+            }
+
+        }
+
+        kassenEintraege.remove(value);
+        return value;
     }
 
     /**
@@ -98,7 +105,7 @@ public class Registryadministration {
     public void createPDF(String path, double gesamterPreis) throws IOException, URISyntaxException {
 
         BonCreator<OrderedPizza> creator = new BonCreator<>(this, gesamterPreis, path);
-        creator.addPizzas(kassenEintraege, gesamterPreis);
+        creator.addPizzas(FXCollections.observableArrayList(new ArrayList<OrderedPizza>(kassenEintraege.keySet())), gesamterPreis);
         creator.close();
     }
 }
