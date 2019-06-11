@@ -78,6 +78,11 @@ public class OrderedPizza extends RegisterEntry {
         return super.toString();
     }
 
+
+    public String toEuroValue() {
+        return String.format("%.2f", preis) + "€";
+    }
+
     /**
      * @param o
      * @return true (if the values of both compared OrderedPizza is matching), else false

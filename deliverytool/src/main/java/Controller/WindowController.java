@@ -18,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -158,9 +157,15 @@ public class WindowController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                controller.init(primaryStage, verwk);
+                try {
+                    controller.init(primaryStage, verwk);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
+
+        kasseAnsicht.setOnAction(new KasseAnsichtItemListener());
 
       schließenItem.setOnAction(new EventHandler<ActionEvent>() {
         @Override
@@ -357,20 +362,23 @@ public class WindowController {
             switch (size) {
             case 1:
                 bp.setGroeße('k');
-
                 bp.setPreis(pizza.getPreisKlein().orElse(0.0));
+                verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisKlein().orElse(0.0), 'k'));
                 break;
             case 2:
                 bp.setGroeße('m');
                 bp.setPreis(pizza.getPreisMittel().orElse(0.0));
+                verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisMittel().orElse(0.0), 'm'));
                 break;
             case 3:
                 bp.setGroeße('g');
                 bp.setPreis(pizza.getPreisGroß().orElse(0.0));
+                verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisGroß().orElse(0.0), 'g'));
                 break;
             case 4:
                 bp.setGroeße('f');
                 bp.setPreis(pizza.getPreisFamilie().orElse(0.0));
+                verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisFamilie().orElse(0.0), 'f'));
                 break;
         }
 
@@ -544,7 +552,7 @@ public class WindowController {
                 for (OrderedPizza p : addedSubList) {
                     gesamterPreis += p.getPreis();
                 }
-                gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
+                gesamterPreisLabel.setText(verwk.toEuroValue());
             }
         }
     }
@@ -590,6 +598,34 @@ public class WindowController {
     class InvalidInstanciationInsertPizzaViewController extends Exception {
         InvalidInstanciationInsertPizzaViewController(String message) {
             super(message);
+        }
+    }
+
+    public class KasseAnsichtItemListener implements EventHandler<ActionEvent> {
+
+        /**
+         * Invoked when a specific event of the type for which this handler is
+         * registered happens.
+         *
+         * @param event the event which occurred
+         */
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                loadFXMLItemsAgain();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            addListener();
+            //gesamterPreisRecalculate();
+            gesamterPreisLabel.setText(verwk.toEuroValue());
+            try {
+                loadKassenEintraege();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            primaryStage.getScene().setRoot(pane);
+            primaryStage.show();
         }
     }
 

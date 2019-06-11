@@ -5,10 +5,12 @@
 package Model.Kasse;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 public class Registryadministration {
 
@@ -17,6 +19,8 @@ public class Registryadministration {
      * @version 1.0
      */
 
+    private double gesamterPreis;
+
     private ObservableList<OrderedPizza> kassenEintraege;
 
     /**
@@ -24,6 +28,28 @@ public class Registryadministration {
      */
     public Registryadministration() {
         kassenEintraege = FXCollections.observableArrayList();
+        addListener();
+    }
+
+    private void addListener() {
+        kassenEintraege.addListener(new ListChangeListener<OrderedPizza>() {
+            @Override
+            public void onChanged(Change<? extends OrderedPizza> c) {
+                while (c.next()) {
+                    final List<? extends OrderedPizza> addedSubList = c.getAddedSubList();
+                    for (OrderedPizza e : addedSubList) {
+                        gesamterPreis += e.getPreis();
+                    }
+
+                    final List<? extends OrderedPizza> removed = c.getRemoved();
+                    for (OrderedPizza e : removed) {
+                        gesamterPreis -= e.getPreis();
+                    }
+
+
+                }
+            }
+        });
     }
 
     /**
@@ -40,6 +66,7 @@ public class Registryadministration {
      */
     public void addKassenEintrag(OrderedPizza kassenEintrag) {
         this.kassenEintraege.add(kassenEintrag);
+        gesamterPreis += kassenEintrag.getPreis();
     }
 
     public RegisterEntry removeKassenEintrag(int index) {
@@ -63,6 +90,10 @@ public class Registryadministration {
         return "Registryadministration{" +
                 "kassenEintraege=" + kassenEintraege +
                 '}';
+    }
+
+    public String toEuroValue() {
+        return String.format("%.2f", gesamterPreis) + "€";
     }
 
     public void createPDF(String path, double gesamterPreis) throws IOException, URISyntaxException {
