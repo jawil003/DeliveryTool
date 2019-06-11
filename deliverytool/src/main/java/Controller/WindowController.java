@@ -363,22 +363,22 @@ public class WindowController {
             case 1:
                 bp.setGroeße('k');
                 bp.setPreis(pizza.getPreisKlein().orElse(0.0));
-                verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisKlein().orElse(0.0), 'k'));
+                //verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisKlein().orElse(0.0), 'k'));
                 break;
             case 2:
                 bp.setGroeße('m');
                 bp.setPreis(pizza.getPreisMittel().orElse(0.0));
-                verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisMittel().orElse(0.0), 'm'));
+                //verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisMittel().orElse(0.0), 'm'));
                 break;
             case 3:
                 bp.setGroeße('g');
                 bp.setPreis(pizza.getPreisGroß().orElse(0.0));
-                verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisGroß().orElse(0.0), 'g'));
+                //verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisGroß().orElse(0.0), 'g'));
                 break;
             case 4:
                 bp.setGroeße('f');
                 bp.setPreis(pizza.getPreisFamilie().orElse(0.0));
-                verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisFamilie().orElse(0.0), 'f'));
+                //verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisFamilie().orElse(0.0), 'f'));
                 break;
         }
 

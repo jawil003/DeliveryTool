@@ -66,7 +66,6 @@ public class Registryadministration {
      */
     public void addKassenEintrag(OrderedPizza kassenEintrag) {
         this.kassenEintraege.add(kassenEintrag);
-        gesamterPreis += kassenEintrag.getPreis();
     }
 
     public RegisterEntry removeKassenEintrag(int index) {
