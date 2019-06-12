@@ -48,7 +48,7 @@ public class WindowServiceController {
         children.remove(1);
         root.getChildren().add(pane);
         for (RegistryEntryWrapper m : e.getKassenEintraege()) {
-            addKasseListView(m.getE());
+            addKasseListView(m.getPizza());
         }
         primaryStage.show();
 

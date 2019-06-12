@@ -27,7 +27,7 @@ public class JavaFXApplication extends Application {
      */
 
     //path to window fxml file
-    //private static final String FXML_PATH = "deliverytool/Fxml/Window.fxml";
+    private static final String FXML_PATH = "Fxml/Window.fxml";
 
     //JavaFX scene
     protected Scene scene = null;
@@ -81,6 +81,7 @@ public class JavaFXApplication extends Application {
         controller.setVerwk(verwk);
         controller.loadFXMLItemsAgain();
         primaryStage.setTitle("Deliverytool");
+        primaryStage.setScene(new Scene(loader.load()));
         controller.init(primaryStage);
         controller.show();
 

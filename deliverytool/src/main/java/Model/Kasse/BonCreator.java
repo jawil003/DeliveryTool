@@ -22,7 +22,7 @@ import java.util.List;
 
 public class BonCreator {
 
-    private Kassenverwaltung verw;
+    private Registryadministration verw;
     private PDDocument doc;
     private ObservableList<PDPage> pages;
     private PDPageContentStream cont;
@@ -40,10 +40,11 @@ public class BonCreator {
      * @param gesamterPreis
      * @throws IOException
      */
-    public BonCreator(Kassenverwaltung verw, double gesamterPreis, String path) throws IOException, URISyntaxException {
+    public BonCreator(Registryadministration verw, double gesamterPreis, String path) throws IOException, URISyntaxException {
 
 
         this.verw = verw;
+        this.path=path;
         doc = new PDDocument();
         pages = FXCollections.observableArrayList();
         this.path = path;
@@ -95,7 +96,7 @@ public class BonCreator {
      *
      * @throws IOException
      */
-    public void close(String path) throws IOException {
+    public void close() throws IOException {
         cont.endText();
         cont.close();
         doc.save(path);
@@ -124,7 +125,7 @@ public class BonCreator {
             float startX = (mediaBox.getWidth() - titleWidth) / 2;
             float startY = mediaBox.getHeight() - marginTop - titleHeight;
             stream.newLineAtOffset(startX, startY - durchlaeufe * (5 + titleHeight));
-            stream.showText(data.getE().toString());
+            stream.showText(data.getPizza().toString());
             durchlaeufe++;
             stream.endText();
 

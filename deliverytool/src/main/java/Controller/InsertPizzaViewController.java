@@ -67,7 +67,7 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
     }
 
     public void loadFXMLItemsAgain() throws IOException {
-        final String s = LinkFetcher.normalizePath("./deliverytool/Fxml/InsertNewPizzaView.fxml", "/deliverytool");
+        final String s = LinkFetcher.normalizePath("Fxml/InsertNewPizzaView.fxml", "/deliverytool");
         FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         if (loader.getController() == null)
             loader.setController(this);

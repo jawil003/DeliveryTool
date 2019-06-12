@@ -4,9 +4,7 @@
 
 package Model.Kasse;
 
-import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.collections.*;
-import org.hibernate.criterion.Order;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -39,11 +37,11 @@ public class Registryadministration {
             public void onChanged(Change<? extends RegistryEntryWrapper> change) {
                 final RegistryEntryWrapper elementAdded = change.getElementAdded();
                 if (elementAdded != null) {
-                    gesamterPreis += elementAdded.getE().getPreis();
+                    gesamterPreis += elementAdded.getPizza().getPreis();
                 }
                 final RegistryEntryWrapper elementRemoved = change.getElementRemoved();
                 if (elementRemoved != null) {
-                    gesamterPreis -= elementRemoved.getE().getPreis();
+                    gesamterPreis -= elementRemoved.getPizza().getPreis();
                 }
             }
         });

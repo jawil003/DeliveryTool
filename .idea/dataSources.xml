@@ -15,14 +15,5 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="d0984942-58a3-4bfd-84c0-2de533c406cc">
-      <imported>true</imported>
-      <configured-by-url>true</configured-by-url>
-      <remarks>Hibernate
-
-/Users/Jannik/Documents/Inteliji IDEA/pizzagesch-ft/deliverytool/src/main/Resources/hibernate.cfg.xml</remarks>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://db4free.net:3306/deliverytool</jdbc-url>
-    </data-source>
   </component>
 </project>
