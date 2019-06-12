@@ -5,6 +5,7 @@
 package Controller;
 
 import Model.Kasse.OrderedPizza;
+import Model.Kasse.RegistryEntryWrapper;
 import Model.Kasse.Registryadministration;
 import Model.PizzenDB.Pizza;
 import Tools.LinkFetcher;
@@ -46,8 +47,8 @@ public class WindowServiceController {
         final ObservableList<Node> children = root.getChildren();
         children.remove(1);
         root.getChildren().add(pane);
-        for (OrderedPizza m : e.getKassenEintraege()) {
-            addKasseListView(m);
+        for (RegistryEntryWrapper m : e.getKassenEintraege()) {
+            addKasseListView(m.getE());
         }
         primaryStage.show();
 

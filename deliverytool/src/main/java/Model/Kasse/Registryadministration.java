@@ -23,30 +23,37 @@ public class Registryadministration {
 
     private double gesamterPreis;
 
-    private ObservableMap<OrderedPizza,Integer> kassenEintraege;
+    private ObservableSet<RegistryEntryWrapper> kassenEintraege;
 
     /**
      * Contructor where the Registryadministration is initalized
      */
     public Registryadministration() {
-        kassenEintraege = FXCollections.observableHashMap();
+        kassenEintraege = FXCollections.observableSet();
         addListener();
     }
 
     private void addListener() {
-        kassenEintraege.addListener(new MapChangeListener<RegisterEntry, Integer>() {
+        kassenEintraege.addListener(new SetChangeListener<RegistryEntryWrapper>() {
             @Override
-            public void onChanged(Change<? extends RegisterEntry, ? extends Integer> change) {
-
+            public void onChanged(Change<? extends RegistryEntryWrapper> change) {
+                final RegistryEntryWrapper elementAdded = change.getElementAdded();
+                if (elementAdded != null) {
+                    gesamterPreis += elementAdded.getE().getPreis();
+                }
+                final RegistryEntryWrapper elementRemoved = change.getElementRemoved();
+                if (elementRemoved != null) {
+                    gesamterPreis += elementAdded.getE().getPreis();
+                }
             }
-        }
+        });
     }
 
     /**
      * @return the Obervablelist of KassenEintraege
      */
-    public ObservableList<OrderedPizza> getKassenEintraege() {
-        return FXCollections.observableArrayList(new ArrayList<OrderedPizza>(kassenEintraege.keySet()));
+    public ObservableList<RegistryEntryWrapper> getKassenEintraege() {
+        return FXCollections.observableArrayList(new ArrayList<RegistryEntryWrapper>(kassenEintraege));
     }
 
     /**
@@ -55,28 +62,24 @@ public class Registryadministration {
      * @param kassenEintrag
      */
     public void addKassenEintrag(OrderedPizza kassenEintrag) {
-        if(kassenEintraege.containsKey(kassenEintrag)){
-            kassenEintraege.put(kassenEintrag, kassenEintraege.get(kassenEintraege)+1);
+        final RegistryEntryWrapper registryEntryWrapper = new RegistryEntryWrapper(kassenEintrag, 1);
+        if(kassenEintraege.contains(registryEntryWrapper)){
+            registryEntryWrapper.setSize(registryEntryWrapper.getSize()+1);
         }else{
-            kassenEintraege.put(kassenEintrag, 1);
+            kassenEintraege.add(registryEntryWrapper);
         }
+
 
     }
 
-    public RegisterEntry removeKassenEintrag(int index) {
-        final Iterator<OrderedPizza> iterator = kassenEintraege.keySet().iterator();
-        OrderedPizza value = null;
-        for(int i=0; i<index;i++){
-            if(iterator.hasNext()){
-                value = iterator.next();
-            }else{
-                return null;
-            }
-
+    public RegistryEntryWrapper removeKassenEintrag(int index) {
+        final Iterator<RegistryEntryWrapper> iterator = kassenEintraege.iterator();
+        RegistryEntryWrapper e = null;
+        for(int i=0; i<=index&&i<kassenEintraege.size();i++){
+           e=iterator.next();
         }
-
-        kassenEintraege.remove(value);
-        return value;
+        kassenEintraege.remove(e);
+        return e;
     }
 
     /**
@@ -88,13 +91,21 @@ public class Registryadministration {
         kassenEintraege.remove(kassenEintrag);
     }
 
+    public double getGesamterPreis() {
+        return gesamterPreis;
+    }
+
+    public void setGesamterPreis(double gesamterPreis) {
+        this.gesamterPreis = gesamterPreis;
+    }
+
     /**
      * @return the Parameters as String
      */
     @Override
     public String toString() {
         return "Registryadministration{" +
-                "kassenEintraege=" + kassenEintraege +
+                "kassenEintraege=" + kassenEintraege+
                 '}';
     }
 
@@ -104,8 +115,8 @@ public class Registryadministration {
 
     public void createPDF(String path, double gesamterPreis) throws IOException, URISyntaxException {
 
-        BonCreator<OrderedPizza> creator = new BonCreator<>(this, gesamterPreis, path);
-        creator.addPizzas(FXCollections.observableArrayList(new ArrayList<OrderedPizza>(kassenEintraege.keySet())), gesamterPreis);
+        BonCreator creator = new BonCreator(this, gesamterPreis, path);
+        creator.addPizzas(FXCollections.observableArrayList(new ArrayList<RegistryEntryWrapper>(kassenEintraege)), gesamterPreis);
         creator.close();
     }
 }

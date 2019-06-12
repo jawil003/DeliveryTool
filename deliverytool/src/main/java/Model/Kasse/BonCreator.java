@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 
-public class BonCreator<T> {
+public class BonCreator {
 
     private Kassenverwaltung verw;
     private PDDocument doc;
@@ -81,7 +81,7 @@ public class BonCreator<T> {
      * @param datalist
      * @throws IOException
      */
-    public void addPizzas(ObservableList<T> datalist, double gesamterPreis) throws IOException {
+    public void addPizzas(ObservableList<RegistryEntryWrapper> datalist, double gesamterPreis) throws IOException {
         centerText(cont, fontSizeÜberschrift, 30, pages.get(0), "Rechnung");
         centerListAsText(cont, fontSizeNormal, 30, pages.get(0), datalist);
         centerText(cont, fontSizeNormal, 30, pages.get(0), "-----------------------------------------");
@@ -112,11 +112,11 @@ public class BonCreator<T> {
      * @param list
      * @throws IOException
      */
-    private void centerListAsText(PDPageContentStream stream, int fontSize, int marginTop, PDPage page, List<T> list) throws IOException {
+    private void centerListAsText(PDPageContentStream stream, int fontSize, int marginTop, PDPage page, List<RegistryEntryWrapper> list) throws IOException {
         PDRectangle mediaBox = page.getMediaBox();
         stream.setFont(fontNormal, fontSize);
 
-        for (T data : list) {
+        for (RegistryEntryWrapper data : list) {
             stream.beginText();
             float titleWidth = fontNormal.getStringWidth(data.toString()) / 1000 * fontSize;
             float titleHeight = fontNormal.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
@@ -124,7 +124,7 @@ public class BonCreator<T> {
             float startX = (mediaBox.getWidth() - titleWidth) / 2;
             float startY = mediaBox.getHeight() - marginTop - titleHeight;
             stream.newLineAtOffset(startX, startY - durchlaeufe * (5 + titleHeight));
-            stream.showText(data.toString());
+            stream.showText(data.getE().toString());
             durchlaeufe++;
             stream.endText();
 

@@ -5,10 +5,7 @@
 package Controller;
 
 import App.JavaFXApplication;
-import Model.Kasse.InvalidEntryException;
-import Model.Kasse.OrderedPizza;
-import Model.Kasse.RegisterEntry;
-import Model.Kasse.Registryadministration;
+import Model.Kasse.*;
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.Pizzavadministration;
 import Tools.LinkFetcher;
@@ -308,6 +305,7 @@ public class WindowController {
                         event -> {
                             try {
                                 addKasseneintrag(pizza, 1);
+                                gesamterPreisLabel.setText(verwk.toEuroValue());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -319,6 +317,7 @@ public class WindowController {
                         event -> {
                             try {
                                 addKasseneintrag(pizza, 2);
+                                gesamterPreisLabel.setText(verwk.toEuroValue());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -331,6 +330,7 @@ public class WindowController {
                         event -> {
                             try {
                                 addKasseneintrag(pizza, 3);
+                                gesamterPreisLabel.setText(verwk.toEuroValue());
                             } catch (AddingKassenEintragException e) {
                                 e.printStackTrace();
                             }
@@ -342,6 +342,7 @@ public class WindowController {
                         event -> {
                             try {
                                 addKasseneintrag(pizza, 4);
+                                gesamterPreisLabel.setText(verwk.toEuroValue());
                             } catch (AddingKassenEintragException e) {
                                 e.printStackTrace();
                             }
