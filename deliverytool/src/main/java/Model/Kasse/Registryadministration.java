@@ -43,7 +43,7 @@ public class Registryadministration {
                 }
                 final RegistryEntryWrapper elementRemoved = change.getElementRemoved();
                 if (elementRemoved != null) {
-                    gesamterPreis += elementAdded.getE().getPreis();
+                    gesamterPreis -= elementRemoved.getE().getPreis();
                 }
             }
         });
@@ -53,7 +53,12 @@ public class Registryadministration {
      * @return the Obervablelist of KassenEintraege
      */
     public ObservableList<RegistryEntryWrapper> getKassenEintraege() {
-        return FXCollections.observableArrayList(new ArrayList<RegistryEntryWrapper>(kassenEintraege));
+        ObservableList<RegistryEntryWrapper> l = FXCollections.observableArrayList();
+        for(RegistryEntryWrapper e:kassenEintraege){
+            l.add(e);
+        }
+
+        return l;
     }
 
     /**
