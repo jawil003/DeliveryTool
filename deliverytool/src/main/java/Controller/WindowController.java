@@ -684,6 +684,7 @@ public class WindowController {
     private void loadKassenEintraege() throws IOException {
             for(RegistryEntryWrapper e: verwk.getKassenEintraege()){
                 addKasseneintrag(e.getPizza());
+                addListener();
             }
     }
 
