@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -44,7 +45,6 @@ public class WindowController {
     private static final String ROW2_FXML = "Fxml/Cells/RowKasseListcell.fxml";
     private InsertPizzaViewController parentController;
     private RowPizzasController pizzenContr;
-    private double gesamterPreis = 0.00;
     private Pizzavadministration verw;
     @FXML
     private ListView<Pane> pizzenListview;
@@ -237,8 +237,7 @@ public class WindowController {
           public void handle(ActionEvent event) {
               kasseListview.getItems().clear();
               verwk.getKassenEintraege().clear();
-              gesamterPreis = 0.0;
-              gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
+              gesamterPreisLabel.setText(verwk.toEuroValue());
           }
       });
 
@@ -248,21 +247,28 @@ public class WindowController {
               new EventHandler<ActionEvent>() {
                   @Override
                   public void handle(ActionEvent event) {
-                      deleteSelected();
+                      try {
+                          deleteSelected();
+                      } catch (NoSuchEntryException e) {
+                          e.printStackTrace();
+                      }
                   }
               });
 
       kasseListview.setOnKeyPressed(new EventHandler<KeyEvent>() {
           @Override
           public void handle(KeyEvent event) {
-              deleteSelected(event);
+              try {
+                  deleteSelected(event);
+              } catch (NoSuchEntryException e) {
+                  e.printStackTrace();
+              }
           }
       });
   }
 
   /**
    * Initalize the MainWindow
-   * @param primaryStage
    *
    * */
   public void init(Stage primaryStage) throws MalformedURLException {
@@ -349,32 +355,28 @@ public class WindowController {
     }
 
     private void addKasseneintrag(OrderedPizza pizza) throws IOException {
-      int size = 0;
-        switch (pizza.getGroeße()) {
-            case 'k':
-                size=1;
-                break;
-            case 'm':
-                size=2;
-                break;
-            case'b':
-                size=3;
-                break;
-            case 'f':
-                size=4;
-                break;
-        }
+
+      if(!verwk.contains(pizza)) {
+
+
+          FXMLLoader loader = new FXMLLoader(new File(ROW2_FXML).toURI().toURL());
+
+          RowRegisterController kasseContr = new RowRegisterController();
+          loader.setController(kasseContr);
+
+          Pane rootPane = loader.load();
+          kasseContr.init(pizza);
+
+          this.kasseListview.getItems().add(rootPane);
+      }else{
+         for(Pane p:kasseListview.getItems()){
+             final Label lookup = (Label) ((AnchorPane) p).lookup("#kasseAnzahlLabel");
+             final int text = Integer.valueOf(lookup.getText());
+             lookup.setText(String.valueOf(text+1));
+         }
+      }
+
         verwk.addKassenEintrag(pizza);
-
-        FXMLLoader loader = new FXMLLoader(new File(ROW2_FXML).toURI().toURL());
-
-        RowRegisterController kasseContr = new RowRegisterController();
-        loader.setController(kasseContr);
-
-        Pane rootPane = loader.load();
-        kasseContr.init(pizza);
-
-        this.kasseListview.getItems().add(rootPane);
     }
 
     /**
@@ -457,8 +459,8 @@ public class WindowController {
 
         /**
          * Delete the selected row Entry in the KasseView
-         *  @param event */
-        private void deleteSelected (KeyEvent event){
+         */
+        private void deleteSelected (KeyEvent event) throws NoSuchEntryException {
             if (kasseListview.isFocused()) {
                 if (event.getCode() == KeyCode.BACK_SPACE) {
                     deleteSelected();
@@ -474,16 +476,20 @@ public class WindowController {
         /**
          * Delete the selected Entry (like above)
          * */
-        public void deleteSelected () {
+        public void deleteSelected () throws NoSuchEntryException {
             final int selectedIndex = kasseListview.getSelectionModel().getSelectedIndex();
-            final RegistryEntryWrapper kassenEintrag = verwk.removeKassenEintrag(selectedIndex);
-            final Label lookup = (Label) kasseListview.getItems().get(selectedIndex).lookup("#kasseAnzahlLabel");
-            if (Integer.valueOf(lookup.getText()) > 1) {
+            final RegistryEntryWrapper kassenEintrag = verwk.get(selectedIndex);
+            final int size = kassenEintrag.getSize();
+            if (size>1) {
+                final Label lookup = (Label) kasseListview.getItems().get(selectedIndex).lookup("#kasseAnzahlLabel");
+                kassenEintrag.setSize(size-1);
                 lookup.setText(String.valueOf(Integer.valueOf(lookup.getText()) - 1));
-            } else {
+            } else if(size==1){
+                verwk.remove(kassenEintrag);
                 kasseListview.getItems().remove(selectedIndex);
-            }
 
+
+            }
             gesamterPreisLabel.setText(verwk.toEuroValue());
         }
 
@@ -599,7 +605,8 @@ public class WindowController {
                 chooser.setTitle("Rechnung speichern unter");
                 chooser.setInitialFileName("Rechnung.pdf");
                 try {
-                    BonCreator creator = new BonCreator(verwk, gesamterPreis, (chooser.showSaveDialog(primaryStage.getScene().getWindow())).getAbsolutePath());
+                    final double gesamterPreis = verwk.getGesamterPreis();
+                    BonCreator creator = new BonCreator(verwk, gesamterPreis , (chooser.showSaveDialog(primaryStage.getScene().getWindow())).getAbsolutePath());
                     creator.addPizzas(verwk.getKassenEintraege(), gesamterPreis);
                     creator.close();
                 } catch (IOException | URISyntaxException e) {
@@ -688,14 +695,6 @@ public class WindowController {
 
     public void setPizzenContr(RowPizzasController pizzenContr) {
         this.pizzenContr = pizzenContr;
-    }
-
-    public double getGesamterPreis() {
-        return gesamterPreis;
-    }
-
-    public void setGesamterPreis(double gesamterPreis) {
-        this.gesamterPreis = gesamterPreis;
     }
 
     public Pizzavadministration getVerw() {

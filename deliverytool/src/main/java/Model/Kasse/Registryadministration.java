@@ -61,6 +61,47 @@ public class Registryadministration {
         return l;
     }
 
+    public RegistryEntryWrapper get(OrderedPizza pizza) throws NoSuchEntryException{
+        final Iterator<RegistryEntryWrapper> iterator = kassenEintraege.iterator();
+        RegistryEntryWrapper next;
+        while (iterator.hasNext()){
+            next = iterator.next();
+            if(next.getPizza().equals(pizza)){
+                return next;
+            }
+
+        }
+
+        throw new NoSuchEntryException("This Entry does not exist in here");
+
+    }
+
+    public RegistryEntryWrapper get(int index) throws NoSuchEntryException{
+        int i=0;
+        for(RegistryEntryWrapper e:kassenEintraege){
+            if(i==index){
+                return e;
+            }
+            i++;
+        }
+
+        throw new NoSuchEntryException("This Entry does not exist in here");
+    }
+
+    public boolean contains(OrderedPizza pizza) {
+
+        return kassenEintraege.contains(new RegistryEntryWrapper(pizza,0));
+
+    }
+
+    public void remove(RegistryEntryWrapper pizza) throws NoSuchEntryException {
+        final boolean remove = kassenEintraege.remove(pizza);
+
+        if(!remove){
+            throw new NoSuchEntryException("This Entry does not exist in here");
+        }
+    }
+
     /**
      * Add a new RegisterEntry to the List
      *
@@ -77,7 +118,7 @@ public class Registryadministration {
 
     }
 
-    public RegistryEntryWrapper removeKassenEintrag(int index) {
+    public RegistryEntryWrapper remove(int index) {
         final Iterator<RegistryEntryWrapper> iterator = kassenEintraege.iterator();
         RegistryEntryWrapper e = null;
         for(int i=0; i<=index&&i<kassenEintraege.size();i++){
@@ -92,7 +133,7 @@ public class Registryadministration {
      *
      * @param kassenEintrag
      */
-    public void removeKassenEintrag(OrderedPizza kassenEintrag) {
+    public void remove(OrderedPizza kassenEintrag) {
         kassenEintraege.remove(kassenEintrag);
     }
 
