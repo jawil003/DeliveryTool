@@ -467,6 +467,11 @@ public class WindowController {
         }
 
         /**
+        *@todo Double same Entry gesamterPreis doesn't recalculate
+        *@body Possible reason is in Registryadministration Set with Wrapper object which isn't used yet
+        */
+
+        /**
          * Delete the selected Entry (like above)
          * */
         public void deleteSelected () {
@@ -478,8 +483,8 @@ public class WindowController {
             } else {
                 kasseListview.getItems().remove(selectedIndex);
             }
-            gesamterPreis -= kassenEintrag.getPizza().getPreis();
-            gesamterPreisLabel.setText(String.format("%.2f", gesamterPreis) + "€");
+
+            gesamterPreisLabel.setText(verwk.toEuroValue());
         }
 
         /**
