@@ -9,7 +9,7 @@ public class LinkFetcher {
     public static String normalizePath(String path, String contains) {
         String pathBackup = path;
         if (path.contains(contains)) {
-            path = path.toLowerCase().replaceFirst(contains, "");
+            path = path.replaceFirst(contains, "");
         }
 
         if (path.contains(contains)) {

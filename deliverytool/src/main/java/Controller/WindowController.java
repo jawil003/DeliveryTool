@@ -41,8 +41,8 @@ public class WindowController {
    * @author Jannik Will
    * @version 1.0
    */
-    private static final String ROW_FXML = "Fxml/Cells/RowPizzenListcell.fxml";
-    private static final String ROW2_FXML = "Fxml/Cells/RowKasseListcell.fxml";
+    private static final String ROW_FXML = "deliverytool/Fxml/Cells/RowPizzenListcell.fxml";
+    private static final String ROW2_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
     private InsertPizzaViewController parentController;
     private RowPizzasController pizzenContr;
     private Pizzavadministration verw;
