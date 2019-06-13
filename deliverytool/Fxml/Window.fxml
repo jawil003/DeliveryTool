@@ -16,66 +16,60 @@
   ~ Copyright (c) 2019. Jannik Will und Albert Munsch
   -->
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <MenuBar fx:id="menuBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-            <menus>
-                <Menu mnemonicParsing="false" text="Datei">
-                    <items>
-                        <MenuItem fx:id="schliessenItem" mnemonicParsing="false" text="Schließen"/>
-                        <MenuItem fx:id="neustartItem" mnemonicParsing="false" text="Neustart"/>
-                        <MenuItem fx:id="bonDruckenItem" mnemonicParsing="false" text="Bon drucken"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Bearbeiten">
-                    <items>
-                        <MenuItem fx:id="ausgewaehltLoeschen" mnemonicParsing="false" text="Ausgewählt löschen"/>
-                        <MenuItem fx:id="allesLoeschenItem" mnemonicParsing="false" text="Alles löschen"/>
-                        <MenuItem fx:id="eintragHinzufuegenItem" mnemonicParsing="false" text="Pizza hinzufügen"/>
-                        <MenuItem fx:id="eintragHinzufuegenItem1" mnemonicParsing="false" text="Zutat hinzufügen"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Ansicht">
-                    <items>
-                        <MenuItem fx:id="kasseAnsicht" mnemonicParsing="false" text="Kasse"/>
-                        <MenuItem fx:id="zubereitungAnsicht" mnemonicParsing="false" text="Zubereitung"/>
-                        <MenuItem fx:id="ServiceAnsicht" mnemonicParsing="false" text="Service"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Hilfe">
-                    <items>
-                        <MenuItem fx:id="ueberItem" mnemonicParsing="false" text="Über"/>
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-        <GridPane fx:id="gridpane" alignment="CENTER" hgap="10.0" prefHeight="388.0" prefWidth="600.0" vgap="10.0"
-                  VBox.vgrow="ALWAYS">
+      <MenuBar fx:id="menuBar">
+        <menus>
+            <Menu mnemonicParsing="false" text="Datei">
+               <items>
+                  <MenuItem fx:id="schliessenItem" mnemonicParsing="false" text="Schließen" />
+                  <MenuItem fx:id="neustartItem" mnemonicParsing="false" text="Neustart" />
+                  <MenuItem fx:id="bonDruckenItem" mnemonicParsing="false" text="Bon drucken" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Bearbeiten">
+               <items>
+                  <MenuItem fx:id="ausgewaehltLoeschen" mnemonicParsing="false" text="Ausgewählt löschen" />
+                  <MenuItem fx:id="allesLoeschenItem" mnemonicParsing="false" text="Alles löschen" />
+                  <MenuItem fx:id="eintragHinzufuegenItem" mnemonicParsing="false" text="Pizza hinzufügen" />
+                  <MenuItem fx:id="eintragHinzufuegenItem1" mnemonicParsing="false" text="Zutat hinzufügen" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Ansicht">
+               <items>
+                  <MenuItem fx:id="kasseAnsicht" mnemonicParsing="false" text="Kasse" />
+                  <MenuItem fx:id="zubereitungAnsicht" mnemonicParsing="false" text="Zubereitung" />
+                  <MenuItem fx:id="ServiceAnsicht" mnemonicParsing="false" text="Service" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Hilfe">
+               <items>
+                  <MenuItem fx:id="ueberItem" mnemonicParsing="false" text="Über" />
+               </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+        <GridPane fx:id="gridpane" alignment="CENTER" hgap="10.0" prefHeight="388.0" prefWidth="600.0" vgap="10.0" VBox.vgrow="ALWAYS">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="10.0" prefWidth="291.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="289.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="10.0" prefWidth="291.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="289.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="362.0" minHeight="10.0" prefHeight="348.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="362.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="362.0" minHeight="10.0" prefHeight="348.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="362.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <ListView id="kasseListview" fx:id="kasseListview" maxHeight="1.0E42" maxWidth="1.0E42"
-                          minHeight="353.0" minWidth="271.0" prefHeight="353.0" prefWidth="271.0"
-                          GridPane.columnIndex="1"/>
-                <HBox alignment="TOP_CENTER" prefHeight="29.0" prefWidth="271.0" spacing="5.0" GridPane.columnIndex="1"
-                      GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"
-                      GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                <ListView id="kasseListview" fx:id="kasseListview" maxHeight="1.0E42" maxWidth="1.0E42" minHeight="353.0" minWidth="271.0" prefHeight="353.0" prefWidth="271.0" GridPane.columnIndex="1" />
+                <HBox alignment="TOP_CENTER" prefHeight="29.0" prefWidth="271.0" spacing="5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <children>
-                        <Label contentDisplay="CENTER" text="Zu bezahlen:"/>
-                        <Label fx:id="gesamterPreisLabel" text="0,00€"/>
+                        <Label contentDisplay="CENTER" text="Zu bezahlen:" />
+                        <Label fx:id="gesamterPreisLabel" text="0,00€" />
                     </children>
                 </HBox>
-                <ListView id="kasseListview" fx:id="pizzenListview" maxHeight="1.0E42" maxWidth="1.0E21"
-                          minHeight="353.0" minWidth="271.0" prefHeight="353.0" prefWidth="271.0"/>
+                <ListView id="kasseListview" fx:id="pizzenListview" maxHeight="1.0E42" maxWidth="1.0E21" minHeight="353.0" minWidth="271.0" prefHeight="353.0" prefWidth="271.0" />
             </children>
             <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
         </GridPane>
     </children>

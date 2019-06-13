@@ -94,7 +94,7 @@ public class WindowController {
 
     public void loadFXMLItemsAgain() throws IOException {
 
-        final String s = LinkFetcher.normalizePath(Paths.get("deliverytool/Fxml/Window.fxml").normalize().toAbsolutePath().toString(), "/deliverytool");
+        final String s = LinkFetcher.normalizePath(Paths.get("deliverytool/Fxml/Window.fxml").toAbsolutePath().toString(), "/deliverytool");
         FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         if (loader.getController() == null) {
             loader.setController(this);
@@ -214,7 +214,9 @@ public class WindowController {
                       primaryStage.close();
                       Platform.runLater(() -> {
                           try {
-                              new JavaFXApplication().start(new Stage());
+                              final JavaFXApplication javaFXApplication = new JavaFXApplication();
+                                      javaFXApplication.init();
+                                      javaFXApplication.start(new Stage());
                           } catch (Exception e) {
                               e.printStackTrace();
                           }
@@ -365,16 +367,7 @@ public class WindowController {
         verwk.addKassenEintrag(pizza);
 
         FXMLLoader loader = new FXMLLoader(new File(ROW2_FXML).toURI().toURL());
-        for (int i = 0; i < kasseListview.getItems().size(); i++) {
-            Pane p = kasseListview.getItems().get(i);
-            Label kasseAnzahlLabel = (Label) kasseListview.getItems().get(i).lookup("#kasseAnzahlLabel");
-            Label kasseAnzahlName = (Label) kasseListview.getItems().get(i).lookup("#kasseAnzahlName");
-            if ((pizza.getName() + " " + whichSize(size)).equals(kasseAnzahlName.getText())) {
-                int anzahl = Integer.valueOf(kasseAnzahlLabel.getText()) + 1;
-                kasseAnzahlLabel.setText(String.valueOf(anzahl));
-                return;
-            }
-        }
+
         RowRegisterController kasseContr = new RowRegisterController();
         loader.setController(kasseContr);
 
@@ -419,26 +412,7 @@ public class WindowController {
             }
 
 
-            verwk.addKassenEintrag(bp);
-
-            FXMLLoader loader = new FXMLLoader(new File(ROW2_FXML).toURI().toURL());
-            for (int i = 0; i < kasseListview.getItems().size(); i++) {
-                Pane p = kasseListview.getItems().get(i);
-                Label kasseAnzahlLabel = (Label) kasseListview.getItems().get(i).lookup("#kasseAnzahlLabel");
-                Label kasseAnzahlName = (Label) kasseListview.getItems().get(i).lookup("#kasseAnzahlName");
-                if ((pizza.getName() + " " + whichSize(size)).equals(kasseAnzahlName.getText())) {
-                    int anzahl = Integer.valueOf(kasseAnzahlLabel.getText()) + 1;
-                    kasseAnzahlLabel.setText(String.valueOf(anzahl));
-                    return;
-                }
-            }
-            RowRegisterController kasseContr = new RowRegisterController();
-            loader.setController(kasseContr);
-
-            Pane rootPane = loader.load();
-            kasseContr.init(pizza, size);
-
-            this.kasseListview.getItems().add(rootPane);
+            addKasseneintrag(bp);
 
         }
 
@@ -589,13 +563,7 @@ public class WindowController {
 
             @Override
             public void onChanged(Change<? extends OrderedPizza> c) {
-                while (c.next()) {
-                    final List<? extends OrderedPizza> addedSubList = c.getAddedSubList();
-                    for (OrderedPizza p : addedSubList) {
-                        gesamterPreis += p.getPreis();
-                    }
-                    gesamterPreisLabel.setText(verwk.toEuroValue());
-                }
+                gesamterPreisLabel.setText(verwk.toEuroValue());
             }
         }
 

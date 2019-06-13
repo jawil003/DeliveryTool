@@ -21,9 +21,13 @@ public class Pizza extends ListEntry implements Comparable<Pizza> {
      */
 
     private String name;
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private Optional<Double> preisKlein;
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private Optional<Double> preisMittel;
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private Optional<Double> preisGroß;
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private Optional<Double> preisFamilie;
     private LinkedList<Ingredient> zutaten;
 

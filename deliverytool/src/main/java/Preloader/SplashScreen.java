@@ -4,6 +4,7 @@
 
 package Preloader;
 
+import Tools.LinkFetcher;
 import javafx.application.Preloader;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +38,8 @@ public class SplashScreen extends Preloader {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(new File("Fxml/SplashScreen.fxml").toURI().toURL());
+        final String s = LinkFetcher.normalizePath("Fxml/SplashScreen.fxml", "/deliverytool");
+        FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         loader.setController(this);
         root = loader.load();
         primaryStage.setScene(new Scene(root));
@@ -48,11 +50,10 @@ public class SplashScreen extends Preloader {
         MavenXpp3Reader mavenreader = new MavenXpp3Reader();
 
         try {
-            reader = new FileReader(new File("pom.xml")); // <-- pomfile is your pom.xml
+            reader = new FileReader(new File("pom.xml"));
             model = mavenreader.read(reader);
             model.setPomFile(new File("pom.xml"));
         }catch(Exception ex){
-            // do something better here
             ex.printStackTrace();
         }
         assert model != null;
@@ -68,5 +69,21 @@ public class SplashScreen extends Preloader {
         if (stateChangeNotification.getType() == StateChangeNotification.Type.BEFORE_START) {
             splashScreen.hide();
         }
+    }
+
+    public Pane getRoot() {
+        return root;
+    }
+
+    public void setRoot(Pane root) {
+        this.root = root;
+    }
+
+    public Label getVersionLabel() {
+        return versionLabel;
+    }
+
+    public void setVersionLabel(Label versionLabel) {
+        this.versionLabel = versionLabel;
     }
 }

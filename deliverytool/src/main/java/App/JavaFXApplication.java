@@ -77,6 +77,7 @@ public class JavaFXApplication extends Application {
         //JavaFX window controller (MVC principle)
         if (controller == null)
             controller = new WindowController();
+        loader.setController(controller);
         controller.setVerw(verw);
         controller.setVerwk(verwk);
         controller.loadFXMLItemsAgain();

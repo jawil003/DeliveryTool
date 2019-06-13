@@ -13,13 +13,9 @@ public interface SQLConnection {
 
     void deletePizza(Pizza p) throws SQLException;
 
-    default void addPizza(Pizza pizza) {
+    void addPizza(Pizza pizza);
 
-    }
-
-    default boolean isRunning() {
-        return false;
-    }
+    boolean isRunning();
 
     List<Ingredient> getZutaten();
 }
