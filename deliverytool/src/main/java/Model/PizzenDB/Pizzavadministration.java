@@ -4,6 +4,8 @@
 
 package Model.PizzenDB;
 
+import Model.Kasse.NoSuchEntryException;
+import Model.Kasse.OrderedPizza;
 import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -83,6 +85,11 @@ public class Pizzavadministration {
                 sqlConnection.addPizza(pizza);
 
         });
+
+    }
+
+    public boolean contains(Pizza pizza) {
+        return pizzen.contains(pizza);
 
     }
 

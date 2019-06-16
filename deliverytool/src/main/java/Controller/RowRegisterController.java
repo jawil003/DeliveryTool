@@ -4,6 +4,8 @@
 
 package Controller;
 
+import Model.Kasse.OrderedPizza;
+import Model.Kasse.RegisterEntry;
 import Model.PizzenDB.Pizza;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -51,6 +53,14 @@ public class RowRegisterController implements Initializable {
                 this.kassePreis.setText(String.format("%.2f", pizza.getPreisFamilie().get()) + "€");
                 break;
         }
+    }
+
+    public void init(RegisterEntry pizza) {
+
+        this.kasseAnzahlName.setText(pizza.getName() + " (klein)");
+        this.kassePreis.setText(String.format("%.2f", pizza.getPreis()) + "€");
+
+
     }
 
     public void increaseAnzahl() {

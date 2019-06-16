@@ -5,6 +5,8 @@
 package Controller;
 
 import Model.Kasse.OrderedPizza;
+import Model.Kasse.RegisterEntry;
+import Model.Kasse.RegistryEntryWrapper;
 import Model.Kasse.Registryadministration;
 import Model.PizzenDB.Pizza;
 import Tools.LinkFetcher;
@@ -46,19 +48,19 @@ public class WindowServiceController {
         final ObservableList<Node> children = root.getChildren();
         children.remove(1);
         root.getChildren().add(pane);
-        for (OrderedPizza m : e.getKassenEintraege()) {
+        for (RegisterEntry m : e.getKassenEintraege()) {
             addKasseListView(m);
         }
         primaryStage.show();
 
     }
 
-    private void addKasseListView(OrderedPizza e) throws IOException {
+    private void addKasseListView(RegisterEntry e) throws IOException {
         RowRegisterController c = new RowRegisterController();
         FXMLLoader loader = new FXMLLoader(new File("deliverytool/Fxml/Cells/RowKasseListcell.fxml").toURI().toURL());
         loader.setController(c);
         final Pane load = loader.load();
-        switch (e.getGroeße()) {
+        switch (((OrderedPizza) e).getGroeße()) {
             case 'k':
                 c.init(new Pizza(e.getName(), e.getPreis(), 0.0, 0.0, 0.0), 1);
                 break;

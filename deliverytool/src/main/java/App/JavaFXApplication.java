@@ -10,14 +10,12 @@ import Model.PizzenDB.Pizzavadministration;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class JavaFXApplication extends Application {
 
@@ -27,7 +25,7 @@ public class JavaFXApplication extends Application {
      */
 
     //path to window fxml file
-    //private static final String FXML_PATH = "deliverytool/Fxml/Window.fxml";
+    private static final String FXML_PATH = "deliverytool/Fxml/Window.fxml";
 
     //JavaFX scene
     protected Scene scene = null;
@@ -77,10 +75,12 @@ public class JavaFXApplication extends Application {
         //JavaFX window controller (MVC principle)
         if (controller == null)
             controller = new WindowController();
-        controller.setVerw(verw);
-        controller.setVerwk(verwk);
+        loader.setController(controller);
+        controller.setPizzavadministration(verw);
+        controller.setRegistryadministration(verwk);
         controller.loadFXMLItemsAgain();
         primaryStage.setTitle("Deliverytool");
+        primaryStage.setScene(new Scene(loader.load()));
         controller.init(primaryStage);
         controller.show();
 

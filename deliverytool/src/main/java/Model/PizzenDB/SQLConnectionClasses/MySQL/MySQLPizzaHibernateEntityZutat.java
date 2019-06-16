@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+
 @Entity(name = "Zutatenliste")
 public class MySQLPizzaHibernateEntityZutat {
 
