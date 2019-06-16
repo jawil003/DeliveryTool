@@ -5,14 +5,12 @@
 package Model.Kasse;
 
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
-import javafx.collections.SetChangeListener;
+import javafx.collections.ObservableMap;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
 
 public class Registryadministration {
 
@@ -23,50 +21,69 @@ public class Registryadministration {
 
     private double gesamterPreis;
 
-    private ObservableSet<RegistryEntryWrapper> kassenEintraege;
+    private ObservableMap<RegisterEntry, Integer> kassenEintraege;
+
 
     /**
      * Contructor where the Registryadministration is initalized
      */
     public Registryadministration() {
-        kassenEintraege = FXCollections.observableSet();
+        kassenEintraege = FXCollections.observableHashMap();
         addListener();
     }
 
     private void addListener() {
-        kassenEintraege.addListener(new SetChangeListener<RegistryEntryWrapper>() {
+        kassenEintraege.addListener(new MapChangeListener<RegisterEntry, Integer>() {
             @Override
-            public void onChanged(Change<? extends RegistryEntryWrapper> change) {
-                final RegistryEntryWrapper elementAdded = change.getElementAdded();
-                if (elementAdded != null) {
-                    gesamterPreis += elementAdded.getPizza().getPreis();
-                }
-                final RegistryEntryWrapper elementRemoved = change.getElementRemoved();
-                if (elementRemoved != null) {
-                    gesamterPreis -= elementRemoved.getPizza().getPreis();
-                }
+            public void onChanged(Change<? extends RegisterEntry, ? extends Integer> change) {
+                final RegisterEntry key = change.getKey();
+                final Integer valueAdded = change.getValueAdded();
+                final Integer valueRemoved = change.getValueRemoved();
+                if(valueRemoved!=null)
+                gesamterPreis-=key.getPreis();
+                if(valueRemoved!=null)
+                gesamterPreis+=key.getPreis();
             }
         });
+    }
+
+    public void addListener(MapChangeListener listener){
+        kassenEintraege.addListener(listener);
+    }
+    
+    public int getSize(RegisterEntry entry) throws NoSuchEntryException {
+        final Integer integer = kassenEintraege.get(entry);
+
+        if (integer==null){
+            throw new NoSuchEntryException("This Entry does not exist in here");
+        }else{
+            return integer;
+        }
     }
 
     /**
      * @return the Obervablelist of KassenEintraege
      */
-    public ObservableList<RegistryEntryWrapper> getKassenEintraege() {
-        ObservableList<RegistryEntryWrapper> l = FXCollections.observableArrayList();
-        for(RegistryEntryWrapper e:kassenEintraege){
+    public ObservableList<RegisterEntry> getKassenEintraege() {
+        ObservableList<RegisterEntry> l = FXCollections.observableArrayList();
+        for (RegisterEntry e : kassenEintraege.keySet()) {
             l.add(e);
         }
 
         return l;
     }
 
-    public RegistryEntryWrapper get(OrderedPizza pizza) throws NoSuchEntryException{
-        final Iterator<RegistryEntryWrapper> iterator = kassenEintraege.iterator();
-        RegistryEntryWrapper next;
-        while (iterator.hasNext()){
+    /**
+     * @param entry The entry value which should be returned
+     * @return The Value from the Set which contains entry
+     * @throws NoSuchEntryException when Element isn't stored yet
+     */
+    public RegisterEntry get(OrderedPizza entry) throws NoSuchEntryException {
+        final Iterator<RegisterEntry> iterator = kassenEintraege.keySet().iterator();
+        RegisterEntry next;
+        while (iterator.hasNext()) {
             next = iterator.next();
-            if(next.getPizza().equals(pizza)){
+            if (next.equals(entry)) {
                 return next;
             }
 
@@ -76,10 +93,15 @@ public class Registryadministration {
 
     }
 
-    public RegistryEntryWrapper get(int index) throws NoSuchEntryException{
-        int i=0;
-        for(RegistryEntryWrapper e:kassenEintraege){
-            if(i==index){
+    /**
+     * @param index The position of the RegisterEntry in the Set
+     * @return The Element if it is there
+     * @throws NoSuchEntryException If no such Element is in Set this Exception is thrown
+     */
+    public RegisterEntry get(int index) throws NoSuchEntryException {
+        int i = 0;
+        for (RegisterEntry e : kassenEintraege.keySet()) {
+            if (i == index) {
                 return e;
             }
             i++;
@@ -88,53 +110,48 @@ public class Registryadministration {
         throw new NoSuchEntryException("This Entry does not exist in here");
     }
 
-    public boolean contains(OrderedPizza pizza) {
+    /**
+     * @param entry The Entry which should be in the Set
+     * @return True if the Entry is in there, else false
+     */
+    public boolean contains(RegisterEntry entry) {
 
-        return kassenEintraege.contains(new RegistryEntryWrapper(pizza,0));
+        return kassenEintraege.keySet().contains(entry);
 
     }
 
-    public void remove(RegistryEntryWrapper pizza) throws NoSuchEntryException {
-        final boolean remove = kassenEintraege.remove(pizza);
+    public void remove(RegisterEntry entry) throws NoSuchEntryException {
+        final boolean remove = kassenEintraege.keySet().remove(entry);
 
-        if(!remove){
+        if (!remove) {
             throw new NoSuchEntryException("This Entry does not exist in here");
         }
     }
 
     /**
      * Add a new RegisterEntry to the List
-     *
-     * @param kassenEintrag
+     * @param entry The RegisterEntry which should be added
      */
-    public void addKassenEintrag(OrderedPizza kassenEintrag) {
-        final RegistryEntryWrapper registryEntryWrapper = new RegistryEntryWrapper(kassenEintrag, 1);
-        if(kassenEintraege.contains(registryEntryWrapper)){
-            registryEntryWrapper.setSize(registryEntryWrapper.getSize()+1);
+    public void addRegisterEntry(RegisterEntry entry) throws NoSuchEntryException {
+        assert (entry!=null);
+        final Set<RegisterEntry> registerEntries = kassenEintraege.keySet();
+        
+        if(kassenEintraege.containsKey(entry)){
+            final Integer entrySize = kassenEintraege.get(entry);
+            kassenEintraege.put(entry, entrySize+1);
         }else{
-            kassenEintraege.add(registryEntryWrapper);
+            kassenEintraege.put(entry, 1);
         }
-
-
     }
 
-    public RegistryEntryWrapper remove(int index) {
-        final Iterator<RegistryEntryWrapper> iterator = kassenEintraege.iterator();
-        RegistryEntryWrapper e = null;
-        for(int i=0; i<=index&&i<kassenEintraege.size();i++){
-           e=iterator.next();
+    public RegisterEntry remove(int index) {
+        final Iterator<RegisterEntry> iterator = kassenEintraege.keySet().iterator();
+        RegisterEntry e = null;
+        for (int i = 0; i <= index && i < kassenEintraege.size(); i++) {
+            e = iterator.next();
         }
         kassenEintraege.remove(e);
         return e;
-    }
-
-    /**
-     * Remove a matching RegisterEntry
-     *
-     * @param kassenEintrag
-     */
-    public void remove(OrderedPizza kassenEintrag) {
-        kassenEintraege.remove(kassenEintrag);
     }
 
     public double getGesamterPreis() {
@@ -151,7 +168,7 @@ public class Registryadministration {
     @Override
     public String toString() {
         return "Registryadministration{" +
-                "kassenEintraege=" + kassenEintraege+
+                "kassenEintraege=" + kassenEintraege +
                 '}';
     }
 
@@ -159,10 +176,10 @@ public class Registryadministration {
         return String.format("%.2f", gesamterPreis) + "€";
     }
 
-    public void createPDF(String path, double gesamterPreis) throws IOException, URISyntaxException {
+    /*public void createPDF(String path, double gesamterPreis) throws IOException, URISyntaxException {
 
         BonCreator creator = new BonCreator(this, gesamterPreis, path);
-        creator.addPizzas(FXCollections.observableArrayList(new ArrayList<RegistryEntryWrapper>(kassenEintraege)), gesamterPreis);
+        creator.addPizzas(FXCollections.observableArrayList(new ArrayList<RegistryEntryWrapper>(kassenEintraege.keySet())), gesamterPreis);
         creator.close();
-    }
+    }*/
 }

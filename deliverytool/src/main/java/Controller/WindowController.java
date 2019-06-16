@@ -11,6 +11,7 @@ import Model.PizzenDB.Pizzavadministration;
 import Tools.LinkFetcher;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.collections.MapChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,20 +33,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
 public class WindowController {
-
-  /**
-   * @author Jannik Will
-   * @version 1.0
-   */
-    private static final String ROW_FXML = "deliverytool/Fxml/Cells/RowPizzenListcell.fxml";
-    private static final String ROW2_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
-    private InsertPizzaViewController parentController;
-    private RowPizzasController pizzenContr;
-    private Pizzavadministration verw;
+    //FXML-Integration variables:
     @FXML
     private ListView<Pane> pizzenListview;
     @FXML
@@ -69,16 +64,23 @@ public class WindowController {
     @FXML
     private MenuItem zubereitungAnsicht;
     @FXML
-    private MenuItem ServiceAnsicht;
+    private MenuItem serviceAnsicht;
     @FXML
     private MenuItem schliessenItem;
     @FXML
     private MenuItem neustartItem;
     @FXML
+
+    //Other variables:
     private Label gesamterPreisLabel;
     private Stage primaryStage;
-    private Registryadministration verwk;
-
+    private static final String FXML_CELLS_ROW_PIZZEN_LISTCELL_FXML = "deliverytool/Fxml/Cells/RowPizzenListcell.fxml";
+    private static final String FXML_CELLS_ROW_KASSE_LISTCELL_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
+    private static final String FXML_WINDOW_FXML = "deliverytool/Fxml/Window.fxml";
+    private InsertPizzaViewController insertPizzaViewController;
+    private RowPizzasController pizzasController;
+    private Pizzavadministration pizzavadministration;
+    private Registryadministration registryadministration;
     private Parent pane;
     private Scene scene;
 
@@ -86,15 +88,15 @@ public class WindowController {
      */
     public WindowController() {
 
-        this.verw = new Pizzavadministration();
-        this.verwk = new Registryadministration();
+        this.pizzavadministration = new Pizzavadministration();
+        this.registryadministration = new Registryadministration();
     }
 
     // A Pizza is added
 
     public void loadFXMLItemsAgain() throws IOException {
 
-        final String s = LinkFetcher.normalizePath(Paths.get("deliverytool/Fxml/Window.fxml").toAbsolutePath().toString(), "/deliverytool");
+        final String s = LinkFetcher.normalizePath(Paths.get(FXML_WINDOW_FXML).toAbsolutePath().toString(), "/deliverytool");
         FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         if (loader.getController() == null) {
             loader.setController(this);
@@ -102,26 +104,34 @@ public class WindowController {
         pane = loader.load();
     }
 
-    /** @return String for the source of the Pizza Row */
-    public static String getRowFxml() {
-        return ROW_FXML;
-    }
-
-    // A Pizza is added
-
-  /** @return String for the source of the Kasse Row*/
-  public static String getRow2Fxml() {
-    return ROW2_FXML;
-  }
-
-
+    /**
+     * @param pizza The pizza Entry where the Listeners are added (it's row in the listview in detail)
+     */
   private void addPizzaListener(Pizza pizza){
-      pizzenContr.getKleinButton().setOnAction(new EventHandler<ActionEvent>() {
+      pizzasController.getKleinButton().setOnAction(event -> {
+          try {
+              addRegisterEntry(pizza, 1);
+          } catch (IOException | AddingRegisterEntryException | NoSuchEntryException | InvalidEntryException e) {
+              e.printStackTrace();
+          }
+      });
+
+      pizzasController.getMittelButton().setOnAction(event -> {
+          try {
+              addRegisterEntry(pizza, 2);
+          } catch (IOException | AddingRegisterEntryException | NoSuchEntryException e) {
+              e.printStackTrace();
+          } catch (InvalidEntryException e) {
+              e.printStackTrace();
+          }
+      });
+
+      pizzasController.getGrossButton().setOnAction(new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
               try {
-                  addKasseneintrag(pizza, 1);
-              } catch (IOException | AddingKassenEintragException e) {
+                  addRegisterEntry(pizza, 3);
+              } catch (IOException | AddingRegisterEntryException | NoSuchEntryException e) {
                   e.printStackTrace();
               } catch (InvalidEntryException e) {
                   e.printStackTrace();
@@ -129,38 +139,12 @@ public class WindowController {
           }
       });
 
-      pizzenContr.getMittelButton().setOnAction(new EventHandler<ActionEvent>() {
+      pizzasController.getFamilieButton().setOnAction(new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
               try {
-                  addKasseneintrag(pizza, 2);
-              } catch (IOException | AddingKassenEintragException e) {
-                  e.printStackTrace();
-              } catch (InvalidEntryException e) {
-                  e.printStackTrace();
-              }
-          }
-      });
-
-      pizzenContr.getGrossButton().setOnAction(new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-              try {
-                  addKasseneintrag(pizza, 3);
-              } catch (IOException | AddingKassenEintragException e) {
-                  e.printStackTrace();
-              } catch (InvalidEntryException e) {
-                  e.printStackTrace();
-              }
-          }
-      });
-
-      pizzenContr.getFamilieButton().setOnAction(new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-              try {
-                  addKasseneintrag(pizza, 4);
-              } catch (IOException | InvalidEntryException | AddingKassenEintragException e) {
+                  addRegisterEntry(pizza, 4);
+              } catch (IOException | InvalidEntryException | AddingRegisterEntryException | NoSuchEntryException e) {
                   e.printStackTrace();
               }
           }
@@ -168,18 +152,29 @@ public class WindowController {
 
   }
 
-  private void addListener() throws MalformedURLException {
-
-      verw.addListener(new PizzenViewListener());
-
+    /**
+     * @throws MalformedURLException
+     */
+  private void loadPizzaEntries() throws MalformedURLException {
       // create rows
-      for (Pizza pizza : this.verw.getList()) {
+      for (Pizza pizza : this.pizzavadministration.getList()) {
           addPizzaRow(pizza);
           addListenerPizzaRow(pizza);
       }
+  }
+
+    /**
+     * @throws MalformedURLException
+     */
+  private void addListener() throws MalformedURLException {
+
+      pizzavadministration.addListener(new PizzenViewListener());
+
+      registryadministration.addListener(new RegistryAdministrationListener());
+
       // Actions:
 
-      ServiceAnsicht.setOnAction(new EventHandler<ActionEvent>() {
+      serviceAnsicht.setOnAction(new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
               WindowServiceController controller = new WindowServiceController();
@@ -189,7 +184,7 @@ public class WindowController {
                   e.printStackTrace();
               }
               try {
-                  controller.init(primaryStage, verwk);
+                  controller.init(primaryStage, registryadministration);
               } catch (IOException e) {
                   e.printStackTrace();
               }
@@ -232,69 +227,66 @@ public class WindowController {
 
       bonDruckenItem.setOnAction(new BonDruckenListener());
 
-      allesLoeschenItem.setOnAction(new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-              kasseListview.getItems().clear();
-              verwk.getKassenEintraege().clear();
-              gesamterPreisLabel.setText(verwk.toEuroValue());
-          }
+      allesLoeschenItem.setOnAction(event -> {
+          kasseListview.getItems().clear();
+          registryadministration.getKassenEintraege().clear();
+          gesamterPreisLabel.setText(registryadministration.toEuroValue());
       });
 
 
 
       ausgewaehltLoeschen.setOnAction(
-              new EventHandler<ActionEvent>() {
-                  @Override
-                  public void handle(ActionEvent event) {
-                      try {
-                          deleteSelected();
-                      } catch (NoSuchEntryException e) {
-                          e.printStackTrace();
+              event -> {
+                  try {
+                      ListViewMode mode = null;
+                      if(kasseListview.isFocused()) {
+                          mode = ListViewMode.KassenListView;
+                      }else if (pizzenListview.isFocused()){
+                          mode = ListViewMode.PizzenListView;
                       }
+                      deleteSelected(mode);
+                  } catch (NoSuchEntryException e) {
+                      e.printStackTrace();
                   }
               });
 
-      kasseListview.setOnKeyPressed(new EventHandler<KeyEvent>() {
-          @Override
-          public void handle(KeyEvent event) {
-              try {
-                  deleteSelected(event);
-              } catch (NoSuchEntryException e) {
-                  e.printStackTrace();
-              }
+      kasseListview.setOnKeyPressed(event -> {
+          try {
+              deleteSelected(event);
+          } catch (NoSuchEntryException e) {
+              e.printStackTrace();
           }
       });
   }
 
   /**
    * Initalize the MainWindow
-   *
+   * @param primaryStage the Stage in which the Window(-pane) should be inizialized
    * */
   public void init(Stage primaryStage) throws MalformedURLException {
       this.primaryStage=primaryStage;
       addListener();
+      loadPizzaEntries();
     }
 
 
   /**
-   * Add a new Row for a choosable Pizza
-   * @param pizza
+   * @param pizza The Entry which a new Row should be generated in Pizzalistview
    */
   private void addPizzaRow(Pizza pizza) throws MalformedURLException {
     // load fxml
     try {
-      FXMLLoader loader = new FXMLLoader(new File(ROW_FXML).toURI().toURL());
+      FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_PIZZEN_LISTCELL_FXML).toURI().toURL());
 
             // set controller
-            pizzenContr = new RowPizzasController();
-            loader.setController(pizzenContr);
+            pizzasController = new RowPizzasController();
+            loader.setController(pizzasController);
 
 
             Pane rootPane = loader.load();
 
             // initialize tab controller
-            pizzenContr.init(pizza);
+            pizzasController.init(pizza);
 
             this.pizzenListview.getItems().add(rootPane);
         } catch (IOException e) {
@@ -303,63 +295,71 @@ public class WindowController {
         }
     }
 
+    /**
+     * @param pizza The pizza Entry which should be connected with Listeners of Buttons K,M,B,F
+     */
     private void addListenerPizzaRow(Pizza pizza) {
-        pizzenContr
+        pizzasController
                 .getKleinButton()
                 .setOnAction(
                         event -> {
                             try {
-                                addKasseneintrag(pizza, 1);
-                                gesamterPreisLabel.setText(verwk.toEuroValue());
+                                addRegisterEntry(pizza, 1);
+                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         });
 
-        pizzenContr
+        pizzasController
                 .getMittelButton()
                 .setOnAction(
                         event -> {
                             try {
-                                addKasseneintrag(pizza, 2);
-                                gesamterPreisLabel.setText(verwk.toEuroValue());
+                                addRegisterEntry(pizza, 2);
+                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         });
 
 
-        pizzenContr
+        pizzasController
                 .getGrossButton()
                 .setOnAction(
                         event -> {
                             try {
-                                addKasseneintrag(pizza, 3);
-                                gesamterPreisLabel.setText(verwk.toEuroValue());
-                            } catch (AddingKassenEintragException | IOException | InvalidEntryException e) {
+                                addRegisterEntry(pizza, 3);
+                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
+                            } catch (AddingRegisterEntryException | IOException | InvalidEntryException | NoSuchEntryException e) {
                                 e.printStackTrace();
                             }
                         });
 
-        pizzenContr
+        pizzasController
                 .getFamilieButton()
                 .setOnAction(
                         event -> {
                             try {
-                                addKasseneintrag(pizza, 4);
-                                gesamterPreisLabel.setText(verwk.toEuroValue());
-                            } catch (AddingKassenEintragException | InvalidEntryException | IOException e) {
+                                addRegisterEntry(pizza, 4);
+                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
+                            } catch (AddingRegisterEntryException | InvalidEntryException | IOException | NoSuchEntryException e) {
                                 e.printStackTrace();
                             }
                         });
     }
 
-    private void addKasseneintrag(OrderedPizza pizza) throws IOException {
+    /**
+     * @param pizza The Entry for which a new RegisterRow is created
+     * @throws IOException
+     * @throws NoSuchEntryException
+     */
+    private void addRegisterEntry(RegisterEntry pizza) throws IOException, NoSuchEntryException {
 
-      if(!verwk.contains(pizza)) {
+      if(!registryadministration.contains(pizza)) {
 
 
-          FXMLLoader loader = new FXMLLoader(new File(ROW2_FXML).toURI().toURL());
+          FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
 
           RowRegisterController kasseContr = new RowRegisterController();
           loader.setController(kasseContr);
@@ -376,7 +376,7 @@ public class WindowController {
          }
       }
 
-        verwk.addKassenEintrag(pizza);
+        registryadministration.addRegisterEntry(pizza);
     }
 
     /**
@@ -384,48 +384,43 @@ public class WindowController {
      *
      * @param pizza Pizza Entry where the price is extracted from
      * @param size the Size of the Pizza (1-4 as little - family)
-     * @throws AddingKassenEintragException When adding the entry gone wrong
+     * @throws AddingRegisterEntryException When adding the entry gone wrong
      */
-    private void addKasseneintrag(Pizza pizza, int size) throws AddingKassenEintragException, InvalidEntryException, IOException {
+    private void addRegisterEntry(Pizza pizza, int size) throws AddingRegisterEntryException, InvalidEntryException, IOException, NoSuchEntryException {
         OrderedPizza bp = new OrderedPizza(pizza.getName());
-        //DecimalFormat df2 = new DecimalFormat("#,##");
 
             switch (size) {
                 case 1:
                     bp.setGroeße('k');
                     bp.setPreis(pizza.getPreisKlein().orElse(0.0));
-                    //verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisKlein().orElse(0.0), 'k'));
                     break;
                 case 2:
                     bp.setGroeße('m');
                     bp.setPreis(pizza.getPreisMittel().orElse(0.0));
-                    //verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisMittel().orElse(0.0), 'm'));
                     break;
                 case 3:
                     bp.setGroeße('g');
                     bp.setPreis(pizza.getPreisGroß().orElse(0.0));
-                    //verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisGroß().orElse(0.0), 'g'));
                     break;
                 case 4:
                     bp.setGroeße('f');
                     bp.setPreis(pizza.getPreisFamilie().orElse(0.0));
-                    //verwk.addKassenEintrag(new OrderedPizza(pizza.getName(), pizza.getPreisFamilie().orElse(0.0), 'f'));
                     break;
             }
 
 
-            addKasseneintrag(bp);
+            addRegisterEntry(bp);
 
         }
 
 
         /** @throws IOException */
-        private void eintragHinzufuegen () throws IOException {
+        private void eintragHinzufuegen() throws IOException {
             FXMLLoader loader = new FXMLLoader(new File("deliverytool/Fxml/InsertNewPizzaView.fxml").toURI().toURL());
             Pizza pizza = new Pizza();
             final InsertPizzaViewController insertPizzaViewController = new InsertPizzaViewController(pizza);
             loader.setController(insertPizzaViewController);
-            this.parentController = insertPizzaViewController;
+            this.insertPizzaViewController = insertPizzaViewController;
             insertPizzaViewController.init(primaryStage);
 
             insertPizzaViewController.getOkButton().setOnAction(new OkButtonListener());
@@ -439,15 +434,15 @@ public class WindowController {
          * @return the String which needs to be inserted in the addkasseneintrag method for filling the Label in the Row of KassenListView
          */
         @org.jetbrains.annotations.NotNull
-        private String whichSize ( int size){
+        private String whichSize (PizzaSize size){
             switch (size) {
-                case 1:
+                case Small:
                     return "(klein)";
-                case 2:
+                case Middle:
                     return "(mittel)";
-                case 3:
+                case Big:
                     return "(groß)";
-                case 4:
+                case Family:
                     return "(Familie)";
             }
 
@@ -463,7 +458,7 @@ public class WindowController {
         private void deleteSelected (KeyEvent event) throws NoSuchEntryException {
             if (kasseListview.isFocused()) {
                 if (event.getCode() == KeyCode.BACK_SPACE) {
-                    deleteSelected();
+                    deleteSelected(ListViewMode.KassenListView);
                 }
             }
         }
@@ -476,21 +471,24 @@ public class WindowController {
         /**
          * Delete the selected Entry (like above)
          * */
-        public void deleteSelected () throws NoSuchEntryException {
-            final int selectedIndex = kasseListview.getSelectionModel().getSelectedIndex();
-            final RegistryEntryWrapper kassenEintrag = verwk.get(selectedIndex);
-            final int size = kassenEintrag.getSize();
-            if (size>1) {
-                final Label lookup = (Label) kasseListview.getItems().get(selectedIndex).lookup("#kasseAnzahlLabel");
-                kassenEintrag.setSize(size-1);
-                lookup.setText(String.valueOf(Integer.valueOf(lookup.getText()) - 1));
-            } else if(size==1){
-                verwk.remove(kassenEintrag);
-                kasseListview.getItems().remove(selectedIndex);
+        public void deleteSelected (ListViewMode mode) throws NoSuchEntryException {
 
+            switch (mode){
+                case KassenListView:
+                    final int selectedIndex = kasseListview.getSelectionModel().getSelectedIndex();
+                    final RegisterEntry registerEntry = registryadministration.get(selectedIndex);
+                    final int size = registryadministration.getSize(registerEntry);
+                    if (size>1) {
+                        final Label lookup = (Label) kasseListview.getItems().get(selectedIndex).lookup("#kasseAnzahlLabel");
+                        lookup.setText(String.valueOf(Integer.valueOf(lookup.getText()) - 1));
+                    } else if(size==1){
+                        kasseListview.getItems().remove(selectedIndex);
+                    }
 
+                    registryadministration.remove(registerEntry);
+                    gesamterPreisLabel.setText(registryadministration.toEuroValue());
+                case PizzenListView:
             }
-            gesamterPreisLabel.setText(verwk.toEuroValue());
         }
 
         /**
@@ -548,12 +546,12 @@ public class WindowController {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    verw.add(new Pizza(parentController.getNameField().getText(), null,
-                            Double.valueOf(parentController.getPreisKleinField().getText()),
-                            Double.valueOf(parentController.getPreisMittelField().getText()),
-                            Double.valueOf(parentController.getPreisGrossField().getText()),
-                            Double.valueOf(parentController.getPreisFamilieField().getText())));
-                    parentController.close();
+                    pizzavadministration.add(new Pizza(insertPizzaViewController.getNameField().getText(), null,
+                            Double.valueOf(insertPizzaViewController.getPreisKleinField().getText()),
+                            Double.valueOf(insertPizzaViewController.getPreisMittelField().getText()),
+                            Double.valueOf(insertPizzaViewController.getPreisGrossField().getText()),
+                            Double.valueOf(insertPizzaViewController.getPreisFamilieField().getText())));
+                    insertPizzaViewController.close();
                 } catch (NumberFormatException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.initModality(Modality.WINDOW_MODAL);
@@ -574,7 +572,7 @@ public class WindowController {
 
             @Override
             public void onChanged(Change<? extends OrderedPizza> c) {
-                gesamterPreisLabel.setText(verwk.toEuroValue());
+                gesamterPreisLabel.setText(registryadministration.toEuroValue());
             }
         }
 
@@ -605,9 +603,9 @@ public class WindowController {
                 chooser.setTitle("Rechnung speichern unter");
                 chooser.setInitialFileName("Rechnung.pdf");
                 try {
-                    final double gesamterPreis = verwk.getGesamterPreis();
-                    BonCreator creator = new BonCreator(verwk, gesamterPreis , (chooser.showSaveDialog(primaryStage.getScene().getWindow())).getAbsolutePath());
-                    creator.addPizzas(verwk.getKassenEintraege(), gesamterPreis);
+                    final double gesamterPreis = registryadministration.getGesamterPreis();
+                    BonCreator creator = new BonCreator(registryadministration, gesamterPreis , (chooser.showSaveDialog(primaryStage.getScene().getWindow())).getAbsolutePath());
+                    creator.addPizzas(registryadministration.getKassenEintraege(), gesamterPreis);
                     creator.close();
                 } catch (IOException | URISyntaxException e) {
                     e.printStackTrace();
@@ -615,8 +613,8 @@ public class WindowController {
             }
         }
 
-        class AddingKassenEintragException extends Exception {
-            AddingKassenEintragException(String message) {
+        class AddingRegisterEntryException extends Exception {
+            AddingRegisterEntryException(String message) {
                 super(message);
             }
         }
@@ -647,12 +645,13 @@ public class WindowController {
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-                //gesamterPreisRecalculate();
-                gesamterPreisLabel.setText(verwk.toEuroValue());
+                gesamterPreisLabel.setText(registryadministration.toEuroValue());
 
                 try {
                     loadKassenEintraege();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (NoSuchEntryException e) {
                     e.printStackTrace();
                 }
 
@@ -661,9 +660,9 @@ public class WindowController {
             }
         }
 
-    private void loadKassenEintraege() throws IOException {
-            for(RegistryEntryWrapper e: verwk.getKassenEintraege()){
-                addKasseneintrag(e.getPizza());
+    private void loadKassenEintraege() throws IOException, NoSuchEntryException {
+            for(RegisterEntry e: registryadministration.getKassenEintraege()){
+                addRegisterEntry(e);
                 addListener();
             }
     }
@@ -681,28 +680,28 @@ public class WindowController {
         }
     }
 
-    public InsertPizzaViewController getParentController() {
-        return parentController;
+    public InsertPizzaViewController getInsertPizzaViewController() {
+        return insertPizzaViewController;
     }
 
-    public void setParentController(InsertPizzaViewController parentController) {
-        this.parentController = parentController;
+    public void setInsertPizzaViewController(InsertPizzaViewController insertPizzaViewController) {
+        this.insertPizzaViewController = insertPizzaViewController;
     }
 
-    public RowPizzasController getPizzenContr() {
-        return pizzenContr;
+    public RowPizzasController getPizzasController() {
+        return pizzasController;
     }
 
-    public void setPizzenContr(RowPizzasController pizzenContr) {
-        this.pizzenContr = pizzenContr;
+    public void setPizzasController(RowPizzasController pizzasController) {
+        this.pizzasController = pizzasController;
     }
 
-    public Pizzavadministration getVerw() {
-        return verw;
+    public Pizzavadministration getPizzavadministration() {
+        return pizzavadministration;
     }
 
-    public void setVerw(Pizzavadministration verw) {
-        this.verw = verw;
+    public void setPizzavadministration(Pizzavadministration pizzavadministration) {
+        this.pizzavadministration = pizzavadministration;
     }
 
     public GridPane getGridpane() {
@@ -770,11 +769,11 @@ public class WindowController {
     }
 
     public MenuItem getServiceAnsicht() {
-        return ServiceAnsicht;
+        return serviceAnsicht;
     }
 
     public void setServiceAnsicht(MenuItem serviceAnsicht) {
-        ServiceAnsicht = serviceAnsicht;
+        this.serviceAnsicht = serviceAnsicht;
     }
 
     public MenuItem getSchliessenItem() {
@@ -809,12 +808,12 @@ public class WindowController {
         this.primaryStage = primaryStage;
     }
 
-    public Registryadministration getVerwk() {
-        return verwk;
+    public Registryadministration getRegistryadministration() {
+        return registryadministration;
     }
 
-    public void setVerwk(Registryadministration verwk) {
-        this.verwk = verwk;
+    public void setRegistryadministration(Registryadministration registryadministration) {
+        this.registryadministration = registryadministration;
     }
 
     public Parent getPane() {
@@ -831,5 +830,20 @@ public class WindowController {
 
     public void setScene(Scene scene) {
         this.scene = scene;
+    }
+
+    private class RegistryAdministrationListener implements MapChangeListener<RegisterEntry, Integer> {
+        /**
+         * Called after a change has been made to an ObservableMap.
+         * This method is called on every elementary change (put/remove) once.
+         * This means, complex changes like keySet().removeAll(Collection) or clear()
+         * may result in more than one call of onChanged method.
+         *
+         * @param change the change that was made
+         */
+        @Override
+        public void onChanged(Change<? extends RegisterEntry, ? extends Integer> change) {
+            gesamterPreisLabel.setText(registryadministration.toEuroValue());
+        }
     }
 }

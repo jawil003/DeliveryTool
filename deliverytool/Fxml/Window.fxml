@@ -39,7 +39,7 @@
                <items>
                   <MenuItem fx:id="kasseAnsicht" mnemonicParsing="false" text="Kasse" />
                   <MenuItem fx:id="zubereitungAnsicht" mnemonicParsing="false" text="Zubereitung" />
-                  <MenuItem fx:id="ServiceAnsicht" mnemonicParsing="false" text="Service" />
+                  <MenuItem fx:id="serviceAnsicht" mnemonicParsing="false" text="Service" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Hilfe">

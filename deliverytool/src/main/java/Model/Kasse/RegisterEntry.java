@@ -6,7 +6,7 @@ package Model.Kasse;
 
 import java.util.Objects;
 
-public abstract class RegisterEntry {
+public abstract class RegisterEntry implements Comparable<RegisterEntry> {
 
     /**
      * @author Jannik Will

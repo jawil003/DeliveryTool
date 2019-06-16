@@ -82,7 +82,7 @@ public class BonCreator {
      * @param datalist
      * @throws IOException
      */
-    public void addPizzas(ObservableList<RegistryEntryWrapper> datalist, double gesamterPreis) throws IOException {
+    public void addPizzas(ObservableList<RegisterEntry> datalist, double gesamterPreis) throws IOException {
         centerText(cont, fontSizeÜberschrift, 30, pages.get(0), "Rechnung");
         centerListAsText(cont, fontSizeNormal, 30, pages.get(0), datalist);
         centerText(cont, fontSizeNormal, 30, pages.get(0), "-----------------------------------------");
@@ -113,11 +113,11 @@ public class BonCreator {
      * @param list
      * @throws IOException
      */
-    private void centerListAsText(PDPageContentStream stream, int fontSize, int marginTop, PDPage page, List<RegistryEntryWrapper> list) throws IOException {
+    private void centerListAsText(PDPageContentStream stream, int fontSize, int marginTop, PDPage page, ObservableList<RegisterEntry> list) throws IOException {
         PDRectangle mediaBox = page.getMediaBox();
         stream.setFont(fontNormal, fontSize);
 
-        for (RegistryEntryWrapper data : list) {
+        for (RegisterEntry data : list) {
             stream.beginText();
             float titleWidth = fontNormal.getStringWidth(data.toString()) / 1000 * fontSize;
             float titleHeight = fontNormal.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
@@ -125,7 +125,7 @@ public class BonCreator {
             float startX = (mediaBox.getWidth() - titleWidth) / 2;
             float startY = mediaBox.getHeight() - marginTop - titleHeight;
             stream.newLineAtOffset(startX, startY - durchlaeufe * (5 + titleHeight));
-            stream.showText(data.getPizza().toString());
+            stream.showText(data.toString());
             durchlaeufe++;
             stream.endText();
 
