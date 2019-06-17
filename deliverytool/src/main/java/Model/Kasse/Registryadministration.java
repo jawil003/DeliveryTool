@@ -40,9 +40,9 @@ public class Registryadministration {
                 final Integer valueAdded = change.getValueAdded();
                 final Integer valueRemoved = change.getValueRemoved();
                 if(valueRemoved!=null)
-                gesamterPreis-=key.getPreis();
-                if(valueRemoved!=null)
-                gesamterPreis+=key.getPreis();
+                    gesamterPreis -= key.getPreis() * valueRemoved;
+                if (valueAdded != null)
+                    gesamterPreis += key.getPreis() * valueAdded;
             }
         });
     }
@@ -78,7 +78,7 @@ public class Registryadministration {
      * @return The Value from the Set which contains entry
      * @throws NoSuchEntryException when Element isn't stored yet
      */
-    public RegisterEntry get(OrderedPizza entry) throws NoSuchEntryException {
+    public RegisterEntry get(RegisterEntry entry) throws NoSuchEntryException {
         final Iterator<RegisterEntry> iterator = kassenEintraege.keySet().iterator();
         RegisterEntry next;
         while (iterator.hasNext()) {
@@ -121,7 +121,13 @@ public class Registryadministration {
     }
 
     public void remove(RegisterEntry entry) throws NoSuchEntryException {
-        final boolean remove = kassenEintraege.keySet().remove(entry);
+        boolean remove = false;
+        final int size = getSize(entry);
+        if (size == 1) {
+            remove = kassenEintraege.keySet().remove(entry);
+        } else {
+            kassenEintraege.put(entry, size - 1);
+        }
 
         if (!remove) {
             throw new NoSuchEntryException("This Entry does not exist in here");
