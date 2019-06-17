@@ -4,6 +4,7 @@
 
 package Model.Kasse;
 
+import Controller.PizzaSize;
 import org.jetbrains.annotations.NotNull;
 
 public class OrderedPizza extends RegisterEntry implements Comparable<RegisterEntry> {
@@ -13,29 +14,29 @@ public class OrderedPizza extends RegisterEntry implements Comparable<RegisterEn
      * @version 1.0
      */
 
-    private char groeße;
+    private PizzaSize groeße;
 
     /**
      * Constructor where all values are empty or zero
      */
     public OrderedPizza() {
-        this("", 0.0, ' ');
+        this("", 0.0, PizzaSize.Small);
 
     }
 
     /**
      * @param name
      */
-    public OrderedPizza(String name) {
+    public OrderedPizza(@NotNull String name) {
         super(name);
     }
 
     /**
      * @param name
      * @param preis
-     * @param groeße
+     * @param size
      */
-    public OrderedPizza(String name, Double preis, char groeße) {
+    public OrderedPizza(@NotNull String name, @NotNull Double preis, @NotNull PizzaSize size) {
         super(name, preis);
         this.groeße = groeße;
     }
@@ -43,17 +44,12 @@ public class OrderedPizza extends RegisterEntry implements Comparable<RegisterEn
     /**
      * @return the Size which this Pizza has
      */
-    public char getGroeße() {
+    public PizzaSize getGroeße() {
         return groeße;
     }
 
-    public void setGroeße(char groeße) throws InvalidEntryException {
-        Character.toLowerCase(groeße);
-        if (groeße == 'k' || groeße == 'm' || groeße == 'g' || groeße == 'f') {
-            this.groeße = groeße;
-        } else {
-            throw new InvalidEntryException("Eine Pizza kann nur klein, mittel, groß oder eine Familienpizza sein");
-        }
+    public void setGroeße(@NotNull PizzaSize groeße) throws InvalidEntryException {
+        this.groeße = groeße;
     }
 
     /**
@@ -124,7 +120,7 @@ public class OrderedPizza extends RegisterEntry implements Comparable<RegisterEn
     @Override
     public int compareTo(@NotNull RegisterEntry o) {
         if(o instanceof OrderedPizza){
-        return super.compareTo(o) + groeße - ((OrderedPizza)o).getGroeße();
+            return super.compareTo(o) + (groeße.compareTo(((OrderedPizza) o).getGroeße()));
         }else {
             return super.compareTo(o);
         }
