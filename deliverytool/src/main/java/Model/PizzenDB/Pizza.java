@@ -40,15 +40,15 @@ public class Pizza extends ListEntry implements Comparable<Pizza> {
         this("", new LinkedList<>());
     }
 
+    public Pizza(String name, LinkedList<Ingredient> zutaten) {
+        this(name, zutaten, null, null, null, null);
+    }
+
     public Pizza(String name, Double preisKlein,
                  Double preisMittel,
                  Double preisGroß,
                  Double preisFamilie) {
         this(name, new LinkedList<>(), preisKlein, preisMittel, preisGroß, preisGroß);
-    }
-
-    public Pizza(String name, LinkedList<Ingredient> zutaten) {
-        this(name, zutaten, null, null, null, null);
     }
 
     /**

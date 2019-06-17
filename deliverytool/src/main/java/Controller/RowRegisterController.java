@@ -5,7 +5,6 @@
 package Controller;
 
 import Model.Kasse.OrderedPizza;
-import Model.Kasse.RegisterEntry;
 import Model.PizzenDB.Pizza;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,35 +30,45 @@ public class RowRegisterController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    public void init(Pizza pizza, int size) {
+    public void init(Pizza pizza, PizzaSize size) {
 
         this.kasseAnzahlLabel.setText(String.valueOf(1));
         anzahl = 1;
         switch (size) {
-            case 1:
-                this.kasseAnzahlName.setText(pizza.getName() + " (klein)");
+            case Small:
+                this.kasseAnzahlName.setText(pizza.getName() + " (Klein)");
                 this.kassePreis.setText(String.format("%.2f", pizza.getPreisKlein().get()) + "€");
                 break;
-            case 2:
-                this.kasseAnzahlName.setText(pizza.getName() + " (mittel)");
+            case Middle:
+                this.kasseAnzahlName.setText(pizza.getName() + " (Mittel)");
                 this.kassePreis.setText(String.format("%.2f", pizza.getPreisMittel().get()) + "€");
                 break;
-            case 3:
-                this.kasseAnzahlName.setText(pizza.getName() + " (groß)");
+            case Big:
+                this.kasseAnzahlName.setText(pizza.getName() + " (Groß)");
                 this.kassePreis.setText(String.format("%.2f", pizza.getPreisGroß().get()) + "€");
                 break;
-            case 4:
+            case Family:
                 this.kasseAnzahlName.setText(pizza.getName() + " (Familie)");
                 this.kassePreis.setText(String.format("%.2f", pizza.getPreisFamilie().get()) + "€");
                 break;
         }
     }
 
-    public void init(RegisterEntry pizza) {
-
-        this.kasseAnzahlName.setText(pizza.getName() + " (klein)");
-        this.kassePreis.setText(String.format("%.2f", pizza.getPreis()) + "€");
-
+    public void init(OrderedPizza pizza) {
+        switch (pizza.getGroeße()) {
+            case Small:
+                init(new Pizza(pizza.getName(), null, pizza.getPreis(), 0.0, 0.0, 0.0), pizza.getGroeße());
+                break;
+            case Middle:
+                init(new Pizza(pizza.getName(), null, 0.0, pizza.getPreis(), 0.0, 0.0), pizza.getGroeße());
+                break;
+            case Big:
+                init(new Pizza(pizza.getName(), null, 0.0, 0.0, pizza.getPreis(), 0.0), pizza.getGroeße());
+                break;
+            case Family:
+                init(new Pizza(pizza.getName(), null, 0.0, 0.0, 0.0, pizza.getPreis()), pizza.getGroeße());
+                break;
+        }
 
     }
 

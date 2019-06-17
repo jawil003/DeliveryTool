@@ -21,7 +21,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -104,53 +103,9 @@ public class WindowController {
         pane = loader.load();
     }
 
-    /**
-     * @param pizza The pizza Entry where the Listeners are added (it's row in the listview in detail)
-     */
-  private void addPizzaListener(Pizza pizza){
-      pizzasController.getKleinButton().setOnAction(event -> {
-          try {
-              addRegisterEntry(pizza, 1);
-          } catch (IOException | AddingRegisterEntryException | NoSuchEntryException | InvalidEntryException e) {
-              e.printStackTrace();
-          }
-      });
-
-      pizzasController.getMittelButton().setOnAction(event -> {
-          try {
-              addRegisterEntry(pizza, 2);
-          } catch (IOException | AddingRegisterEntryException | NoSuchEntryException e) {
-              e.printStackTrace();
-          } catch (InvalidEntryException e) {
-              e.printStackTrace();
-          }
-      });
-
-      pizzasController.getGrossButton().setOnAction(new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-              try {
-                  addRegisterEntry(pizza, 3);
-              } catch (IOException | AddingRegisterEntryException | NoSuchEntryException e) {
-                  e.printStackTrace();
-              } catch (InvalidEntryException e) {
-                  e.printStackTrace();
-              }
-          }
-      });
-
-      pizzasController.getFamilieButton().setOnAction(new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-              try {
-                  addRegisterEntry(pizza, 4);
-              } catch (IOException | InvalidEntryException | AddingRegisterEntryException | NoSuchEntryException e) {
-                  e.printStackTrace();
-              }
-          }
-      });
-
-  }
+    public static String getFxmlCellsRowPizzenListcellFxml() {
+        return FXML_CELLS_ROW_PIZZEN_LISTCELL_FXML;
+    }
 
     /**
      * @throws MalformedURLException
@@ -295,123 +250,61 @@ public class WindowController {
         }
     }
 
-    /**
-     * @param pizza The pizza Entry which should be connected with Listeners of Buttons K,M,B,F
-     */
-    private void addListenerPizzaRow(Pizza pizza) {
-        pizzasController
-                .getKleinButton()
-                .setOnAction(
-                        event -> {
-                            try {
-                                addRegisterEntry(pizza, 1);
-                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
+    public static String getFxmlCellsRowKasseListcellFxml() {
+        return FXML_CELLS_ROW_KASSE_LISTCELL_FXML;
+    }
 
-        pizzasController
-                .getMittelButton()
-                .setOnAction(
-                        event -> {
-                            try {
-                                addRegisterEntry(pizza, 2);
-                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
-
-
-        pizzasController
-                .getGrossButton()
-                .setOnAction(
-                        event -> {
-                            try {
-                                addRegisterEntry(pizza, 3);
-                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
-                            } catch (AddingRegisterEntryException | IOException | InvalidEntryException | NoSuchEntryException e) {
-                                e.printStackTrace();
-                            }
-                        });
-
-        pizzasController
-                .getFamilieButton()
-                .setOnAction(
-                        event -> {
-                            try {
-                                addRegisterEntry(pizza, 4);
-                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
-                            } catch (AddingRegisterEntryException | InvalidEntryException | IOException | NoSuchEntryException e) {
-                                e.printStackTrace();
-                            }
-                        });
+    public static String getFxmlWindowFxml() {
+        return FXML_WINDOW_FXML;
     }
 
     /**
-     * @param pizza The Entry for which a new RegisterRow is created
-     * @throws IOException
-     * @throws NoSuchEntryException
+     * @param pizza The pizza Entry where the Listeners are added (it's row in the listview in detail)
      */
-    private void addRegisterEntry(RegisterEntry pizza) throws IOException, NoSuchEntryException {
-
-      if(!registryadministration.contains(pizza)) {
-
-
-          FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
-
-          RowRegisterController kasseContr = new RowRegisterController();
-          loader.setController(kasseContr);
-
-          Pane rootPane = loader.load();
-          kasseContr.init(pizza);
-
-          this.kasseListview.getItems().add(rootPane);
-      }else{
-         for(Pane p:kasseListview.getItems()){
-             final Label lookup = (Label) ((AnchorPane) p).lookup("#kasseAnzahlLabel");
-             final int text = Integer.valueOf(lookup.getText());
-             lookup.setText(String.valueOf(text+1));
-         }
-      }
-
-        registryadministration.addRegisterEntry(pizza);
-    }
-
-    /**
-     * Add a new Row for a choosed Pizza
-     *
-     * @param pizza Pizza Entry where the price is extracted from
-     * @param size the Size of the Pizza (1-4 as little - family)
-     * @throws AddingRegisterEntryException When adding the entry gone wrong
-     */
-    private void addRegisterEntry(Pizza pizza, int size) throws AddingRegisterEntryException, InvalidEntryException, IOException, NoSuchEntryException {
-        OrderedPizza bp = new OrderedPizza(pizza.getName());
-
-            switch (size) {
-                case 1:
-                    bp.setGroeße('k');
-                    bp.setPreis(pizza.getPreisKlein().orElse(0.0));
-                    break;
-                case 2:
-                    bp.setGroeße('m');
-                    bp.setPreis(pizza.getPreisMittel().orElse(0.0));
-                    break;
-                case 3:
-                    bp.setGroeße('g');
-                    bp.setPreis(pizza.getPreisGroß().orElse(0.0));
-                    break;
-                case 4:
-                    bp.setGroeße('f');
-                    bp.setPreis(pizza.getPreisFamilie().orElse(0.0));
-                    break;
+    private void addPizzaListener(Pizza pizza) {
+        pizzasController.getKleinButton().setOnAction(event -> {
+            try {
+                addRegisterEntry(pizza, PizzaSize.Small);
+            } catch (IOException | AddingRegisterEntryException | NoSuchEntryException | InvalidEntryException e) {
+                e.printStackTrace();
             }
+        });
 
+        pizzasController.getMittelButton().setOnAction(event -> {
+            try {
+                addRegisterEntry(pizza, PizzaSize.Middle);
+            } catch (IOException | AddingRegisterEntryException | NoSuchEntryException e) {
+                e.printStackTrace();
+            } catch (InvalidEntryException e) {
+                e.printStackTrace();
+            }
+        });
 
-            addRegisterEntry(bp);
+        pizzasController.getGrossButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    addRegisterEntry(pizza, PizzaSize.Big);
+                } catch (IOException | AddingRegisterEntryException | NoSuchEntryException e) {
+                    e.printStackTrace();
+                } catch (InvalidEntryException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-        }
+        pizzasController.getFamilieButton().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    addRegisterEntry(pizza, PizzaSize.Family);
+                } catch (IOException | InvalidEntryException | AddingRegisterEntryException | NoSuchEntryException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
 
 
         /** @throws IOException */
@@ -660,11 +553,58 @@ public class WindowController {
             }
         }
 
-    private void loadKassenEintraege() throws IOException, NoSuchEntryException {
-            for(RegisterEntry e: registryadministration.getKassenEintraege()){
-                addRegisterEntry(e);
-                addListener();
-            }
+    /**
+     * @param pizza The pizza Entry which should be connected with Listeners of Buttons K,M,B,F
+     */
+    private void addListenerPizzaRow(Pizza pizza) {
+        pizzasController
+                .getKleinButton()
+                .setOnAction(
+                        event -> {
+                            try {
+                                addRegisterEntry(pizza, PizzaSize.Small);
+                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+        pizzasController
+                .getMittelButton()
+                .setOnAction(
+                        event -> {
+                            try {
+                                addRegisterEntry(pizza, PizzaSize.Middle);
+                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+
+        pizzasController
+                .getGrossButton()
+                .setOnAction(
+                        event -> {
+                            try {
+                                addRegisterEntry(pizza, PizzaSize.Big);
+                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
+                            } catch (AddingRegisterEntryException | IOException | InvalidEntryException | NoSuchEntryException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+        pizzasController
+                .getFamilieButton()
+                .setOnAction(
+                        event -> {
+                            try {
+                                addRegisterEntry(pizza, PizzaSize.Family);
+                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
+                            } catch (AddingRegisterEntryException | InvalidEntryException | IOException | NoSuchEntryException e) {
+                                e.printStackTrace();
+                            }
+                        });
     }
 
     private class EintragHinzufuegenListener implements EventHandler<ActionEvent> {
@@ -844,6 +784,77 @@ public class WindowController {
         @Override
         public void onChanged(Change<? extends RegisterEntry, ? extends Integer> change) {
             gesamterPreisLabel.setText(registryadministration.toEuroValue());
+        }
+    }
+
+    /**
+     * @param pizza The Entry for which a new RegisterRow is created
+     * @throws IOException
+     * @throws NoSuchEntryException
+     */
+    private void addRegisterEntry(OrderedPizza pizza) throws IOException, NoSuchEntryException {
+
+        if (!registryadministration.contains(pizza)) {
+
+
+            FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
+
+            RowRegisterController kasseContr = new RowRegisterController();
+            loader.setController(kasseContr);
+
+            Pane rootPane = loader.load();
+            kasseContr.init(pizza);
+
+            this.kasseListview.getItems().add(rootPane);
+            registryadministration.addRegisterEntry(pizza);
+        } else {
+            String groese = null;
+            switch (pizza.getGroeße()) {
+                case Small:
+                    groese = "(Klein)";
+                    break;
+                case Middle:
+                    groese = "(Mittel)";
+                    break;
+                case Big:
+                    groese = "(Groß)";
+                    break;
+                case Family:
+                    groese = "(Familie)";
+                    break;
+            }
+            for (Pane p : kasseListview.getItems()) {
+                if (((Label) p.lookup("#kasseAnzahlName")).getText().contains(pizza.getName() + " " + groese)) {
+                    final Label lookup = (Label) p.lookup("#kasseAnzahlLabel");
+                    final int text = Integer.valueOf(lookup.getText());
+                    lookup.setText(String.valueOf(text + 1));
+                    registryadministration.addRegisterEntry(pizza);
+                    return;
+                }
+            }
+        }
+    }
+
+    /**
+     * Add a new Row for a choosed Pizza
+     *
+     * @param pizza Pizza Entry where the price is extracted from
+     * @param size  the Size of the Pizza (1-4 as little - family)
+     * @throws AddingRegisterEntryException When adding the entry gone wrong
+     */
+    private void addRegisterEntry(Pizza pizza, PizzaSize size) throws AddingRegisterEntryException, InvalidEntryException, IOException, NoSuchEntryException {
+        OrderedPizza bp = new OrderedPizza(pizza.getName());
+        bp.setGroeße(size);
+        bp.setPreis(pizza.getPreisKlein().orElse(0.0));
+        addRegisterEntry(bp);
+
+    }
+
+    private void loadKassenEintraege() throws IOException, NoSuchEntryException {
+        for (RegisterEntry e : registryadministration.getKassenEintraege()) {
+            if (e instanceof OrderedPizza)
+                addRegisterEntry((OrderedPizza) e);
+            addListener();
         }
     }
 }
