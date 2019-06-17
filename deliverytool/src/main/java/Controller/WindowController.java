@@ -806,15 +806,33 @@ public class WindowController {
             kasseContr.init(pizza);
 
             this.kasseListview.getItems().add(rootPane);
+            registryadministration.addRegisterEntry(pizza);
         } else {
+            String groese = null;
+            switch (pizza.getGroeße()) {
+                case Small:
+                    groese = "(Klein)";
+                    break;
+                case Middle:
+                    groese = "(Mittel)";
+                    break;
+                case Big:
+                    groese = "(Groß)";
+                    break;
+                case Family:
+                    groese = "(Familie)";
+                    break;
+            }
             for (Pane p : kasseListview.getItems()) {
-                final Label lookup = (Label) p.lookup("#kasseAnzahlLabel");
-                final int text = Integer.valueOf(lookup.getText());
-                lookup.setText(String.valueOf(text + 1));
+                if (((Label) p.lookup("#kasseAnzahlName")).getText().contains(pizza.getName() + " " + groese)) {
+                    final Label lookup = (Label) p.lookup("#kasseAnzahlLabel");
+                    final int text = Integer.valueOf(lookup.getText());
+                    lookup.setText(String.valueOf(text + 1));
+                    registryadministration.addRegisterEntry(pizza);
+                    return;
+                }
             }
         }
-
-        registryadministration.addRegisterEntry(pizza);
     }
 
     /**

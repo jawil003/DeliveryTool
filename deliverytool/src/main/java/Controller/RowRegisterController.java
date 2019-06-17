@@ -36,15 +36,15 @@ public class RowRegisterController implements Initializable {
         anzahl = 1;
         switch (size) {
             case Small:
-                this.kasseAnzahlName.setText(pizza.getName() + " (klein)");
+                this.kasseAnzahlName.setText(pizza.getName() + " (Klein)");
                 this.kassePreis.setText(String.format("%.2f", pizza.getPreisKlein().get()) + "€");
                 break;
             case Middle:
-                this.kasseAnzahlName.setText(pizza.getName() + " (mittel)");
+                this.kasseAnzahlName.setText(pizza.getName() + " (Mittel)");
                 this.kassePreis.setText(String.format("%.2f", pizza.getPreisMittel().get()) + "€");
                 break;
             case Big:
-                this.kasseAnzahlName.setText(pizza.getName() + " (groß)");
+                this.kasseAnzahlName.setText(pizza.getName() + " (Groß)");
                 this.kassePreis.setText(String.format("%.2f", pizza.getPreisGroß().get()) + "€");
                 break;
             case Family:
