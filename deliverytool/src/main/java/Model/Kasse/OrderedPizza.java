@@ -6,16 +6,14 @@ package Model.Kasse;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
-public class OrderedPizza extends RegisterEntry implements Comparable<OrderedPizza> {
+public class OrderedPizza extends RegisterEntry implements Comparable<RegisterEntry> {
 
     /**
      * @author Jannik Will
      * @version 1.0
      */
 
-    char groeße;
+    private char groeße;
 
     /**
      * Constructor where all values are empty or zero
@@ -40,20 +38,6 @@ public class OrderedPizza extends RegisterEntry implements Comparable<OrderedPiz
     public OrderedPizza(String name, Double preis, char groeße) {
         super(name, preis);
         this.groeße = groeße;
-    }
-
-    /**
-     * @return the Price of the Pizza which is ordered
-     */
-    public Double getPreis() {
-        return preis;
-    }
-
-    /**
-     * @param preis
-     */
-    public void setPreis(Double preis) {
-        this.preis = preis;
     }
 
     /**
@@ -82,7 +66,7 @@ public class OrderedPizza extends RegisterEntry implements Comparable<OrderedPiz
 
 
     public String toEuroValue() {
-        return String.format("%.2f", preis) + "€";
+        return String.format("%.2f", getPreis()) + "€";
     }
 
     /**
@@ -98,13 +82,6 @@ public class OrderedPizza extends RegisterEntry implements Comparable<OrderedPiz
         return groeße == that.groeße;
     }
 
-    /**
-     * @return the calculated hashCode value
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), groeße);
-    }
 
     /**
      * Compares this object with the specified object for order.  Returns a
@@ -145,7 +122,11 @@ public class OrderedPizza extends RegisterEntry implements Comparable<OrderedPiz
      *                              from being compared to this object.
      */
     @Override
-    public int compareTo(@NotNull OrderedPizza o) {
-        return Integer.valueOf(String.valueOf(getName().compareTo(o.getName()) + getPreis()-o.getPreis() + getGroeße()-o.getGroeße()));
+    public int compareTo(@NotNull RegisterEntry o) {
+        if(o instanceof OrderedPizza){
+        return super.compareTo(o) + groeße - ((OrderedPizza)o).getGroeße();
+        }else {
+            return super.compareTo(o);
+        }
     }
 }

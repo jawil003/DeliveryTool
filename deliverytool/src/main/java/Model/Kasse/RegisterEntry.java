@@ -6,14 +6,14 @@ package Model.Kasse;
 
 import java.util.Objects;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 public abstract class RegisterEntry implements Comparable<RegisterEntry> {
 
-    /**
-     * @author Jannik Will
-     * @version 1.0
-     */
-
-    Double preis;
+    private double preis;
     private String name;
 
     /**
@@ -95,4 +95,9 @@ public abstract class RegisterEntry implements Comparable<RegisterEntry> {
     public int hashCode() {
         return Objects.hash(preis, name);
     }
+
+    public int compareTo(RegisterEntry o){
+        return name.compareTo(o.getName() + preis + o.getPreis());
+    }
+
 }

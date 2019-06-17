@@ -6,7 +6,6 @@ package Controller;
 
 import Model.Kasse.OrderedPizza;
 import Model.Kasse.RegisterEntry;
-import Model.Kasse.RegistryEntryWrapper;
 import Model.Kasse.Registryadministration;
 import Model.PizzenDB.Pizza;
 import Tools.LinkFetcher;
