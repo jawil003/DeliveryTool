@@ -12,10 +12,12 @@ import Tools.LinkFetcher;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -23,6 +25,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -260,62 +263,15 @@ public class WindowController {
         return FXML_WINDOW_FXML;
     }
 
-    /**
-     * @param pizza The pizza Entry where the Listeners are added (it's row in the listview in detail)
-     */
-    private void addPizzaListener(Pizza pizza) {
-        pizzasController.getKleinButton().setOnAction(event -> {
-            try {
-                addRegisterEntry(pizza, PizzaSize.Small);
-            } catch (IOException | AddingRegisterEntryException | NoSuchEntryException | InvalidEntryException e) {
-                e.printStackTrace();
-            }
-        });
-
-        pizzasController.getMittelButton().setOnAction(event -> {
-            try {
-                addRegisterEntry(pizza, PizzaSize.Middle);
-            } catch (IOException | AddingRegisterEntryException | NoSuchEntryException e) {
-                e.printStackTrace();
-            } catch (InvalidEntryException e) {
-                e.printStackTrace();
-            }
-        });
-
-        pizzasController.getGrossButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    addRegisterEntry(pizza, PizzaSize.Big);
-                } catch (IOException | AddingRegisterEntryException | NoSuchEntryException e) {
-                    e.printStackTrace();
-                } catch (InvalidEntryException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        pizzasController.getFamilieButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    addRegisterEntry(pizza, PizzaSize.Family);
-                } catch (IOException | InvalidEntryException | AddingRegisterEntryException | NoSuchEntryException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }
-
 
         /** @throws IOException */
         private void eintragHinzufuegen() throws IOException {
-            FXMLLoader loader = new FXMLLoader(new File("deliverytool/Fxml/InsertNewPizzaView.fxml").toURI().toURL());
+            //FXMLLoader loader = new FXMLLoader(new File("deliverytool/Fxml/InsertNewPizzaView.fxml").toURI().toURL());
             Pizza pizza = new Pizza();
             final InsertPizzaViewController insertPizzaViewController = new InsertPizzaViewController(pizza);
-            loader.setController(insertPizzaViewController);
+            //loader.setController(insertPizzaViewController);
             this.insertPizzaViewController = insertPizzaViewController;
+            insertPizzaViewController.loadFXMLItemsAgain();
             insertPizzaViewController.init(primaryStage);
 
             insertPizzaViewController.getOkButton().setOnAction(new OkButtonListener());
@@ -357,11 +313,6 @@ public class WindowController {
                 }
             }
         }
-
-        /**
-        *@todo Double same Entry gesamterPreis doesn't recalculate
-        *@body Possible reason is in Registryadministration Set with Wrapper object which isn't used yet
-        */
 
         /**
          * Delete the selected Entry (like above)
@@ -550,7 +501,11 @@ public class WindowController {
                     e.printStackTrace();
                 }
 
-                primaryStage.getScene().setRoot(pane);
+                final ObservableList<Node> children = ((VBox) scene.getRoot()).getChildren();
+                children.remove(2);
+                children.add(pane);
+
+
                 primaryStage.show();
             }
         }
@@ -618,7 +573,11 @@ public class WindowController {
          */
         @Override
         public void handle(ActionEvent event) {
-
+            try {
+                eintragHinzufuegen();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -856,7 +815,6 @@ public class WindowController {
         for (RegisterEntry e : registryadministration.getKassenEintraege()) {
             if (e instanceof OrderedPizza)
                 addRegisterEntry((OrderedPizza) e);
-            addListener();
         }
     }
 }

@@ -36,7 +36,7 @@ public class SplashScreenController extends Preloader {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        final String s = LinkFetcher.normalizePath("deliverytool/Fxml/SplashScreenController.fxml", "/deliverytool");
+        final String s = LinkFetcher.normalizePath("deliverytool/Fxml/SplashScreen.fxml", "/deliverytool");
         FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         loader.setController(this);
         root = loader.load();
