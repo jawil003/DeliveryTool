@@ -98,7 +98,7 @@ public class WindowController {
 
         pizzavadministration = new Pizzavadministration();
         registryadministration = new Registryadministration();
-        ingredientsadministration = new Ingredientsadministration();
+        ingredientsadministration = Ingredientsadministration.getInstance();
     }
 
     // A Pizza is added

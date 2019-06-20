@@ -19,13 +19,22 @@ import java.util.concurrent.Executors;
 public class Ingredientsadministration {
     private ObservableList<Ingredient> zutaten;
     private SQLConnection sqlConnection;
+    private static Ingredientsadministration ingredientsadministration;
 
     /**
      *
      */
-    public Ingredientsadministration() {
+    private Ingredientsadministration() {
         this.zutaten = FXCollections.observableArrayList();
 
+    }
+
+    public static Ingredientsadministration getInstance() {
+        if (ingredientsadministration == null) {
+            ingredientsadministration = new Ingredientsadministration();
+        }
+
+        return ingredientsadministration;
     }
 
     /**

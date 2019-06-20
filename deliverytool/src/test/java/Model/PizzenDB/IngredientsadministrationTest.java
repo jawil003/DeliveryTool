@@ -15,7 +15,7 @@ public class IngredientsadministrationTest {
 
     @Test
     public void addZutaten() {
-        ingredientsadministration = new Ingredientsadministration();
+        ingredientsadministration = Ingredientsadministration.getInstance();
         ingredientsadministration.add(new Ingredient("Petersilie"));
         ingredientsadministration.add(new Ingredient("Oregano"));
         ingredientsadministration.add(new Ingredient("Kümmel"));
@@ -26,19 +26,18 @@ public class IngredientsadministrationTest {
 
     @Test
     public void addNull() {
-        ingredientsadministration = new Ingredientsadministration();
-        ingredientsadministration.add(null);
+        ingredientsadministration = Ingredientsadministration.getInstance();
     }
 
     @Test
     public void addZutatNull() {
-        ingredientsadministration = new Ingredientsadministration();
+        ingredientsadministration = Ingredientsadministration.getInstance();
         ingredientsadministration.add(new Ingredient(null));
     }
 
     @Test
     public void addZutatenDuplicate() {
-        ingredientsadministration = new Ingredientsadministration();
+        ingredientsadministration = Ingredientsadministration.getInstance();
         ingredientsadministration.add(new Ingredient("Petersilie"));
         ingredientsadministration.add(new Ingredient("Petersilie"));
         ingredientsadministration.add(new Ingredient("Petersilie"));
@@ -50,7 +49,7 @@ public class IngredientsadministrationTest {
 
     @Test
     public void deletePizzaNegative() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-        ingredientsadministration = new Ingredientsadministration();
+        ingredientsadministration = Ingredientsadministration.getInstance();
         ingredientsadministration.delete(-1);
     }
 

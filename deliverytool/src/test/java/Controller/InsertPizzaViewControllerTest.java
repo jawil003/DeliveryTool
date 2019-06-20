@@ -17,7 +17,7 @@ public class InsertPizzaViewControllerTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
-        controller = new InsertPizzaViewController(new Pizza(), new Ingredientsadministration());
+        controller = new InsertPizzaViewController(new Pizza(), Ingredientsadministration.getInstance());
         controller.loadFXMLItemsAgain();
     }
 

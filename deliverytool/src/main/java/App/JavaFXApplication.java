@@ -57,7 +57,7 @@ public class JavaFXApplication extends Application {
         verw = new Pizzavadministration();
         verw.connectToDB();
         verwk = new Registryadministration();
-        ingredientsadministration = new Ingredientsadministration();
+        ingredientsadministration = Ingredientsadministration.getInstance();
         ingredientsadministration.loadDBEntries();
 
     }
