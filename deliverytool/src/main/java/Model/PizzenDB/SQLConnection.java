@@ -15,6 +15,8 @@ public interface SQLConnection {
 
     void addPizza(Pizza pizza);
 
+    void addIngredience(Ingredient e);
+
     boolean isRunning();
 
     List<Ingredient> getZutaten();

@@ -15,8 +15,6 @@ import javax.persistence.Id;
 public class MySQLPizzaHibernateEntityZutat {
 
     @Id
-    @Column(name = "Id")
-    private int id;
     @Column(name = "Name")
     private String name;
 

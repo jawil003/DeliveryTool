@@ -6,6 +6,8 @@ package Controller;
 
 import App.JavaFXApplication;
 import Model.Kasse.*;
+import Model.PizzenDB.Ingredient;
+import Model.PizzenDB.Ingredientsadministration;
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.Pizzavadministration;
 import Tools.LinkFetcher;
@@ -58,7 +60,9 @@ public class WindowController {
     @FXML
     private MenuItem allesLoeschenItem;
     @FXML
-    private MenuItem eintragHinzufuegenItem;
+    private MenuItem eintragHinzufuegenItem; //Pizza
+    @FXML
+    private MenuItem eintragHinzufuegenItem1; //Zutat
     @FXML
     private MenuItem ueberItem;
     @FXML
@@ -83,6 +87,8 @@ public class WindowController {
     private RowPizzasController pizzasController;
     private Pizzavadministration pizzavadministration;
     private Registryadministration registryadministration;
+    private InsertNewIngredienceViewController insertNewIngredienceViewController;
+    private Ingredientsadministration ingredientsadministration;
     private Parent pane;
     private Scene scene;
 
@@ -90,8 +96,9 @@ public class WindowController {
      */
     public WindowController() {
 
-        this.pizzavadministration = new Pizzavadministration();
-        this.registryadministration = new Registryadministration();
+        pizzavadministration = new Pizzavadministration();
+        registryadministration = new Registryadministration();
+        ingredientsadministration = new Ingredientsadministration();
     }
 
     // A Pizza is added
@@ -158,6 +165,30 @@ public class WindowController {
           }
       });
 
+      eintragHinzufuegenItem1.setOnAction(event -> {
+          insertNewIngredienceViewController = null;
+          try {
+              insertNewIngredienceViewController = new InsertNewIngredienceViewController(primaryStage);
+          } catch (MalformedURLException e) {
+              e.printStackTrace();
+          }
+
+          try {
+              insertNewIngredienceViewController.init();
+
+              insertNewIngredienceViewController.getOkButton().setOnAction(new EventHandler<ActionEvent>() {
+                  @Override
+                  public void handle(ActionEvent event) {
+                      ingredientsadministration.add(new Ingredient(insertNewIngredienceViewController.getNameTextField().getText()));
+                      insertNewIngredienceViewController.getAbbrechenButton().fire();
+                  }
+              });
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+      });
+
+
       neustartItem.setOnAction(new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
@@ -215,6 +246,8 @@ public class WindowController {
               e.printStackTrace();
           }
       });
+
+
   }
 
   /**
@@ -816,5 +849,13 @@ public class WindowController {
             if (e instanceof OrderedPizza)
                 addRegisterEntry((OrderedPizza) e);
         }
+    }
+
+    public Ingredientsadministration getIngredientsadministration() {
+        return ingredientsadministration;
+    }
+
+    public void setIngredientsadministration(Ingredientsadministration ingredientsadministration) {
+        this.ingredientsadministration = ingredientsadministration;
     }
 }

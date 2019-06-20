@@ -66,6 +66,12 @@ public class MySQLConnectHibernate implements SQLConnection {
         session.getTransaction().commit();
     }
 
+    private void create(Ingredient p) {
+        final MySQLPizzaHibernateEntityZutat entity = executeTransaction(p);
+        session.save(entity);
+        session.getTransaction().commit();
+    }
+
     private void update(Pizza p) {
         final MySQLPizzaHibernateEntityPizza entity = executeTransaction(p);
         session.update(entity);
@@ -83,6 +89,12 @@ public class MySQLConnectHibernate implements SQLConnection {
         createSessionIfNecessary();
         beginTransaction();
         MySQLPizzaHibernateEntityPizza entity = new MySQLPizzaHibernateEntityPizza(p.getName(), p.getPreisKlein().orElse(0.00), p.getPreisMittel().orElse(0.00), p.getPreisGroß().orElse(0.00), p.getPreisFamilie().orElse(0.00));
+        return entity;
+    }
+
+    private MySQLPizzaHibernateEntityZutat executeTransaction(Ingredient e) {
+        beginTransaction();
+        MySQLPizzaHibernateEntityZutat entity = new MySQLPizzaHibernateEntityZutat(e.getName());
         return entity;
     }
 
@@ -122,6 +134,12 @@ public class MySQLConnectHibernate implements SQLConnection {
         create(pizza);
     }
 
+    @Override
+    public void addIngredience(Ingredient e) {
+        create(e);
+    }
+
+
     /**
      * Make a SQL SELECT Request to the mySQL DB and returns all Pizza Entries as a LinkedList.
      *
@@ -137,7 +155,7 @@ public class MySQLConnectHibernate implements SQLConnection {
     }
 
     public List<Ingredient> getZutaten() {
-        final List<MySQLPizzaHibernateEntityZutat> select_a_from_zutat_a = session.createQuery("SELECT a FROM Pizza a", MySQLPizzaHibernateEntityZutat.class).getResultList();
+        final List<MySQLPizzaHibernateEntityZutat> select_a_from_zutat_a = session.createQuery("SELECT a FROM Zutatenliste a", MySQLPizzaHibernateEntityZutat.class).getResultList();
         List<Ingredient> zutaten = new LinkedList<>();
         for (MySQLPizzaHibernateEntityZutat e : select_a_from_zutat_a) {
             zutaten.add(e.toZutat());

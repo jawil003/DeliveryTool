@@ -6,6 +6,7 @@ package App;
 
 import Controller.WindowController;
 import Model.Kasse.Registryadministration;
+import Model.PizzenDB.Ingredientsadministration;
 import Model.PizzenDB.Pizzavadministration;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -34,6 +35,7 @@ public class JavaFXApplication extends Application {
 
     private Pizzavadministration verw;
     private Registryadministration verwk;
+    private Ingredientsadministration ingredientsadministration;
 
     /**
      * The main Method for the RestartMenuItem
@@ -55,6 +57,8 @@ public class JavaFXApplication extends Application {
         verw = new Pizzavadministration();
         verw.connectToDB();
         verwk = new Registryadministration();
+        ingredientsadministration = new Ingredientsadministration();
+        ingredientsadministration.loadDBEntries();
 
     }
 
@@ -78,6 +82,7 @@ public class JavaFXApplication extends Application {
         loader.setController(controller);
         controller.setPizzavadministration(verw);
         controller.setRegistryadministration(verwk);
+        controller.setIngredientsadministration(ingredientsadministration);
         controller.loadFXMLItemsAgain();
         primaryStage.setTitle("Deliverytool");
         primaryStage.setScene(new Scene(loader.load()));

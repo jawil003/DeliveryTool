@@ -9,6 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -29,9 +31,12 @@ public class Ingredientsadministration {
     /**
      *
      */
-    private void loadDBEntries() {
+    public void loadDBEntries() {
         sqlConnection = new MySQLConnectHibernate();
-        zutaten = FXCollections.observableArrayList(sqlConnection.getZutaten());
+        for (Ingredient e : sqlConnection.getZutaten()) {
+            add(e);
+        }
+
     }
 
     /**
@@ -42,6 +47,13 @@ public class Ingredientsadministration {
             return;
         }
         zutaten.add(e);
+        ExecutorService executor = Executors.newFixedThreadPool(10);
+        executor.execute(() -> {
+            sqlConnection = null;
+            sqlConnection = new MySQLConnectHibernate();
+            sqlConnection.addIngredience(e);
+
+        });
     }
 
     /**

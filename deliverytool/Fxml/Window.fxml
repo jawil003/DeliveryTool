@@ -38,7 +38,6 @@
             <Menu mnemonicParsing="false" text="Ansicht">
                <items>
                   <MenuItem fx:id="kasseAnsicht" mnemonicParsing="false" text="Kasse" />
-                  <MenuItem fx:id="zubereitungAnsicht" mnemonicParsing="false" text="Zubereitung" />
                   <MenuItem fx:id="serviceAnsicht" mnemonicParsing="false" text="Service" />
                </items>
             </Menu>

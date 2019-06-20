@@ -6,12 +6,13 @@ package Model.PizzenDB;
 
 import java.util.Objects;
 
-public class Ingredient {
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
 
-    /**
-     * @author Jannik Will
-     * @version 1.0
-     */
+
+public class Ingredient {
 
     private String name;
 

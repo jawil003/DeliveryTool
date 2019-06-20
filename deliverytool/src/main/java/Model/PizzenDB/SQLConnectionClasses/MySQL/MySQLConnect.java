@@ -21,6 +21,8 @@ import java.util.List;
  * SQL DB Connection
  *
  * @author Jannik Will
+ *
+ * !!!!Replaced by Interface and MySQLHibernate Class!!!!
  */
 public class MySQLConnect implements SQLConnection {
 
@@ -253,6 +255,11 @@ public class MySQLConnect implements SQLConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void addIngredience(Ingredient e) {
+
     }
 
     /**
