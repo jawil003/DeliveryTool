@@ -217,8 +217,10 @@ public class WindowController {
   /**
    * Initalize the MainWindow
    * @param primaryStage the Stage in which the Window(-pane) should be inizialized
-   * */
-  public void init(Stage primaryStage) throws MalformedURLException {
+   * @param loader*/
+  public void init(Stage primaryStage, FXMLLoader loader) throws MalformedURLException {
+      if (loader.getController() == null)
+          loader.setController(this);
       this.primaryStage=primaryStage;
       addListener();
       loadPizzaEntries();

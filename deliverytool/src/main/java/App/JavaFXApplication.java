@@ -81,7 +81,7 @@ public class JavaFXApplication extends Application {
         controller.loadFXMLItemsAgain();
         primaryStage.setTitle("Deliverytool");
         primaryStage.setScene(new Scene(loader.load()));
-        controller.init(primaryStage);
+        controller.init(primaryStage, loader);
         controller.show();
 
         //triggered when mainwindow is tried to close with the x window button
