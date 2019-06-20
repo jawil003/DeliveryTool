@@ -16,6 +16,7 @@ public class IngredientsadministrationTest {
     @Test
     public void addZutaten() {
         ingredientsadministration = Ingredientsadministration.getInstance();
+        ingredientsadministration.deleteAll();
         ingredientsadministration.add(new Ingredient("Petersilie"));
         ingredientsadministration.add(new Ingredient("Oregano"));
         ingredientsadministration.add(new Ingredient("Kümmel"));

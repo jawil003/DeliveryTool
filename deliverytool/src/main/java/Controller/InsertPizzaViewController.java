@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
 
@@ -74,7 +75,7 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
     }
 
     public void loadFXMLItemsAgain() throws IOException {
-        final String s = LinkFetcher.normalizePath("deliverytool/Fxml/InsertNewPizzaView.fxml", "/deliverytool");
+        final String s = LinkFetcher.normalizePath(Paths.get("deliverytool/Fxml/InsertNewPizzaView.fxml").toAbsolutePath().toString(), "/deliverytool");
         FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         if (loader.getController() == null)
             loader.setController(this);

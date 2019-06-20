@@ -19,6 +19,7 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public class SplashScreenController extends Preloader {
@@ -36,7 +37,7 @@ public class SplashScreenController extends Preloader {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        final String s = LinkFetcher.normalizePath("deliverytool/Fxml/SplashScreen.fxml", "/deliverytool");
+        final String s = LinkFetcher.normalizePath(Paths.get("./deliverytool/Fxml/SplashScreen.fxml").toAbsolutePath().toString(), "/deliverytool");
         FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         loader.setController(this);
         root = loader.load();
@@ -48,7 +49,7 @@ public class SplashScreenController extends Preloader {
         MavenXpp3Reader mavenreader = new MavenXpp3Reader();
 
         try {
-            reader = new FileReader(new File("deliverytool/pom.xml"));
+            reader = new FileReader(LinkFetcher.normalizePath(new File("deliverytool/pom.xml").getAbsolutePath(), "/deliverytool"));
             model = mavenreader.read(reader);
             model.setPomFile(new File("pom.xml"));
         }catch(Exception ex){
