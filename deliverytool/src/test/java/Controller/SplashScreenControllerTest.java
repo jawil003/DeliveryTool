@@ -1,19 +1,19 @@
 package Controller;
 
-import Preloader.SplashScreen;
+import Preloader.SplashScreenController;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SplashScreenControllerTest extends ApplicationTest {
-    SplashScreen s;
+    SplashScreenController s;
 
     @Override
     public void start(Stage stage) throws Exception {
-        s=new SplashScreen();
+        s = new SplashScreenController();
         s.start(stage);
     }
 

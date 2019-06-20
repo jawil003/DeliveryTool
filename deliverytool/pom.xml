@@ -10,7 +10,7 @@
 
     <groupId>de.java.deliverytool.swt2</groupId>
     <artifactId>deliverytool</artifactId>
-    <version>1.6</version>
+    <version>1.6</version> <!-- Version of the Software shown in Preloader -->
 
     <properties>
         <version>{project.version}</version>

@@ -16,14 +16,12 @@ import javafx.stage.StageStyle;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Properties;
 
-public class SplashScreen extends Preloader {
+public class SplashScreenController extends Preloader {
 
     private Stage splashScreen;
     private Pane root;
@@ -38,7 +36,7 @@ public class SplashScreen extends Preloader {
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        final String s = LinkFetcher.normalizePath("deliverytool/Fxml/SplashScreen.fxml", "/deliverytool");
+        final String s = LinkFetcher.normalizePath("deliverytool/Fxml/SplashScreenController.fxml", "/deliverytool");
         FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
         loader.setController(this);
         root = loader.load();
