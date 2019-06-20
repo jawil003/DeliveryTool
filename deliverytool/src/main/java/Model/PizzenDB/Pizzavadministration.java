@@ -5,7 +5,6 @@
 package Model.PizzenDB;
 
 import Model.Kasse.NoSuchEntryException;
-import Model.Kasse.OrderedPizza;
 import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -86,6 +85,16 @@ public class Pizzavadministration {
 
         });
 
+    }
+
+    public Pizza search(String name) throws NoSuchEntryException {
+        for (Pizza e : pizzen) {
+            if (e.getName().equals(name)) {
+                return e;
+            }
+        }
+
+        throw new NoSuchEntryException("No such Entry found");
     }
 
     public boolean contains(Pizza pizza) {

@@ -149,8 +149,8 @@ public class WindowController {
                   e.printStackTrace();
               }
               try {
-                  controller.init(primaryStage, registryadministration);
-              } catch (IOException e) {
+                  controller.init(primaryStage, registryadministration, pizzavadministration);
+              } catch (IOException | NoSuchEntryException e) {
                   e.printStackTrace();
               }
           }
@@ -301,7 +301,7 @@ public class WindowController {
         private void eintragHinzufuegen() throws IOException {
             //FXMLLoader loader = new FXMLLoader(new File("deliverytool/Fxml/InsertNewPizzaView.fxml").toURI().toURL());
             Pizza pizza = new Pizza();
-            final InsertPizzaViewController insertPizzaViewController = new InsertPizzaViewController(pizza);
+            final InsertPizzaViewController insertPizzaViewController = new InsertPizzaViewController(pizza, ingredientsadministration);
             //loader.setController(insertPizzaViewController);
             this.insertPizzaViewController = insertPizzaViewController;
             insertPizzaViewController.loadFXMLItemsAgain();
@@ -504,44 +504,19 @@ public class WindowController {
             }
         }
 
-        public class KasseAnsichtItemListener implements EventHandler<ActionEvent> {
+    private void readdRegisterEntry(OrderedPizza pizza) throws NoSuchEntryException, IOException {
+        FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
 
-            /**
-             * Invoked when a specific event of the type for which this handler is
-             * registered happens.
-             *
-             * @param event the event which occurred
-             */
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    loadFXMLItemsAgain();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    addListener();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                gesamterPreisLabel.setText(registryadministration.toEuroValue());
+        RowRegisterController kasseContr = new RowRegisterController();
+        loader.setController(kasseContr);
 
-                try {
-                    loadKassenEintraege();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (NoSuchEntryException e) {
-                    e.printStackTrace();
-                }
+        Pane rootPane = loader.load();
+        kasseContr.init(pizza);
 
-                final ObservableList<Node> children = ((VBox) scene.getRoot()).getChildren();
-                children.remove(2);
-                children.add(pane);
+        kasseContr.getKasseAnzahlLabel().setText(String.valueOf(registryadministration.getSize(pizza)));
 
-
-                primaryStage.show();
-            }
-        }
+        this.kasseListview.getItems().add(rootPane);
+    }
 
     /**
      * @param pizza The pizza Entry which should be connected with Listeners of Buttons K,M,B,F
@@ -778,6 +753,55 @@ public class WindowController {
         @Override
         public void onChanged(Change<? extends RegisterEntry, ? extends Integer> change) {
             gesamterPreisLabel.setText(registryadministration.toEuroValue());
+        }
+    }
+
+    private void reloadRegistryEntries() throws NoSuchEntryException, IOException {
+        for (RegisterEntry e : registryadministration.getKassenEintraege()) {
+            if (e instanceof OrderedPizza) {
+                readdRegisterEntry((OrderedPizza) e);
+            }
+        }
+    }
+
+    public class KasseAnsichtItemListener implements EventHandler<ActionEvent> {
+
+        /**
+         * Invoked when a specific event of the type for which this handler is
+         * registered happens.
+         *
+         * @param event the event which occurred
+         */
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                loadFXMLItemsAgain();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                addListener();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            gesamterPreisLabel.setText(registryadministration.toEuroValue());
+
+            try {
+                reloadRegistryEntries();
+                loadPizzaEntries();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NoSuchEntryException e) {
+                e.printStackTrace();
+            }
+
+            final ObservableList<Node> children = ((VBox) primaryStage.getScene().getRoot()).getChildren();
+            children.remove(1);
+            final Node node = pane.getChildrenUnmodifiable().get(1);
+            children.add(node);
+
+
+            primaryStage.show();
         }
     }
 

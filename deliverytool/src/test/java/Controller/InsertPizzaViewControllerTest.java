@@ -4,6 +4,7 @@
 
 package Controller;
 
+import Model.PizzenDB.Ingredientsadministration;
 import Model.PizzenDB.Pizza;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class InsertPizzaViewControllerTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
-        controller = new InsertPizzaViewController(new Pizza());
+        controller = new InsertPizzaViewController(new Pizza(), new Ingredientsadministration());
         controller.loadFXMLItemsAgain();
     }
 

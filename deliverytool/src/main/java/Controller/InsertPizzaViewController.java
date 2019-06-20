@@ -4,6 +4,8 @@
 
 package Controller;
 
+import Model.PizzenDB.Ingredient;
+import Model.PizzenDB.Ingredientsadministration;
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntityPizza;
 import Tools.LinkFetcher;
@@ -16,6 +18,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -43,10 +46,10 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
     private TextField preisFamilieField;
 
     @FXML
-    private ListView<?> zutatenView;
+    private ListView<Ingredient> zutatenView;
 
     @FXML
-    private ListView<?> hinzugefuegteZutatenView;
+    private ListView<Ingredient> hinzugefuegteZutatenView;
 
     @FXML
     private Button abbrechenButton;
@@ -59,11 +62,15 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
 
     private Stage current;
 
+    private Ingredientsadministration ingredientsadministration;
+
     /**
      * @param pizza
      */
-    InsertPizzaViewController(Pizza pizza) {
+    InsertPizzaViewController(Pizza pizza, Ingredientsadministration ingredientsadministration) {
+
         this.pizza = pizza;
+        this.ingredientsadministration = ingredientsadministration;
     }
 
     public void loadFXMLItemsAgain() throws IOException {
@@ -74,11 +81,35 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
         root = loader.load();
     }
 
+    private void loadIngrediences() {
+        for (int i = 0; i < ingredientsadministration.getSize(); i++) {
+            final Ingredient ingredient = ingredientsadministration.get(i);
+            addZutat(ingredient);
+
+        }
+    }
+
+    private void addListener() {
+        zutatenView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() >= 2) {
+                    final int selectedIndex = zutatenView.getSelectionModel().getSelectedIndex();
+                    final Ingredient ingredient = ingredientsadministration.get(selectedIndex);
+                    addHinzugefuegteZutat(ingredient);
+                    pizza.addIngridience(ingredient);
+                }
+            }
+        });
+    }
+
     void init(Stage parent) throws IOException {
+        addListener();
         current = new Stage();
         current.setTitle("Pizza hinzufügen");
         current.initOwner(parent);
         current.initModality(Modality.WINDOW_MODAL);
+        loadIngrediences();
         final Scene scene = new Scene(root);
         current.setScene(scene);
         current.centerOnScreen();
@@ -96,6 +127,15 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
         preisGrossField.setOnKeyPressed(new enterPressedTextFieldListener(preisFamilieField));
 
 
+    }
+
+    private void addZutat(Ingredient e) {
+        zutatenView.getItems().add(e);
+
+    }
+
+    private void addHinzugefuegteZutat(Ingredient e) {
+        hinzugefuegteZutatenView.getItems().add(e);
     }
 
     /**
@@ -132,7 +172,7 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
     /**
      * @param zutatenView
      */
-    public void setZutatenView(ListView<?> zutatenView) {
+    public void setZutatenView(ListView<Ingredient> zutatenView) {
         this.zutatenView = zutatenView;
     }
 
@@ -150,7 +190,7 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
     /**
      * @param hinzugefuegteZutatenView
      */
-    public void setHinzugefuegteZutatenView(ListView<?> hinzugefuegteZutatenView) {
+    public void setHinzugefuegteZutatenView(ListView<Ingredient> hinzugefuegteZutatenView) {
         this.hinzugefuegteZutatenView = hinzugefuegteZutatenView;
     }
 

@@ -102,14 +102,6 @@ public class WindowControllerTest extends ApplicationTest {
     }
 
     /**
-     * Tests wheater the ZubereitungAnsicht MenuItem is Null, because the loading from the FXML File wasn´t sucessful
-     */
-    @Test
-    public void zubereitungAnsichtItemNotNull() {
-        assertNotNull(controller.getZubereitungAnsicht());
-    }
-
-    /**
      * Tests wheater the ServiceAnsicht MenuItem is Null, because the loading from the FXML File wasn´t sucessful
      */
     @Test
