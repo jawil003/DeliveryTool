@@ -7,6 +7,7 @@ package Model.PizzenDB;
 import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.hibernate.service.spi.ServiceException;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -40,7 +41,7 @@ public class Ingredientsadministration {
     /**
      *
      */
-    public void loadDBEntries() {
+    public void loadDBEntries() throws ServiceException {
         sqlConnection = new MySQLConnectHibernate();
         for (Ingredient e : sqlConnection.getZutaten()) {
             add(e);

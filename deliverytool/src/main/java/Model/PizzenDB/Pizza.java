@@ -161,7 +161,9 @@ public class Pizza extends ListEntry implements Comparable<Pizza> {
      */
     @Override
     public String toString() {
-        return this.name;
+        return name + " (" + preisKlein.orElse(0.0) + ", " + preisMittel.orElse(0.0) + ", " + preisGroß.orElse(0.0) + ", " + preisFamilie.orElse(0.0) + ")" +
+                "with Ingredience: " +
+                zutaten;
     }
 
     /**

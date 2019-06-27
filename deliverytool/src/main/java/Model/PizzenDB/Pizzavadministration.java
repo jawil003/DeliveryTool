@@ -4,12 +4,14 @@
 
 package Model.PizzenDB;
 
+import Logging.PizzaLogger;
 import Model.Kasse.NoSuchEntryException;
 import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import org.hibernate.service.spi.ServiceException;
 
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -26,6 +28,7 @@ public class Pizzavadministration {
 
     private ObservableList<Pizza> pizzen;
     private SQLConnection sqlConnection;
+    private PizzaLogger pizzaLogger;
 
     // Constructors:
 
@@ -51,13 +54,14 @@ public class Pizzavadministration {
     private Pizzavadministration(LinkedList<Pizza> pizzen) {
 
             this.pizzen = FXCollections.observableArrayList(pizzen);
+        pizzaLogger = PizzaLogger.getInstance();
     }
 
     public void addListener(ListChangeListener e) {
         pizzen.addListener(e);
     }
 
-    public void connectToDB() {
+    public void connectToDB() throws ServiceException {
         //pizzen are loaded out of the mysql database with the help of the heping class MySQLConnect
         sqlConnection = new MySQLConnectHibernate();
         this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzas());
@@ -77,6 +81,7 @@ public class Pizzavadministration {
         }
 
         this.pizzen.add(pizza);
+        pizzaLogger.added(pizza);
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.execute(() -> {
             sqlConnection = null;
@@ -113,6 +118,7 @@ public class Pizzavadministration {
             return;
         }
         final Pizza remove = pizzen.remove(number);
+        pizzaLogger.removed(remove);
         if (sqlConnection != null) {
             Platform.runLater(new Runnable() {
                 @Override
@@ -129,6 +135,9 @@ public class Pizzavadministration {
     }
 
     public void deleteAll() {
+        for (Pizza p : pizzen) {
+            pizzaLogger.removed(p);
+        }
         pizzen.clear();
     }
 

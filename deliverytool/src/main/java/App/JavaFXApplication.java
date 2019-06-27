@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.hibernate.service.spi.ServiceException;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,8 @@ public class JavaFXApplication extends Application {
     private Registryadministration verwk;
     private Ingredientsadministration ingredientsadministration;
 
+    private boolean dbConnectionEstablished = true;
+
     /**
      * The main Method for the RestartMenuItem
      * @param args
@@ -54,11 +57,15 @@ public class JavaFXApplication extends Application {
     public void init() throws Exception {
         super.init();
 
-        verw = new Pizzavadministration();
-        verw.connectToDB();
-        verwk = new Registryadministration();
-        ingredientsadministration = Ingredientsadministration.getInstance();
-        ingredientsadministration.loadDBEntries();
+        try {
+            verw = new Pizzavadministration();
+            verw.connectToDB();
+            verwk = new Registryadministration();
+            ingredientsadministration = Ingredientsadministration.getInstance();
+            ingredientsadministration.loadDBEntries();
+        } catch (ServiceException e) {
+            dbConnectionEstablished = false;
+        }
 
     }
 
@@ -72,6 +79,9 @@ public class JavaFXApplication extends Application {
     @Override
     public void start(Stage primaryStage)
             throws IllegalAccessException, ClassNotFoundException, InstantiationException, IOException {
+        if (!dbConnectionEstablished) {
+            return;
+        }
         FXMLLoader loader = new FXMLLoader(new File(FXML_PATH).toURI().toURL());
 
         //MainWindow is build and controller added

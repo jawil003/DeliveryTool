@@ -10,6 +10,7 @@ import Model.PizzenDB.SQLConnection;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.spi.ServiceException;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -31,12 +32,12 @@ public class MySQLConnectHibernate implements SQLConnection {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public MySQLConnectHibernate() {
+    public MySQLConnectHibernate() throws ServiceException {
         setup();
         session = sessionFactory.openSession();
     }
 
-    private void setup() {
+    private void setup() throws ServiceException {
         if (sessionFactory == null)
             sessionFactory = new Configuration().configure().buildSessionFactory();
     }

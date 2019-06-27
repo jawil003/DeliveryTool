@@ -19,7 +19,6 @@
         <ImageView fx:id="pizzaImageview" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true"
                    smooth="false" AnchorPane.bottomAnchor="2.5" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.5">
             <image>
-                <Image url="@../../../../../../../../Downloads/Kursmaterial%20und%20Projekte%20aus%20dem%20Kurs/Abschnitte/33.%20Pizza%20Tabelle%20mit%20TableView/pizza.png"/>
             </image>
             <viewport>
                 <Rectangle2D/>
@@ -34,32 +33,34 @@
         <HBox alignment="CENTER_RIGHT" layoutX="98.0" layoutY="3.0" prefHeight="28.0" prefWidth="172.0" spacing="7.0"
               AnchorPane.rightAnchor="0.0">
             <children>
-                <Button id="kleinButton" fx:id="kleinButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
-                        mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
+                <Button id="kleinButton" fx:id="kleinButton" alignment="CENTER" contentDisplay="CENTER"
+                        ellipsisString="K" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false"
+                        prefHeight="23.5" prefWidth="23.5"
                         stylesheets="@../../src/main/Resources/Fxml/Styling/rowStyle.css" text="K"
                         textAlignment="CENTER">
                     <cursor>
                         <Cursor fx:constant="DEFAULT"/>
                     </cursor>
                 </Button>
-                <Button id="mittelButton" fx:id="mittelButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
-                        mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
+                <Button id="mittelButton" fx:id="mittelButton" alignment="CENTER" contentDisplay="CENTER"
+                        ellipsisString="M" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false"
+                        prefHeight="23.5" prefWidth="23.5"
                         stylesheets="@../../src/main/Resources/Fxml/Styling/rowStyle.css" text="M"
                         textAlignment="CENTER">
                     <cursor>
                         <Cursor fx:constant="DEFAULT"/>
                     </cursor>
                 </Button>
-                <Button id="grossButton" fx:id="grossButton" lineSpacing="1.0" maxHeight="25.0" maxWidth="25.0"
-                        mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
+                <Button id="grossButton" fx:id="grossButton" alignment="CENTER" ellipsisString="G" lineSpacing="1.0"
+                        maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
                         stylesheets="@../../src/main/Resources/Fxml/Styling/rowStyle.css" text="G"
                         textAlignment="CENTER">
                     <cursor>
                         <Cursor fx:constant="DEFAULT"/>
                     </cursor>
                 </Button>
-                <Button id="familieButton" fx:id="familieButton" alignment="CENTER" lineSpacing="1.0" maxHeight="25.0"
-                        maxWidth="25.0" mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
+                <Button id="familieButton" fx:id="familieButton" alignment="CENTER" ellipsisString="F" lineSpacing="1.0"
+                        maxHeight="25.0" maxWidth="25.0" mnemonicParsing="false" prefHeight="23.5" prefWidth="23.5"
                         stylesheets="@../../src/main/Resources/Fxml/Styling/rowStyle.css" text="F"
                         textAlignment="CENTER">
                     <cursor>
