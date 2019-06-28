@@ -8,10 +8,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.Set;
 
+@Slf4j
 public class Registryadministration {
 
     /**
@@ -23,6 +27,8 @@ public class Registryadministration {
 
     private ObservableMap<RegisterEntry, Integer> kassenEintraege;
 
+    private Logger logger;
+
 
     /**
      * Contructor where the Registryadministration is initalized
@@ -30,6 +36,7 @@ public class Registryadministration {
     public Registryadministration() {
         kassenEintraege = FXCollections.observableHashMap();
         addListener();
+        logger = LoggerFactory.getLogger(this.getClass());
     }
 
     private void addListener() {
@@ -132,6 +139,13 @@ public class Registryadministration {
         if (!remove) {
             throw new NoSuchEntryException("This Entry does not exist in here");
         }
+
+        if (entry instanceof OrderedPizza) {
+            final OrderedPizza pizza = (OrderedPizza) entry;
+            logger.info("Removed {} with {}€ and {}", pizza.getName(), pizza.getPreis(), pizza.getGroeße());
+        } else {
+            logger.info("Removed {} with {}", entry.getName(), entry.getPreis());
+        }
     }
 
     /**
@@ -148,6 +162,8 @@ public class Registryadministration {
         }else{
             kassenEintraege.put(entry, 1);
         }
+
+        logger.info("Added {} with {}.", entry.getName(), entry.getPreis());
     }
 
     public RegisterEntry remove(int index) {
@@ -157,6 +173,7 @@ public class Registryadministration {
             e = iterator.next();
         }
         kassenEintraege.remove(e);
+        logger.info("Removed {} with {}.", e.getName(), e.getPreis());
         return e;
     }
 

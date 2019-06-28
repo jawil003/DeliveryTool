@@ -4,14 +4,16 @@
 
 package Model.PizzenDB;
 
-import Logging.PizzaLogger;
 import Model.Kasse.NoSuchEntryException;
 import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -19,6 +21,7 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Slf4j
 public class Pizzavadministration {
 
     /**
@@ -28,7 +31,7 @@ public class Pizzavadministration {
 
     private ObservableList<Pizza> pizzen;
     private SQLConnection sqlConnection;
-    private PizzaLogger pizzaLogger;
+    private Logger logger;
 
     // Constructors:
 
@@ -42,6 +45,7 @@ public class Pizzavadministration {
      */
     public Pizzavadministration() {
         this(new LinkedList<>());
+        logger = LoggerFactory.getLogger(this.getClass());
     }
 
     /**
@@ -53,8 +57,7 @@ public class Pizzavadministration {
      */
     private Pizzavadministration(LinkedList<Pizza> pizzen) {
 
-            this.pizzen = FXCollections.observableArrayList(pizzen);
-        pizzaLogger = PizzaLogger.getInstance();
+        this.pizzen = FXCollections.observableArrayList(pizzen);
     }
 
     public void addListener(ListChangeListener e) {
@@ -81,12 +84,14 @@ public class Pizzavadministration {
         }
 
         this.pizzen.add(pizza);
-        pizzaLogger.added(pizza);
+        logger.info("Added {} with {}€, {}€, {}€, {}€ and {}", pizza.getName(), pizza.getPreisKlein(),
+                pizza.getPreisMittel(), pizza.getPreisGroß(), pizza.getPreisFamilie(), pizza.getIngridience());
+
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.execute(() -> {
             sqlConnection = null;
             sqlConnection = new MySQLConnectHibernate();
-                sqlConnection.addPizza(pizza);
+            sqlConnection.addPizza(pizza);
 
         });
 
@@ -117,15 +122,16 @@ public class Pizzavadministration {
         if (number < 0) {
             return;
         }
-        final Pizza remove = pizzen.remove(number);
-        pizzaLogger.removed(remove);
+        final Pizza pizza = pizzen.remove(number);
+        logger.info("Removed {} with {}€, {}€, {}€, {}€ and {}", pizza.getName(), pizza.getPreisKlein(),
+                pizza.getPreisMittel(), pizza.getPreisGroß(), pizza.getPreisFamilie(), pizza.getIngridience());
         if (sqlConnection != null) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         sqlConnection = new MySQLConnectHibernate();
-                        sqlConnection.deletePizza(remove);
+                        sqlConnection.deletePizza(pizza);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -135,8 +141,10 @@ public class Pizzavadministration {
     }
 
     public void deleteAll() {
-        for (Pizza p : pizzen) {
-            pizzaLogger.removed(p);
+        for (Pizza pizza : pizzen) {
+            logger.info("Remove all:");
+            logger.info("Removed {} with {}€, {}€, {}€, {}€ and {}", pizza.getName(), pizza.getPreisKlein(),
+                    pizza.getPreisMittel(), pizza.getPreisGroß(), pizza.getPreisFamilie(), pizza.getIngridience());
         }
         pizzen.clear();
     }
