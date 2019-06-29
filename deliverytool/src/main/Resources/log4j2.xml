@@ -18,5 +18,8 @@
         <Logger name="Model.Kasse.IngredienceAdministration" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Logger name="Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
     </Loggers>
 </Configuration>

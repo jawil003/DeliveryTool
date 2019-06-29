@@ -12,17 +12,19 @@ import javax.persistence.Id;
 
 
 @Entity(name = "Zutatenliste")
-public class MySQLPizzaHibernateEntityZutat {
+public class MySQLIngredientHibernateEntity {
 
     @Id
+    @Column(name = "ID")
+    private int id;
     @Column(name = "Name")
     private String name;
 
-    public MySQLPizzaHibernateEntityZutat(String name) {
+    public MySQLIngredientHibernateEntity(String name) {
         this.name = name;
     }
 
-    public MySQLPizzaHibernateEntityZutat() {
+    public MySQLIngredientHibernateEntity() {
         this("");
     }
 

@@ -7,10 +7,13 @@ package Model.PizzenDB.SQLConnectionClasses.MySQL;
 import Model.PizzenDB.Ingredient;
 import Model.PizzenDB.Pizza;
 import Model.PizzenDB.SQLConnection;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.spi.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -21,10 +24,12 @@ import java.util.List;
  *
  * @author Jannik Will
  */
+@Slf4j
 public class MySQLConnectHibernate implements SQLConnection {
 
     private static SessionFactory sessionFactory;
     private Session session;
+    private Logger logger;
 
     /**
      * @throws ClassNotFoundException
@@ -33,13 +38,16 @@ public class MySQLConnectHibernate implements SQLConnection {
      * @throws IllegalAccessException
      */
     public MySQLConnectHibernate() throws ServiceException {
+        logger = LoggerFactory.getLogger(this.getClass());
         setup();
         session = sessionFactory.openSession();
     }
 
     private void setup() throws ServiceException {
-        if (sessionFactory == null)
+        if (sessionFactory == null) {
             sessionFactory = new Configuration().configure().buildSessionFactory();
+            logger.debug("Create new SessionFactory={}.", sessionFactory);
+        }
     }
 
     /**
@@ -53,49 +61,59 @@ public class MySQLConnectHibernate implements SQLConnection {
     private void createSessionIfNecessary() {
         if (!session.isOpen()) {
             session = sessionFactory.openSession();
+            logger.debug("Open Session={}", session);
         }
     }
 
     private void beginTransaction() {
         session.beginTransaction();
+        logger.debug("Beginning the transaction");
     }
 
 
     private void create(Pizza p) {
-        final MySQLPizzaHibernateEntityPizza entity = executeTransaction(p);
+        final MySQLPizzaHibernateEntity entity = executeTransaction(p);
         session.save(entity);
         session.getTransaction().commit();
+        logger.debug("Fired Pizza={} to database successful", p);
     }
 
     private void create(Ingredient p) {
-        final MySQLPizzaHibernateEntityZutat entity = executeTransaction(p);
+        final MySQLIngredientHibernateEntity entity = executeTransaction(p);
         session.save(entity);
         session.getTransaction().commit();
+        logger.debug("Fired Ingredience={} to database successful", p);
+
     }
 
     private void update(Pizza p) {
-        final MySQLPizzaHibernateEntityPizza entity = executeTransaction(p);
+        final MySQLPizzaHibernateEntity entity = executeTransaction(p);
         session.update(entity);
         session.getTransaction().commit();
+        logger.debug("Update Pizza={} on database successful", p);
 
     }
 
     private void delete(Pizza p) {
-        MySQLPizzaHibernateEntityPizza entity = executeTransaction(p);
+        MySQLPizzaHibernateEntity entity = executeTransaction(p);
         session.delete(entity);
         session.getTransaction().commit();
+        logger.debug("Deleted Pizza={} on database successful", p);
     }
 
-    private MySQLPizzaHibernateEntityPizza executeTransaction(Pizza p) {
+    private MySQLPizzaHibernateEntity executeTransaction(Pizza p) {
         createSessionIfNecessary();
         beginTransaction();
-        MySQLPizzaHibernateEntityPizza entity = new MySQLPizzaHibernateEntityPizza(p.getName(), p.getPreisKlein().orElse(0.00), p.getPreisMittel().orElse(0.00), p.getPreisGroß().orElse(0.00), p.getPreisFamilie().orElse(0.00));
+        MySQLPizzaHibernateEntity entity = new MySQLPizzaHibernateEntity(p.getName(), p.getPreisKlein().orElse(0.00), p.getPreisMittel().orElse(0.00), p.getPreisGroß().orElse(0.00), p.getPreisFamilie().orElse(0.00));
+        logger.debug("Convert Pizza={} to MySQLPizzaHibernateEntity={}", p, entity);
         return entity;
+
     }
 
-    private MySQLPizzaHibernateEntityZutat executeTransaction(Ingredient e) {
+    private MySQLIngredientHibernateEntity executeTransaction(Ingredient e) {
         beginTransaction();
-        MySQLPizzaHibernateEntityZutat entity = new MySQLPizzaHibernateEntityZutat(e.getName());
+        MySQLIngredientHibernateEntity entity = new MySQLIngredientHibernateEntity(e.getName());
+        logger.debug("Convert Ingredient={} to MySQLIngredientHibernateEntity={}", e, entity);
         return entity;
     }
 
@@ -105,6 +123,7 @@ public class MySQLConnectHibernate implements SQLConnection {
     private void close() throws SQLException {
         if (session.isOpen()) {
             session.close();
+            logger.debug("Closed Session={}", session);
         }
     }
 
@@ -124,6 +143,7 @@ public class MySQLConnectHibernate implements SQLConnection {
      */
     public void deletePizza(Pizza p) {
         delete(p);
+        logger.info("Delete Pizza={} from database ", p);
     }
 
     /**
@@ -133,11 +153,13 @@ public class MySQLConnectHibernate implements SQLConnection {
      */
     public void addPizza(Pizza pizza) {
         create(pizza);
+        logger.info("Create Pizza={} in database ", pizza);
     }
 
     @Override
     public void addIngredience(Ingredient e) {
         create(e);
+        logger.info("Create Ingredient={} in database ", e);
     }
 
 
@@ -147,20 +169,24 @@ public class MySQLConnectHibernate implements SQLConnection {
      * @return LinkedList of Pizza Entries
      */
     public List<Pizza> getPizzas() {
-        final List<MySQLPizzaHibernateEntityPizza> select_a_from_pizza_a = session.createQuery("SELECT a FROM Pizza a", MySQLPizzaHibernateEntityPizza.class).getResultList();
+        final List<MySQLPizzaHibernateEntity> select_a_from_pizza_a = session.createQuery("SELECT a FROM Pizza a", MySQLPizzaHibernateEntity.class).getResultList();
         List<Pizza> pizzen = new LinkedList<>();
-        for (MySQLPizzaHibernateEntityPizza e : select_a_from_pizza_a) {
+        for (MySQLPizzaHibernateEntity e : select_a_from_pizza_a) {
             pizzen.add(e.toPizza());
+            logger.debug("Getting EntityPizza={}", e);
         }
+        logger.info("Getted List={} from database", pizzen);
         return pizzen;
     }
 
     public List<Ingredient> getZutaten() {
-        final List<MySQLPizzaHibernateEntityZutat> select_a_from_zutat_a = session.createQuery("SELECT a FROM Zutatenliste a", MySQLPizzaHibernateEntityZutat.class).getResultList();
+        final List<MySQLIngredientHibernateEntity> select_a_from_zutat_a = session.createQuery("SELECT a FROM Zutatenliste a", MySQLIngredientHibernateEntity.class).getResultList();
         List<Ingredient> zutaten = new LinkedList<>();
-        for (MySQLPizzaHibernateEntityZutat e : select_a_from_zutat_a) {
+        for (MySQLIngredientHibernateEntity e : select_a_from_zutat_a) {
             zutaten.add(e.toZutat());
+            logger.debug("Getting EntityIngrendient={}", e);
         }
+        logger.info("Getted List={} from database", zutaten);
         return zutaten;
     }
 

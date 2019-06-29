@@ -7,7 +7,7 @@ package Controller;
 import Model.PizzenDB.Ingredient;
 import Model.PizzenDB.Ingredientsadministration;
 import Model.PizzenDB.Pizza;
-import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntityPizza;
+import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntity;
 import Tools.LinkFetcher;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,7 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class InsertPizzaViewController extends MySQLPizzaHibernateEntityPizza {
+public class InsertPizzaViewController extends MySQLPizzaHibernateEntity {
 
     Pane root;
 
