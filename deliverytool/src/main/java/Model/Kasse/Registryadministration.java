@@ -134,6 +134,7 @@ public class Registryadministration {
             remove = kassenEintraege.keySet().remove(entry);
         } else {
             kassenEintraege.put(entry, size - 1);
+            remove = true;
         }
 
         if (!remove) {
@@ -142,9 +143,9 @@ public class Registryadministration {
 
         if (entry instanceof OrderedPizza) {
             final OrderedPizza pizza = (OrderedPizza) entry;
-            logger.info("Removed {} with {}€ and {}", pizza.getName(), pizza.getPreis(), pizza.getGroeße());
+            logger.info("Removed Pizza={} with Price={} and Size={}", pizza.getName(), pizza.getPreis(), pizza.getGroeße());
         } else {
-            logger.info("Removed {} with {}", entry.getName(), entry.getPreis());
+            logger.info("Removed Pizza={} with Price={}", entry.getName(), entry.getPreis());
         }
     }
 
@@ -163,7 +164,12 @@ public class Registryadministration {
             kassenEintraege.put(entry, 1);
         }
 
-        logger.info("Added {} with {}.", entry.getName(), entry.getPreis());
+        if (entry instanceof OrderedPizza) {
+            final OrderedPizza pizza = (OrderedPizza) entry;
+            logger.info("Added Pizza={} with Price={} and Size={}", pizza.getName(), pizza.getPreis(), pizza.getGroeße());
+        } else {
+            logger.info("Added Pizza={} with Price={}", entry.getName(), entry.getPreis());
+        }
     }
 
     public RegisterEntry remove(int index) {
@@ -173,7 +179,12 @@ public class Registryadministration {
             e = iterator.next();
         }
         kassenEintraege.remove(e);
-        logger.info("Removed {} with {}.", e.getName(), e.getPreis());
+        if (e instanceof OrderedPizza) {
+            final OrderedPizza pizza = (OrderedPizza) e;
+            logger.info("Removed Pizza={} with Price={} and Size={}", pizza.getName(), pizza.getPreis(), pizza.getGroeße());
+        } else {
+            logger.info("Removed Pizza={} with Price={}", e.getName(), e.getPreis());
+        }
         return e;
     }
 
