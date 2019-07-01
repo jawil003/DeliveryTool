@@ -100,6 +100,10 @@ public class InsertPizzaViewController extends Pizza {
         });
     }
 
+    public void loadDBEntries() {
+
+    }
+
     void init(Stage parent) throws IOException {
         addListener();
         current = new Stage();

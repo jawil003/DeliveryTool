@@ -5,9 +5,10 @@
 package App;
 
 import Controller.WindowController;
+import DatabaseConnection.MySQLConnectHibernate;
 import Model.Kasse.Registryadministration;
 import Model.PizzenDB.Ingredientsadministration;
-import Model.PizzenDB.Pizzavadministration;
+import Model.PizzenDB.PizzaAdministration;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +35,7 @@ public class JavaFXApplication extends Application {
 
     WindowController controller;
 
-    private Pizzavadministration verw;
+    private PizzaAdministration verw;
     private Registryadministration verwk;
     private Ingredientsadministration ingredientsadministration;
 
@@ -58,7 +59,7 @@ public class JavaFXApplication extends Application {
         super.init();
 
         try {
-            verw = new Pizzavadministration();
+            verw = new PizzaAdministration();
             verw.connectToDB();
             verwk = new Registryadministration();
             ingredientsadministration = Ingredientsadministration.getInstance();
@@ -90,7 +91,7 @@ public class JavaFXApplication extends Application {
         if (controller == null)
             controller = new WindowController();
         loader.setController(controller);
-        controller.setPizzavadministration(verw);
+        controller.setPizzaAdministration(verw);
         controller.setRegistryadministration(verwk);
         controller.setIngredientsadministration(ingredientsadministration);
         controller.loadFXMLItemsAgain();
@@ -104,18 +105,8 @@ public class JavaFXApplication extends Application {
         primaryStage.setOnCloseRequest(new closeRequestHandler());
     }
 
-    /**
-     * Called when the mainWindow is closed
-     */
-    private class closeRequestHandler implements EventHandler<WindowEvent> {
-
-        @Override
-        public void handle(WindowEvent event) {
-            if (verw.getSqlConnection().isRunning()) {
-                event.consume();
-            }
-
-        }
+    public PizzaAdministration getVerw() {
+        return verw;
     }
 
     public Scene getScene() {
@@ -134,12 +125,26 @@ public class JavaFXApplication extends Application {
         this.controller = controller;
     }
 
-    public Pizzavadministration getVerw() {
-        return verw;
+    public void setVerw(PizzaAdministration verw) {
+        this.verw = verw;
     }
 
-    public void setVerw(Pizzavadministration verw) {
-        this.verw = verw;
+    /**
+     * Called when the mainWindow is closed
+     */
+    private class closeRequestHandler implements EventHandler<WindowEvent> {
+
+        @Override
+        public void handle(WindowEvent event) {
+            final MySQLConnectHibernate instance = MySQLConnectHibernate.getInstance();
+            if (instance.isRunning()) {
+                event.consume();
+            }
+
+            instance.close(event);
+
+
+        }
     }
 
     public Registryadministration getVerwk() {

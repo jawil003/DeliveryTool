@@ -2,11 +2,11 @@
  * Copyright (c) 2019. Jannik Will und Albert Munsch
  */
 
-package Model.PizzenDB.SQLConnectionClasses.MySQL;
+package DatabaseConnection;
 
 import Model.PizzenDB.Ingredient;
 import Model.PizzenDB.Pizza;
-import Model.PizzenDB.SQLConnection;
+import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,6 +29,7 @@ public class MySQLConnectHibernate implements SQLConnection {
     private static SessionFactory sessionFactory;
     private Session session;
     private Logger logger;
+    private static MySQLConnectHibernate entity;
 
     /**
      * @throws ClassNotFoundException
@@ -36,10 +37,17 @@ public class MySQLConnectHibernate implements SQLConnection {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public MySQLConnectHibernate() throws ServiceException {
+    private MySQLConnectHibernate() throws ServiceException {
         logger = LoggerFactory.getLogger(this.getClass());
         setup();
         session = sessionFactory.openSession();
+    }
+
+    public static MySQLConnectHibernate getInstance() {
+        if (entity == null) {
+            entity = new MySQLConnectHibernate();
+        }
+        return entity;
     }
 
     private void setup() throws ServiceException {
@@ -73,14 +81,24 @@ public class MySQLConnectHibernate implements SQLConnection {
     private void create(Pizza p) {
         final Pizza entity = executeTransaction(p);
         session.save(entity);
-        session.getTransaction().commit();
+        commitAndcloseSession();
         logger.debug("Fired Pizza={} to database successful", p);
+    }
+
+    private void commitAndcloseSession() {
+        try {
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
     }
 
     private void create(Ingredient p) {
         final Ingredient entity = executeTransaction(p);
         session.save(entity);
-        session.getTransaction().commit();
+        commitAndcloseSession();
         logger.debug("Fired Ingredience={} to database successful", p);
 
     }
@@ -88,7 +106,7 @@ public class MySQLConnectHibernate implements SQLConnection {
     private void update(Pizza p) {
         final Pizza entity = executeTransaction(p);
         session.update(entity);
-        session.getTransaction().commit();
+        commitAndcloseSession();
         logger.debug("Update Pizza={} on database successful", p);
 
     }
@@ -96,7 +114,7 @@ public class MySQLConnectHibernate implements SQLConnection {
     private void delete(Pizza p) {
         Pizza entity = executeTransaction(p);
         session.delete(entity);
-        session.getTransaction().commit();
+        commitAndcloseSession();
         logger.debug("Deleted Pizza={} on database successful", p);
     }
 
@@ -116,24 +134,12 @@ public class MySQLConnectHibernate implements SQLConnection {
         return entity;
     }
 
-    /**
-     * @throws SQLException
-     */
-    private void close() throws SQLException {
-        if (session.isOpen()) {
-            session.close();
-            logger.debug("Closed Session={}", session);
-        }
+    public void close(WindowEvent event) {
+        assert (event.equals(WindowEvent.WINDOW_CLOSE_REQUEST));
+        assert (sessionFactory != null);
+        sessionFactory.close();
+        sessionFactory = null;
     }
-
-    private void commitTransaction() {
-        session.getTransaction().commit();
-    }
-
-    private void rollBackTransaction() {
-        session.getTransaction().rollback();
-    }
-
 
     /**
      * Delete the Pizza Entry drom Database

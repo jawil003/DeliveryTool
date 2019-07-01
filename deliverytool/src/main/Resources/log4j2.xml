@@ -9,7 +9,7 @@
         <Root level="error">
             <AppenderRef ref="Console"/>
         </Root>
-        <Logger name="Model.PizzenDB.Pizzavadministration" level="info" additivity="false">
+        <Logger name="Model.PizzenDB.PizzaAdministration" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="Model.Kasse.Registryadministration" level="info" additivity="false">
@@ -18,7 +18,7 @@
         <Logger name="Model.Kasse.IngredienceAdministration" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Logger name="Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate" level="info" additivity="false">
+        <Logger name="DatabaseConnection.MySQLConnectHibernate" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
     </Loggers>

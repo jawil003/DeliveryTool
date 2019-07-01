@@ -9,7 +9,7 @@ import Model.Kasse.*;
 import Model.PizzenDB.Ingredient;
 import Model.PizzenDB.Ingredientsadministration;
 import Model.PizzenDB.Pizza;
-import Model.PizzenDB.Pizzavadministration;
+import Model.PizzenDB.PizzaAdministration;
 import Tools.LinkFetcher;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -85,7 +85,7 @@ public class WindowController {
     private static final String FXML_WINDOW_FXML = "deliverytool/Fxml/Window.fxml";
     private InsertPizzaViewController insertPizzaViewController;
     private RowPizzasController pizzasController;
-    private Pizzavadministration pizzavadministration;
+    private PizzaAdministration pizzaAdministration;
     private Registryadministration registryadministration;
     private InsertNewIngredienceViewController insertNewIngredienceViewController;
     private Ingredientsadministration ingredientsadministration;
@@ -96,7 +96,7 @@ public class WindowController {
      */
     public WindowController() {
 
-        pizzavadministration = new Pizzavadministration();
+        pizzaAdministration = new PizzaAdministration();
         registryadministration = new Registryadministration();
         ingredientsadministration = Ingredientsadministration.getInstance();
     }
@@ -122,7 +122,7 @@ public class WindowController {
      */
   private void loadPizzaEntries() throws MalformedURLException {
       // create rows
-      for (Pizza pizza : this.pizzavadministration.getList()) {
+      for (Pizza pizza : this.pizzaAdministration.getList()) {
           addPizzaRow(pizza);
           addListenerPizzaRow(pizza);
       }
@@ -133,7 +133,7 @@ public class WindowController {
      */
   private void addListener() throws MalformedURLException {
 
-      pizzavadministration.addListener(new PizzenViewListener());
+      pizzaAdministration.addListener(new PizzenViewListener());
 
       registryadministration.addListener(new RegistryAdministrationListener());
 
@@ -149,7 +149,7 @@ public class WindowController {
                   e.printStackTrace();
               }
               try {
-                  controller.init(primaryStage, registryadministration, pizzavadministration);
+                  controller.init(primaryStage, registryadministration, pizzaAdministration);
               } catch (IOException | NoSuchEntryException e) {
                   e.printStackTrace();
               }
@@ -218,7 +218,7 @@ public class WindowController {
 
       allesLoeschenItem.setOnAction(event -> {
           kasseListview.getItems().clear();
-          registryadministration.getKassenEintraege().clear();
+          registryadministration.clear();
           gesamterPreisLabel.setText(registryadministration.toEuroValue());
       });
 
@@ -366,7 +366,9 @@ public class WindowController {
 
                     registryadministration.remove(registerEntry);
                     gesamterPreisLabel.setText(registryadministration.toEuroValue());
+                    break;
                 case PizzenListView:
+                    break;
             }
         }
 
@@ -597,12 +599,12 @@ public class WindowController {
         this.pizzasController = pizzasController;
     }
 
-    public Pizzavadministration getPizzavadministration() {
-        return pizzavadministration;
+    public PizzaAdministration getPizzaAdministration() {
+        return pizzaAdministration;
     }
 
-    public void setPizzavadministration(Pizzavadministration pizzavadministration) {
-        this.pizzavadministration = pizzavadministration;
+    public void setPizzaAdministration(PizzaAdministration pizzaAdministration) {
+        this.pizzaAdministration = pizzaAdministration;
     }
 
     public GridPane getGridpane() {
@@ -853,7 +855,7 @@ public class WindowController {
         @Override
         public void handle(ActionEvent event) {
             try {
-                pizzavadministration.add(new Pizza(insertPizzaViewController.getNameField().getText(),
+                pizzaAdministration.add(new Pizza(insertPizzaViewController.getNameField().getText(),
                         Double.valueOf(insertPizzaViewController.getPreisKleinField().getText()),
                         Double.valueOf(insertPizzaViewController.getPreisMittelField().getText()),
                         Double.valueOf(insertPizzaViewController.getPreisGrossField().getText()),

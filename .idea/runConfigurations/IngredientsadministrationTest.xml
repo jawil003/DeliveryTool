@@ -3,7 +3,7 @@
     <module name="deliverytool" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="Model.PizzenDB.*" />
+        <option name="PATTERN" value="DatabaseConnection.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

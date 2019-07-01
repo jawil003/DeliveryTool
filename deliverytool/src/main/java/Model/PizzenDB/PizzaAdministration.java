@@ -4,8 +4,9 @@
 
 package Model.PizzenDB;
 
+import DatabaseConnection.MySQLConnectHibernate;
+import DatabaseConnection.SQLConnection;
 import Model.Kasse.NoSuchEntryException;
-import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -21,7 +22,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Slf4j
-public class Pizzavadministration {
+public class PizzaAdministration {
 
     /**
      * @author Jannik Will
@@ -42,7 +43,7 @@ public class Pizzavadministration {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    public Pizzavadministration() {
+    public PizzaAdministration() {
         this(new LinkedList<>());
         logger = LoggerFactory.getLogger(this.getClass());
     }
@@ -54,7 +55,7 @@ public class Pizzavadministration {
      * @throws ClassNotFoundException
      * @throws InstantiationException
      */
-    private Pizzavadministration(LinkedList<Pizza> pizzen) {
+    private PizzaAdministration(LinkedList<Pizza> pizzen) {
 
         this.pizzen = FXCollections.observableArrayList(pizzen);
     }
@@ -65,7 +66,7 @@ public class Pizzavadministration {
 
     public void connectToDB() throws ServiceException {
         //pizzen are loaded out of the mysql database with the help of the heping class MySQLConnect
-        sqlConnection = new MySQLConnectHibernate();
+        sqlConnection = MySQLConnectHibernate.getInstance();
         this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzas());
     }
 
@@ -87,8 +88,6 @@ public class Pizzavadministration {
 
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.execute(() -> {
-            sqlConnection = null;
-            sqlConnection = new MySQLConnectHibernate();
             sqlConnection.addPizza(pizza);
 
         });
@@ -111,7 +110,7 @@ public class Pizzavadministration {
     }
 
     /**
-     * Delete a Entry in the Pizzavadministration
+     * Delete a Entry in the PizzaAdministration
      *
      * @param number
      * @return
@@ -128,7 +127,7 @@ public class Pizzavadministration {
                 @Override
                 public void run() {
                     try {
-                        sqlConnection = new MySQLConnectHibernate();
+                        sqlConnection = MySQLConnectHibernate.getInstance();
                         sqlConnection.deletePizza(pizza);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -141,7 +140,7 @@ public class Pizzavadministration {
     public void deleteAll() {
         for (Pizza pizza : pizzen) {
             logger.info("Remove all:");
-            logger.info("Removed {} with {}€, {}€, {}€, {}€ and {}", pizza.getName(), pizza.getSmallPrice(),
+            logger.info("Removed {} with {}€, {}€, {}€, {}€", pizza.getName(), pizza.getSmallPrice(),
                     pizza.getMiddlePrice(), pizza.getBigPrice(), pizza.getFamilyPrice());
         }
         pizzen.clear();

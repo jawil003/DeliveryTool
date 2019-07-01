@@ -4,7 +4,8 @@
 
 package Model.PizzenDB;
 
-import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLConnectHibernate;
+import DatabaseConnection.MySQLConnectHibernate;
+import DatabaseConnection.SQLConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.extern.slf4j.Slf4j;
@@ -48,11 +49,8 @@ public class Ingredientsadministration {
      *
      */
     public void loadDBEntries() throws ServiceException {
-        sqlConnection = new MySQLConnectHibernate();
-        for (Ingredient e : sqlConnection.getZutaten()) {
-            add(e);
-        }
-
+        sqlConnection = MySQLConnectHibernate.getInstance();
+        zutaten = FXCollections.observableArrayList(sqlConnection.getZutaten());
     }
 
     /**
@@ -66,10 +64,7 @@ public class Ingredientsadministration {
         logger.info("Added Ingredience={}", e.getName());
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.execute(() -> {
-            sqlConnection = null;
-            sqlConnection = new MySQLConnectHibernate();
             sqlConnection.addIngredience(e);
-
         });
     }
 

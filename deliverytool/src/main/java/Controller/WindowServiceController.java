@@ -9,7 +9,7 @@ import Model.Kasse.OrderedPizza;
 import Model.Kasse.RegisterEntry;
 import Model.Kasse.Registryadministration;
 import Model.PizzenDB.Ingredient;
-import Model.PizzenDB.Pizzavadministration;
+import Model.PizzenDB.PizzaAdministration;
 import Tools.LinkFetcher;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -38,7 +38,7 @@ public class WindowServiceController {
 
     private GridPane pane;
     private Registryadministration registerAdmininst;
-    private Pizzavadministration pizzavadministration;
+    private PizzaAdministration pizzaAdministration;
 
     public void loadFXMLItemsAgain() throws IOException {
         FXMLLoader loader = new FXMLLoader(new File(LinkFetcher.normalizePath(FXML_WINDOWCONTROLLERSERVICE_FXML, "/deliverytool")).toURI().toURL());
@@ -57,9 +57,9 @@ public class WindowServiceController {
         });
     }
 
-    public void init(Stage primaryStage, Registryadministration e, Pizzavadministration administration) throws IOException, NoSuchEntryException {
+    public void init(Stage primaryStage, Registryadministration e, PizzaAdministration administration) throws IOException, NoSuchEntryException {
         this.registerAdmininst = e;
-        this.pizzavadministration = pizzavadministration;
+        this.pizzaAdministration = pizzaAdministration;
         final VBox root = (VBox) primaryStage.getScene().getRoot();
         final ObservableList<Node> children = root.getChildren();
         children.remove(1);

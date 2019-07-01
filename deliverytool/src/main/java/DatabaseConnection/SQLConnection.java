@@ -2,7 +2,10 @@
  * Copyright (c) 2019. Jannik Will und Albert Munsch
  */
 
-package Model.PizzenDB;
+package DatabaseConnection;
+
+import Model.PizzenDB.Ingredient;
+import Model.PizzenDB.Pizza;
 
 import java.sql.SQLException;
 import java.util.List;

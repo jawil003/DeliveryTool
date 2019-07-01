@@ -100,6 +100,10 @@ public class Registryadministration {
 
     }
 
+    public void clear() {
+        kassenEintraege.clear();
+    }
+
     /**
      * @param index The position of the RegisterEntry in the Set
      * @return The Element if it is there
