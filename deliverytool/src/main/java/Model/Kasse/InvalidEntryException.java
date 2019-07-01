@@ -4,11 +4,13 @@
 
 package Model.Kasse;
 
-public class InvalidEntryException extends Exception {
 
-    /**
-     * @author Jannik Will
-     * @version 1.0*/
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
+public class InvalidEntryException extends Exception {
 
     /**
      * @param message

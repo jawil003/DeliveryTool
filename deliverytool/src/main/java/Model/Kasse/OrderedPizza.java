@@ -7,6 +7,11 @@ package Model.Kasse;
 import Controller.PizzaSize;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Jannik Will
+ * @version 1.3
+ */
+
 public class OrderedPizza extends RegisterEntry implements Comparable<RegisterEntry> {
 
     /**

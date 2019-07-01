@@ -19,10 +19,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * SQL DB Connection
- *
  * @author Jannik Will
+ * @version 1.5
  */
+
 @Slf4j
 public class MySQLConnectHibernate implements SQLConnection {
 

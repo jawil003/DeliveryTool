@@ -17,6 +17,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 public class InsertNewIngredienceViewController {
 
     @FXML

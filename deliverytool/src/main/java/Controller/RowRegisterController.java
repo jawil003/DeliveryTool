@@ -13,6 +13,11 @@ import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 public class RowRegisterController implements Initializable {
 
     @FXML

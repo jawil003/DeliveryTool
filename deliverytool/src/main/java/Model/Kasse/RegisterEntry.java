@@ -8,7 +8,7 @@ import java.util.Objects;
 
 /**
  * @author Jannik Will
- * @version 1.0
+ * @version 1.3
  */
 
 public abstract class RegisterEntry implements Comparable<RegisterEntry> {

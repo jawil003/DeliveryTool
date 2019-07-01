@@ -14,6 +14,12 @@ import java.io.Serializable;
 @Setter
 @ToString
 @EqualsAndHashCode
+
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 public class PizzaIngredientID implements Serializable {
     @Column(name = "PizzaID")
     private long pizzaId;

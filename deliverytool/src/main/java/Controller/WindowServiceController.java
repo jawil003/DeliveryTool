@@ -26,6 +26,11 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 public class WindowServiceController {
 
     @FXML

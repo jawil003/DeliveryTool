@@ -22,6 +22,11 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+/**
+ * @author Jannik Will
+ * @version 1.4
+ */
+
 public class SplashScreenController extends Preloader {
 
     private Stage splashScreen;

@@ -15,13 +15,13 @@ import org.slf4j.LoggerFactory;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * @author Jannik Will
+ * @version 1.7
+ */
+
 @Slf4j
 public class Registryadministration {
-
-    /**
-     * @author Jannik Will
-     * @version 1.0
-     */
 
     private double gesamterPreis;
 
@@ -57,7 +57,7 @@ public class Registryadministration {
     public void addListener(MapChangeListener listener){
         kassenEintraege.addListener(listener);
     }
-    
+
     public int getSize(RegisterEntry entry) throws NoSuchEntryException {
         final Integer integer = kassenEintraege.get(entry);
 
@@ -160,7 +160,7 @@ public class Registryadministration {
     public void addRegisterEntry(RegisterEntry entry) throws NoSuchEntryException {
         assert (entry!=null);
         final Set<RegisterEntry> registerEntries = kassenEintraege.keySet();
-        
+
         if(kassenEintraege.containsKey(entry)){
             final Integer entrySize = kassenEintraege.get(entry);
             kassenEintraege.put(entry, entrySize+1);

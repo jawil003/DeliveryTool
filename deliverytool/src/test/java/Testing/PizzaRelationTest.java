@@ -8,6 +8,11 @@ import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 public class PizzaRelationTest {
     private static SessionFactory factory;
 
@@ -17,6 +22,7 @@ public class PizzaRelationTest {
 
     }
 
+    //WARNING: Just an test for Relation not an actual JUnitTest
     @Test
     @SneakyThrows
     public void addPizzaIngredience() {

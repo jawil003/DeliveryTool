@@ -10,6 +10,11 @@ import Model.PizzenDB.Pizza;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * @author Jannik Will
+ * @version 1.5
+ */
+
 public interface SQLConnection {
 
     List<Pizza> getPizzas();

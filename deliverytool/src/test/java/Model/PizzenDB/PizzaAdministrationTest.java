@@ -10,6 +10,11 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 class PizzaAdministrationTest {
 
     PizzaAdministration pizzaAdministration;

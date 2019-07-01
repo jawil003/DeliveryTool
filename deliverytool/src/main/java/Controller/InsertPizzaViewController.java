@@ -26,6 +26,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 public class InsertPizzaViewController extends Pizza {
 
     Pane root;

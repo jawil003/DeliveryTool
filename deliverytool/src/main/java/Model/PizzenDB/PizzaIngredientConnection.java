@@ -20,6 +20,12 @@ import java.io.Serializable;
 @NamedQueries(
         @NamedQuery(name = "PizzaIngredientConnection.getById", query = "from PizzaIngredientConnection where id.pizzaId=:id")
 )
+
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 public class PizzaIngredientConnection implements Serializable {
 
     public final static String getById = "PizzaIngredientConnection.getById";

@@ -19,8 +19,10 @@ import java.util.concurrent.Executors;
 
 
 /**
- *
+ * @author Jannik Will
+ * @version 1.8
  */
+
 @Slf4j
 public class Ingredientsadministration {
     private ObservableList<Ingredient> zutaten;

@@ -4,6 +4,11 @@
 
 package Tools;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 public class LinkFetcher {
 
     public static String normalizePath(String path, String contains) {

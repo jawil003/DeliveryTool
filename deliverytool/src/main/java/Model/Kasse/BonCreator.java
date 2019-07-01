@@ -20,6 +20,11 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author Jannik Will
+ * @version 1.1
+ */
+
 public class BonCreator {
 
     private Registryadministration verw;

@@ -21,6 +21,11 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * @author Jannik Will
+ * @version 1.8
+ */
+
 @Slf4j
 public class PizzaAdministration {
 

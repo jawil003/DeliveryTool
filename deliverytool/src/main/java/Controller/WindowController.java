@@ -43,6 +43,7 @@ import java.util.List;
  * @author Jannik Will
  * @version 1.0
  */
+
 public class WindowController {
     //FXML-Integration variables:
     @FXML

@@ -23,6 +23,12 @@ import javax.persistence.Table;
 @org.hibernate.annotations.NamedQueries(
         @org.hibernate.annotations.NamedQuery(name = "Ingredient.findAll", query = "SELECT c FROM Ingredient c")
 )
+
+/**
+ * @author Jannik Will
+ * @version 1.3
+ */
+
 public class Ingredient {
 
     public final static String findAll = "Ingredient.findAll";

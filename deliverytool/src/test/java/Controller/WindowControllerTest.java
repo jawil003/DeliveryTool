@@ -11,6 +11,11 @@ import org.testfx.framework.junit5.Start;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
+
 public class WindowControllerTest extends ApplicationTest {
     WindowController controller;
 

@@ -21,6 +21,12 @@ import java.io.Serializable;
 @NamedQueries(
         @NamedQuery(name = "Pizza.findAll", query = "SELECT a FROM Pizza a")
 )
+
+/**
+ * @author Jannik Will
+ * @version 1.3
+ */
+
 public class Pizza implements Serializable {
     public final static String findAll = "Pizza.findAll";
     @Id

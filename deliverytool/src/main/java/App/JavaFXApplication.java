@@ -20,12 +20,13 @@ import org.hibernate.service.spi.ServiceException;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author Jannik Will
+ * @version 1.0
+ */
 public class JavaFXApplication extends Application {
 
-    /**
-     * @author Jannik Will
-     * @version 1.0
-     */
+
 
     //path to window fxml file
     private static final String FXML_PATH = "deliverytool/Fxml/Window.fxml";

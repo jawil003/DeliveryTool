@@ -8,6 +8,11 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * @author Jannik Will
+ * @version 1.3
+ */
+
 public class SplashScreenControllerTest extends ApplicationTest {
     SplashScreenController s;
 
@@ -20,6 +25,6 @@ public class SplashScreenControllerTest extends ApplicationTest {
     @Test
     @SneakyThrows
     public void versionLabelNotNull(){
-       assertNotNull(s.getVersionLabel());
+        assertNotNull(s.getVersionLabel());
     }
 }
