@@ -5,29 +5,20 @@
 package Model.Kasse;
 
 import Controller.PizzaSize;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Jannik Will
  * @version 1.3
  */
-
+@NoArgsConstructor(force = true)
+@AllArgsConstructor
 public class OrderedPizza extends RegisterEntry implements Comparable<RegisterEntry> {
 
-    /**
-     * @author Jannik Will
-     * @version 1.0
-     */
-
+    @NotNull
     private PizzaSize groeße;
-
-    /**
-     * Constructor where all values are empty or zero
-     */
-    public OrderedPizza() {
-        this("", 0.0, PizzaSize.Small);
-
-    }
 
     /**
      * @param name
@@ -37,23 +28,13 @@ public class OrderedPizza extends RegisterEntry implements Comparable<RegisterEn
     }
 
     /**
-     * @param name
-     * @param preis
-     * @param size
-     */
-    public OrderedPizza(@NotNull String name, @NotNull Double preis, @NotNull PizzaSize size) {
-        super(name, preis);
-        this.groeße = groeße;
-    }
-
-    /**
      * @return the Size which this Pizza has
      */
     public PizzaSize getGroeße() {
         return groeße;
     }
 
-    public void setGroeße(@NotNull PizzaSize groeße) throws InvalidEntryException {
+    public void setGroeße(@NotNull PizzaSize groeße) {
         this.groeße = groeße;
     }
 

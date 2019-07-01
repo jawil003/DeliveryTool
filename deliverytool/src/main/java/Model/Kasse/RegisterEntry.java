@@ -4,6 +4,8 @@
 
 package Model.Kasse;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 /**
@@ -13,7 +15,9 @@ import java.util.Objects;
 
 public abstract class RegisterEntry implements Comparable<RegisterEntry> {
 
+    @NotNull
     private double preis;
+    @NotNull
     private String name;
 
     /**
