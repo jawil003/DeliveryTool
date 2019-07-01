@@ -4,55 +4,42 @@
 
 package Model.PizzenDB;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-/**
- * @author Jannik Will
- * @version 1.0
- */
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-
+@Entity
+@Table(name = "Zutatenliste")
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(exclude = "id")
+@org.hibernate.annotations.NamedQueries(
+        @org.hibernate.annotations.NamedQuery(name = "Ingredient.findAll", query = "SELECT c FROM Ingredient c")
+)
 public class Ingredient {
 
+    public final static String findAll = "Ingredient.findAll";
+
+    @Id
+    @Column(name = "ID")
+    private int id;
+    @Column(name = "Name")
     private String name;
 
-    /**
-     * @param name
-     */
+    //Constructor(s):
     public Ingredient(String name) {
         this.name = name;
-
     }
 
-    /**
-     * @return the name of the Ingredient
-     */
-    public String getName() {
-        return name;
+    public Ingredient() {
+        this("");
     }
 
-    /**
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ingredient ingredient = (Ingredient) o;
-        return Objects.equals(name, ingredient.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
 }

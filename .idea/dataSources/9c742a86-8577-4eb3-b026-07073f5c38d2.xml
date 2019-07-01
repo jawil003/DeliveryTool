@@ -1181,100 +1181,96 @@
       <ColNames>ID</ColNames>
       <UnderlyingIndexName>ID</UnderlyingIndexName>
     </key>
-    <column id="294" parent="277" name="ID">
+    <column id="294" parent="277" name="PizzaID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="295" parent="277" name="PizzaID">
+    <column id="295" parent="277" name="IngredientID">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="296" parent="277" name="IngredientID">
+    <column id="296" parent="277" name="Amount">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="297" parent="277" name="Amount">
+    <column id="297" parent="277" name="Volume_Unit">
       <Position>4</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="298" parent="277" name="Volume_Unit">
-      <Position>5</Position>
       <DataType>varchar(1)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="299" parent="277" name="FK_PizzaId">
-      <ColNames>PizzaID</ColNames>
-      <Type>btree</Type>
-    </index>
-    <index id="300" parent="277" name="FK_IngredienceId">
+    <index id="298" parent="277" name="FKc58en2gx5a8n1swmu9tda345">
       <ColNames>IngredientID</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="301" parent="277" name="PRIMARY">
+    <key id="299" parent="277" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>ID</ColNames>
+      <ColNames>PizzaID
+IngredientID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="302" parent="277" name="FK_PizzaId">
+    <foreign-key id="300" parent="277" name="FKhghfxg8raskdydyu8o8msxtfn">
       <ColNames>PizzaID</ColNames>
       <RefSchemaName>deliverytool</RefSchemaName>
       <RefTableName>Pizza</RefTableName>
       <RefColNames>ID</RefColNames>
     </foreign-key>
-    <foreign-key id="303" parent="277" name="FK_IngredienceId">
+    <foreign-key id="301" parent="277" name="FK_IngredienceId">
       <ColNames>IngredientID</ColNames>
       <RefSchemaName>deliverytool</RefSchemaName>
       <RefTableName>Zutatenliste</RefTableName>
       <RefColNames>ID</RefColNames>
     </foreign-key>
-    <column id="304" parent="278" name="PizzaId">
+    <foreign-key id="302" parent="277" name="FKc58en2gx5a8n1swmu9tda345">
+      <ColNames>IngredientID</ColNames>
+      <RefSchemaName>deliverytool</RefSchemaName>
+      <RefTableName>Zutatenliste</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="303" parent="278" name="PizzaId">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="305" parent="278" name="ZutatId">
+    <column id="304" parent="278" name="ZutatId">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="306" parent="278" name="Menge">
+    <column id="305" parent="278" name="Menge">
       <Position>3</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="307" parent="278" name="Mengeneinheit">
+    <column id="306" parent="278" name="Mengeneinheit">
       <Position>4</Position>
       <DataType>varchar(2)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="308" parent="279" name="ID">
+    <column id="307" parent="279" name="ID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="309" parent="279" name="Name">
+    <column id="308" parent="279" name="Name">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="310" parent="279" name="PRIMARY">
+    <key id="309" parent="279" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID</ColNames>
       <Primary>1</Primary>

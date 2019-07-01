@@ -37,19 +37,19 @@ public class RowRegisterController implements Initializable {
         switch (size) {
             case Small:
                 this.kasseAnzahlName.setText(pizza.getName() + " (Klein)");
-                this.kassePreis.setText(String.format("%.2f", pizza.getPreisKlein().get()) + "€");
+                this.kassePreis.setText(String.format("%.2f", pizza.getSmallPrice()) + "€");
                 break;
             case Middle:
                 this.kasseAnzahlName.setText(pizza.getName() + " (Mittel)");
-                this.kassePreis.setText(String.format("%.2f", pizza.getPreisMittel().get()) + "€");
+                this.kassePreis.setText(String.format("%.2f", pizza.getMiddlePrice()) + "€");
                 break;
             case Big:
                 this.kasseAnzahlName.setText(pizza.getName() + " (Groß)");
-                this.kassePreis.setText(String.format("%.2f", pizza.getPreisGroß().get()) + "€");
+                this.kassePreis.setText(String.format("%.2f", pizza.getBigPrice()) + "€");
                 break;
             case Family:
                 this.kasseAnzahlName.setText(pizza.getName() + " (Familie)");
-                this.kassePreis.setText(String.format("%.2f", pizza.getPreisFamilie().get()) + "€");
+                this.kassePreis.setText(String.format("%.2f", pizza.getFamilyPrice()) + "€");
                 break;
         }
     }
@@ -57,16 +57,16 @@ public class RowRegisterController implements Initializable {
     public void init(OrderedPizza pizza) {
         switch (pizza.getGroeße()) {
             case Small:
-                init(new Pizza(pizza.getName(), null, pizza.getPreis(), 0.0, 0.0, 0.0), pizza.getGroeße());
+                init(new Pizza(pizza.getName(), pizza.getPreis(), 0.0, 0.0, 0.0), pizza.getGroeße());
                 break;
             case Middle:
-                init(new Pizza(pizza.getName(), null, 0.0, pizza.getPreis(), 0.0, 0.0), pizza.getGroeße());
+                init(new Pizza(pizza.getName(), 0.0, pizza.getPreis(), 0.0, 0.0), pizza.getGroeße());
                 break;
             case Big:
-                init(new Pizza(pizza.getName(), null, 0.0, 0.0, pizza.getPreis(), 0.0), pizza.getGroeße());
+                init(new Pizza(pizza.getName(), 0.0, 0.0, pizza.getPreis(), 0.0), pizza.getGroeße());
                 break;
             case Family:
-                init(new Pizza(pizza.getName(), null, 0.0, 0.0, 0.0, pizza.getPreis()), pizza.getGroeße());
+                init(new Pizza(pizza.getName(), 0.0, 0.0, 0.0, pizza.getPreis()), pizza.getGroeße());
                 break;
         }
 

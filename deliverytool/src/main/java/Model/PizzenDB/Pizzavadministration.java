@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -68,7 +67,6 @@ public class Pizzavadministration {
         //pizzen are loaded out of the mysql database with the help of the heping class MySQLConnect
         sqlConnection = new MySQLConnectHibernate();
         this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzas());
-        this.pizzen.sort(Comparator.comparing(ListEntry::getName));
     }
 
     // method to add a new Pizza Entry (used by the eintraegeHinzufuegen Window)
@@ -84,8 +82,8 @@ public class Pizzavadministration {
         }
 
         this.pizzen.add(pizza);
-        logger.info("Added {} with {}€, {}€, {}€, {}€ and {}", pizza.getName(), pizza.getPreisKlein(),
-                pizza.getPreisMittel(), pizza.getPreisGroß(), pizza.getPreisFamilie(), pizza.getIngridience());
+        logger.info("Added {} with {}€, {}€, {}€, {}€", pizza.getName(), pizza.getSmallPrice(),
+                pizza.getMiddlePrice(), pizza.getBigPrice(), pizza.getFamilyPrice());
 
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.execute(() -> {
@@ -123,8 +121,8 @@ public class Pizzavadministration {
             return;
         }
         final Pizza pizza = pizzen.remove(number);
-        logger.info("Removed {} with {}€, {}€, {}€, {}€ and {}", pizza.getName(), pizza.getPreisKlein(),
-                pizza.getPreisMittel(), pizza.getPreisGroß(), pizza.getPreisFamilie(), pizza.getIngridience());
+        logger.info("Removed {} with {}€, {}€, {}€, {}€", pizza.getName(), pizza.getSmallPrice(),
+                pizza.getMiddlePrice(), pizza.getBigPrice(), pizza.getFamilyPrice());
         if (sqlConnection != null) {
             Platform.runLater(new Runnable() {
                 @Override
@@ -143,8 +141,8 @@ public class Pizzavadministration {
     public void deleteAll() {
         for (Pizza pizza : pizzen) {
             logger.info("Remove all:");
-            logger.info("Removed {} with {}€, {}€, {}€, {}€ and {}", pizza.getName(), pizza.getPreisKlein(),
-                    pizza.getPreisMittel(), pizza.getPreisGroß(), pizza.getPreisFamilie(), pizza.getIngridience());
+            logger.info("Removed {} with {}€, {}€, {}€, {}€ and {}", pizza.getName(), pizza.getSmallPrice(),
+                    pizza.getMiddlePrice(), pizza.getBigPrice(), pizza.getFamilyPrice());
         }
         pizzen.clear();
     }

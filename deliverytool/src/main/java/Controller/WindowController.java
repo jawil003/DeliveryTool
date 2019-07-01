@@ -418,28 +418,20 @@ public class WindowController {
 
     // Listener:
 
-        /**
-         * The Listener which is triggered when the OkButon is pressed */
-        private class OkButtonListener implements EventHandler<ActionEvent> {
+    /**
+     * Add a new Row for a choosed Pizza
+     *
+     * @param pizza Pizza Entry where the price is extracted from
+     * @param size  the Size of the Pizza (1-4 as little - family)
+     * @throws AddingRegisterEntryException When adding the entry gone wrong
+     */
+    private void addRegisterEntry(Pizza pizza, PizzaSize size) throws AddingRegisterEntryException, InvalidEntryException, IOException, NoSuchEntryException {
+        OrderedPizza bp = new OrderedPizza(pizza.getName());
+        bp.setGroeße(size);
+        bp.setPreis(pizza.getSmallPrice());
+        addRegisterEntry(bp);
 
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    pizzavadministration.add(new Pizza(insertPizzaViewController.getNameField().getText(), null,
-                            Double.valueOf(insertPizzaViewController.getPreisKleinField().getText()),
-                            Double.valueOf(insertPizzaViewController.getPreisMittelField().getText()),
-                            Double.valueOf(insertPizzaViewController.getPreisGrossField().getText()),
-                            Double.valueOf(insertPizzaViewController.getPreisFamilieField().getText())));
-                    insertPizzaViewController.close();
-                } catch (NumberFormatException e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.initModality(Modality.WINDOW_MODAL);
-                    alert.setTitle("Preis(e) ungültig");
-                    alert.setHeaderText("Bitte gültige Preis(e) eingeben und alle Felder ausfüllen");
-                    alert.showAndWait();
-                }
-            }
-        }
+    }
 
         /**
          * The Listener is triggered when a new Item is added to the KasseView so that the gesamterPreis
@@ -854,18 +846,27 @@ public class WindowController {
     }
 
     /**
-     * Add a new Row for a choosed Pizza
-     *
-     * @param pizza Pizza Entry where the price is extracted from
-     * @param size  the Size of the Pizza (1-4 as little - family)
-     * @throws AddingRegisterEntryException When adding the entry gone wrong
+     * The Listener which is triggered when the OkButon is pressed
      */
-    private void addRegisterEntry(Pizza pizza, PizzaSize size) throws AddingRegisterEntryException, InvalidEntryException, IOException, NoSuchEntryException {
-        OrderedPizza bp = new OrderedPizza(pizza.getName());
-        bp.setGroeße(size);
-        bp.setPreis(pizza.getPreisKlein().orElse(0.0));
-        addRegisterEntry(bp);
+    private class OkButtonListener implements EventHandler<ActionEvent> {
 
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                pizzavadministration.add(new Pizza(insertPizzaViewController.getNameField().getText(),
+                        Double.valueOf(insertPizzaViewController.getPreisKleinField().getText()),
+                        Double.valueOf(insertPizzaViewController.getPreisMittelField().getText()),
+                        Double.valueOf(insertPizzaViewController.getPreisGrossField().getText()),
+                        Double.valueOf(insertPizzaViewController.getPreisFamilieField().getText())));
+                insertPizzaViewController.close();
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.initModality(Modality.WINDOW_MODAL);
+                alert.setTitle("Preis(e) ungültig");
+                alert.setHeaderText("Bitte gültige Preis(e) eingeben und alle Felder ausfüllen");
+                alert.showAndWait();
+            }
+        }
     }
 
     private void loadKassenEintraege() throws IOException, NoSuchEntryException {

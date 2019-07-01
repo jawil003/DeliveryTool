@@ -9,7 +9,6 @@ import Model.Kasse.OrderedPizza;
 import Model.Kasse.RegisterEntry;
 import Model.Kasse.Registryadministration;
 import Model.PizzenDB.Ingredient;
-import Model.PizzenDB.Pizza;
 import Model.PizzenDB.Pizzavadministration;
 import Tools.LinkFetcher;
 import javafx.collections.ObservableList;
@@ -17,7 +16,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -27,7 +25,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
 
 public class WindowServiceController {
 
@@ -55,25 +52,7 @@ public class WindowServiceController {
         kasseListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                assert (kasseListView.isFocused());
-                if (event.getClickCount() >= 2) {
-                    final Pane selectedItem = kasseListView.getSelectionModel().getSelectedItem();
-                    Pizza search = null;
-                    try {
-                        search = pizzavadministration.search(((Label) selectedItem.lookup("#kasseAnzahlName")).getText());
-                    } catch (NoSuchEntryException e) {
-                        e.printStackTrace();
-                    }
 
-                    assert search != null;
-                    LinkedList<Ingredient> ingredients = search.getIngridience();
-
-                    for (Ingredient e : ingredients) {
-                        zutatenListView.getItems().add(e);
-                    }
-
-
-                }
             }
         });
     }

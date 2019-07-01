@@ -7,7 +7,6 @@ package Controller;
 import Model.PizzenDB.Ingredient;
 import Model.PizzenDB.Ingredientsadministration;
 import Model.PizzenDB.Pizza;
-import Model.PizzenDB.SQLConnectionClasses.MySQL.MySQLPizzaHibernateEntity;
 import Tools.LinkFetcher;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,7 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class InsertPizzaViewController extends MySQLPizzaHibernateEntity {
+public class InsertPizzaViewController extends Pizza {
 
     Pane root;
 
@@ -95,10 +94,7 @@ public class InsertPizzaViewController extends MySQLPizzaHibernateEntity {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() >= 2) {
-                    final int selectedIndex = zutatenView.getSelectionModel().getSelectedIndex();
-                    final Ingredient ingredient = ingredientsadministration.get(selectedIndex);
-                    addHinzugefuegteZutat(ingredient);
-                    pizza.addIngridience(ingredient);
+
                 }
             }
         });
