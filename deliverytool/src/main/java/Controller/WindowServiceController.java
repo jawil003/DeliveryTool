@@ -6,7 +6,6 @@ package Controller;
 
 import Model.Kasse.NoSuchEntryException;
 import Model.Kasse.OrderedPizza;
-import Model.Kasse.RegisterEntry;
 import Model.Kasse.Registryadministration;
 import Model.PizzenDB.Ingredient;
 import Model.PizzenDB.PizzaAdministration;
@@ -69,7 +68,7 @@ public class WindowServiceController {
         final ObservableList<Node> children = root.getChildren();
         children.remove(1);
         root.getChildren().add(pane);
-        for (RegisterEntry m : e.getKassenEintraege()) {
+        for (OrderedPizza m : e.getKassenEintraege()) {
             if (m instanceof OrderedPizza)
                 addKasseListView((OrderedPizza) m);
         }

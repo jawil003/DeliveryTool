@@ -356,8 +356,8 @@ public class WindowController {
             switch (mode){
                 case KassenListView:
                     final int selectedIndex = kasseListview.getSelectionModel().getSelectedIndex();
-                    final RegisterEntry registerEntry = registryadministration.get(selectedIndex);
-                    final int size = registryadministration.getSize(registerEntry);
+                    final OrderedPizza orderedPizza = registryadministration.get(selectedIndex);
+                    final int size = registryadministration.getSize(orderedPizza);
                     if (size>1) {
                         final Label lookup = (Label) kasseListview.getItems().get(selectedIndex).lookup("#kasseAnzahlLabel");
                         lookup.setText(String.valueOf(Integer.valueOf(lookup.getText()) - 1));
@@ -365,7 +365,7 @@ public class WindowController {
                         kasseListview.getItems().remove(selectedIndex);
                     }
 
-                    registryadministration.remove(registerEntry);
+                    registryadministration.remove(orderedPizza);
                     gesamterPreisLabel.setText(registryadministration.toEuroValue());
                     break;
                 case PizzenListView:
@@ -426,13 +426,12 @@ public class WindowController {
      *
      * @param pizza Pizza Entry where the price is extracted from
      * @param size  the Size of the Pizza (1-4 as little - family)
-     * @throws AddingRegisterEntryException When adding the entry gone wrong
+     * @throws AddingOrderedPizzaException When adding the entry gone wrong
      */
-    private void addRegisterEntry(Pizza pizza, PizzaSize size) throws AddingRegisterEntryException, InvalidEntryException, IOException, NoSuchEntryException {
-        OrderedPizza bp = new OrderedPizza(pizza.getName());
+    private void addOrderedPizza(Pizza pizza, PizzaSize size) throws AddingOrderedPizzaException, InvalidEntryException, IOException, NoSuchEntryException {
+        OrderedPizza bp = new OrderedPizza(pizza);
         bp.setGroeße(size);
-        bp.setPreis(pizza.getSmallPrice());
-        addRegisterEntry(bp);
+        addOrderedPizza(bp);
 
     }
 
@@ -487,19 +486,7 @@ public class WindowController {
             }
         }
 
-        class AddingRegisterEntryException extends Exception {
-            AddingRegisterEntryException(String message) {
-                super(message);
-            }
-        }
-
-        class InvalidInstanciationInsertPizzaViewController extends Exception {
-            InvalidInstanciationInsertPizzaViewController(String message) {
-                super(message);
-            }
-        }
-
-    private void readdRegisterEntry(OrderedPizza pizza) throws NoSuchEntryException, IOException {
+    private void readdOrderedPizza(OrderedPizza pizza) throws NoSuchEntryException, IOException {
         FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
 
         RowRegisterController kasseContr = new RowRegisterController();
@@ -513,6 +500,12 @@ public class WindowController {
         this.kasseListview.getItems().add(rootPane);
     }
 
+    class InvalidInstanciationInsertPizzaViewController extends Exception {
+        InvalidInstanciationInsertPizzaViewController(String message) {
+            super(message);
+        }
+    }
+
     /**
      * @param pizza The pizza Entry which should be connected with Listeners of Buttons K,M,B,F
      */
@@ -522,7 +515,7 @@ public class WindowController {
                 .setOnAction(
                         event -> {
                             try {
-                                addRegisterEntry(pizza, PizzaSize.Small);
+                                addOrderedPizza(pizza, PizzaSize.Small);
                                 gesamterPreisLabel.setText(registryadministration.toEuroValue());
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -534,7 +527,7 @@ public class WindowController {
                 .setOnAction(
                         event -> {
                             try {
-                                addRegisterEntry(pizza, PizzaSize.Middle);
+                                addOrderedPizza(pizza, PizzaSize.Middle);
                                 gesamterPreisLabel.setText(registryadministration.toEuroValue());
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -547,9 +540,9 @@ public class WindowController {
                 .setOnAction(
                         event -> {
                             try {
-                                addRegisterEntry(pizza, PizzaSize.Big);
+                                addOrderedPizza(pizza, PizzaSize.Big);
                                 gesamterPreisLabel.setText(registryadministration.toEuroValue());
-                            } catch (AddingRegisterEntryException | IOException | InvalidEntryException | NoSuchEntryException e) {
+                            } catch (AddingOrderedPizzaException | IOException | InvalidEntryException | NoSuchEntryException e) {
                                 e.printStackTrace();
                             }
                         });
@@ -559,12 +552,20 @@ public class WindowController {
                 .setOnAction(
                         event -> {
                             try {
-                                addRegisterEntry(pizza, PizzaSize.Family);
+                                addOrderedPizza(pizza, PizzaSize.Family);
                                 gesamterPreisLabel.setText(registryadministration.toEuroValue());
-                            } catch (AddingRegisterEntryException | InvalidEntryException | IOException | NoSuchEntryException e) {
+                            } catch (AddingOrderedPizzaException | InvalidEntryException | IOException | NoSuchEntryException e) {
                                 e.printStackTrace();
                             }
                         });
+    }
+
+    private void reloadRegistryEntries() throws NoSuchEntryException, IOException {
+        for (OrderedPizza e : registryadministration.getKassenEintraege()) {
+            if (e instanceof OrderedPizza) {
+                readdOrderedPizza((OrderedPizza) e);
+            }
+        }
     }
 
     private class EintragHinzufuegenListener implements EventHandler<ActionEvent> {
@@ -736,26 +737,58 @@ public class WindowController {
         this.scene = scene;
     }
 
-    private class RegistryAdministrationListener implements MapChangeListener<RegisterEntry, Integer> {
-        /**
-         * Called after a change has been made to an ObservableMap.
-         * This method is called on every elementary change (put/remove) once.
-         * This means, complex changes like keySet().removeAll(Collection) or clear()
-         * may result in more than one call of onChanged method.
-         *
-         * @param change the change that was made
-         */
-        @Override
-        public void onChanged(Change<? extends RegisterEntry, ? extends Integer> change) {
-            gesamterPreisLabel.setText(registryadministration.toEuroValue());
+    /**
+     * @param pizza The Entry for which a new RegisterRow is created
+     * @throws IOException
+     * @throws NoSuchEntryException
+     */
+    private void addOrderedPizza(OrderedPizza pizza) throws IOException, NoSuchEntryException {
+
+        if (!registryadministration.contains(pizza)) {
+
+
+            FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
+
+            RowRegisterController kasseContr = new RowRegisterController();
+            loader.setController(kasseContr);
+
+            Pane rootPane = loader.load();
+            kasseContr.init(pizza);
+
+            this.kasseListview.getItems().add(rootPane);
+            registryadministration.addOrderedPizza(pizza);
+        } else {
+            String groese = null;
+            switch (pizza.getGroeße()) {
+                case Small:
+                    groese = "(Klein)";
+                    break;
+                case Middle:
+                    groese = "(Mittel)";
+                    break;
+                case Big:
+                    groese = "(Groß)";
+                    break;
+                case Family:
+                    groese = "(Familie)";
+                    break;
+            }
+            for (Pane p : kasseListview.getItems()) {
+                if (((Label) p.lookup("#kasseAnzahlName")).getText().contains(pizza.getName() + " " + groese)) {
+                    final Label lookup = (Label) p.lookup("#kasseAnzahlLabel");
+                    final int text = Integer.valueOf(lookup.getText());
+                    lookup.setText(String.valueOf(text + 1));
+                    registryadministration.addOrderedPizza(pizza);
+                    return;
+                }
+            }
         }
     }
 
-    private void reloadRegistryEntries() throws NoSuchEntryException, IOException {
-        for (RegisterEntry e : registryadministration.getKassenEintraege()) {
-            if (e instanceof OrderedPizza) {
-                readdRegisterEntry((OrderedPizza) e);
-            }
+    private void loadKassenEintraege() throws IOException, NoSuchEntryException {
+        for (OrderedPizza e : registryadministration.getKassenEintraege()) {
+            if (e instanceof OrderedPizza)
+                addOrderedPizza((OrderedPizza) e);
         }
     }
 
@@ -800,51 +833,9 @@ public class WindowController {
         }
     }
 
-    /**
-     * @param pizza The Entry for which a new RegisterRow is created
-     * @throws IOException
-     * @throws NoSuchEntryException
-     */
-    private void addRegisterEntry(OrderedPizza pizza) throws IOException, NoSuchEntryException {
-
-        if (!registryadministration.contains(pizza)) {
-
-
-            FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
-
-            RowRegisterController kasseContr = new RowRegisterController();
-            loader.setController(kasseContr);
-
-            Pane rootPane = loader.load();
-            kasseContr.init(pizza);
-
-            this.kasseListview.getItems().add(rootPane);
-            registryadministration.addRegisterEntry(pizza);
-        } else {
-            String groese = null;
-            switch (pizza.getGroeße()) {
-                case Small:
-                    groese = "(Klein)";
-                    break;
-                case Middle:
-                    groese = "(Mittel)";
-                    break;
-                case Big:
-                    groese = "(Groß)";
-                    break;
-                case Family:
-                    groese = "(Familie)";
-                    break;
-            }
-            for (Pane p : kasseListview.getItems()) {
-                if (((Label) p.lookup("#kasseAnzahlName")).getText().contains(pizza.getName() + " " + groese)) {
-                    final Label lookup = (Label) p.lookup("#kasseAnzahlLabel");
-                    final int text = Integer.valueOf(lookup.getText());
-                    lookup.setText(String.valueOf(text + 1));
-                    registryadministration.addRegisterEntry(pizza);
-                    return;
-                }
-            }
+    class AddingOrderedPizzaException extends Exception {
+        AddingOrderedPizzaException(String message) {
+            super(message);
         }
     }
 
@@ -872,10 +863,18 @@ public class WindowController {
         }
     }
 
-    private void loadKassenEintraege() throws IOException, NoSuchEntryException {
-        for (RegisterEntry e : registryadministration.getKassenEintraege()) {
-            if (e instanceof OrderedPizza)
-                addRegisterEntry((OrderedPizza) e);
+    private class RegistryAdministrationListener implements MapChangeListener<OrderedPizza, Integer> {
+        /**
+         * Called after a change has been made to an ObservableMap.
+         * This method is called on every elementary change (put/remove) once.
+         * This means, complex changes like keySet().removeAll(Collection) or clear()
+         * may result in more than one call of onChanged method.
+         *
+         * @param change the change that was made
+         */
+        @Override
+        public void onChanged(Change<? extends OrderedPizza, ? extends Integer> change) {
+            gesamterPreisLabel.setText(registryadministration.toEuroValue());
         }
     }
 

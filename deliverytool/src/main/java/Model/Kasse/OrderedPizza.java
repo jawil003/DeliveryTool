@@ -5,66 +5,72 @@
 package Model.Kasse;
 
 import Controller.PizzaSize;
-import lombok.AllArgsConstructor;
+import Model.PizzenDB.Pizza;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+
+import javax.persistence.*;
 
 /**
  * @author Jannik Will
  * @version 1.3
  */
 @NoArgsConstructor(force = true)
-@AllArgsConstructor
-public class OrderedPizza extends RegisterEntry implements Comparable<RegisterEntry> {
+@Getter
+@Entity
+@Table(name = "RegisterEntries")
+public class OrderedPizza implements Comparable<OrderedPizza> {
 
+    @EmbeddedId
+    private RegistryEntryPizzaID id;
+    @ManyToOne
+    @JoinColumns(
+            @JoinColumn(name = "PizzaID", insertable = false, updatable = false)
+    )
+    private Pizza pizza;
     @NotNull
+    @Setter
+    @Column(name = "Pizza_Size")
     private PizzaSize groeße;
+    @Setter
+    @Column(name = "Pizza_Counter")
+    private long counter;
 
-    /**
-     * @param name
-     */
-    public OrderedPizza(@NotNull String name) {
-        super(name);
+    public OrderedPizza(long pizzaId) {
+        this.id = new RegistryEntryPizzaID(pizzaId);
     }
 
-    /**
-     * @return the Size which this Pizza has
-     */
-    public PizzaSize getGroeße() {
-        return groeße;
+    public OrderedPizza(Pizza p) {
+        this(p.getId());
+        pizza = p;
     }
 
-    public void setGroeße(@NotNull PizzaSize groeße) {
-        this.groeße = groeße;
+    public String getName() {
+        if (pizza == null) {
+            return "";
+        }
+        return pizza.getName();
     }
 
-    /**
-     * @return the Parameters as String Collection
-     */
-    @Override
-    public String toString() {
-        return super.toString();
+    public double getPreis() {
+        if (pizza == null) {
+            return 0;
+        }
+        switch (groeße) {
+            case Small:
+                return pizza.getSmallPrice();
+            case Middle:
+                return pizza.getMiddlePrice();
+            case Big:
+                return pizza.getBigPrice();
+            case Family:
+                return pizza.getFamilyPrice();
+        }
+
+        return 0;
     }
-
-
-    public String toEuroValue() {
-        return String.format("%.2f", getPreis()) + "€";
-    }
-
-    /**
-     * @param o
-     * @return true (if the values of both compared OrderedPizza is matching), else false
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        OrderedPizza that = (OrderedPizza) o;
-        return groeße == that.groeße;
-    }
-
-
     /**
      * Compares this object with the specified object for order.  Returns a
      * negative integer, zero, or a positive integer as this object is less
@@ -104,11 +110,11 @@ public class OrderedPizza extends RegisterEntry implements Comparable<RegisterEn
      *                              from being compared to this object.
      */
     @Override
-    public int compareTo(@NotNull RegisterEntry o) {
-        if(o instanceof OrderedPizza){
-            return super.compareTo(o) + (groeße.compareTo(((OrderedPizza) o).getGroeße()));
-        }else {
-            return super.compareTo(o);
-        }
+    public int compareTo(@NotNull OrderedPizza o) {
+        int one = Integer.valueOf(String.valueOf(id.getPizzaId() + id.getRegistryEntryId()));
+        int two = Integer.valueOf(String.valueOf(o.getId().getPizzaId() + o.getId().getPizzaId()));
+
+        return one - two;
     }
+
 }

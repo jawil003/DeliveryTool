@@ -1100,10 +1100,10 @@
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
     <table id="275" parent="2" name="Factory"/>
-    <table id="276" parent="2" name="Pizza"/>
-    <table id="277" parent="2" name="Pizza_Ingredience_Relation"/>
-    <table id="278" parent="2" name="ZutatPizza"/>
-    <table id="279" parent="2" name="Zutatenliste"/>
+    <table id="276" parent="2" name="Ingredients"/>
+    <table id="277" parent="2" name="Pizza"/>
+    <table id="278" parent="2" name="Pizza_Ingredience_Relation"/>
+    <table id="279" parent="2" name="RegisterEntries"/>
     <column id="280" parent="275" name="ControlName">
       <Position>1</Position>
       <DataType>varchar(50)|0s</DataType>
@@ -1143,137 +1143,153 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="287" parent="276" name="PreisKlein">
-      <Position>3</Position>
-      <DataType>double|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="288" parent="276" name="PreisMittel">
-      <Position>4</Position>
-      <DataType>double|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="289" parent="276" name="PreisGroß">
-      <Position>5</Position>
-      <DataType>double|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="290" parent="276" name="PreisFamilie">
-      <Position>6</Position>
-      <DataType>double|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="291" parent="276" name="ID">
-      <ColNames>ID</ColNames>
-      <Unique>1</Unique>
-      <Type>btree</Type>
-    </index>
-    <key id="292" parent="276" name="PRIMARY">
+    <key id="287" parent="276" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="293" parent="276" name="ID">
-      <ColNames>ID</ColNames>
-      <UnderlyingIndexName>ID</UnderlyingIndexName>
-    </key>
-    <column id="294" parent="277" name="PizzaID">
-      <Position>1</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="295" parent="277" name="IngredientID">
-      <Position>2</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="296" parent="277" name="Amount">
-      <Position>3</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="297" parent="277" name="Volume_Unit">
-      <Position>4</Position>
-      <DataType>varchar(1)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="298" parent="277" name="FKc58en2gx5a8n1swmu9tda345">
-      <ColNames>IngredientID</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="299" parent="277" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>PizzaID
-IngredientID</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="300" parent="277" name="FKhghfxg8raskdydyu8o8msxtfn">
-      <ColNames>PizzaID</ColNames>
-      <RefSchemaName>deliverytool</RefSchemaName>
-      <RefTableName>Pizza</RefTableName>
-      <RefColNames>ID</RefColNames>
-    </foreign-key>
-    <foreign-key id="301" parent="277" name="FK_IngredienceId">
-      <ColNames>IngredientID</ColNames>
-      <RefSchemaName>deliverytool</RefSchemaName>
-      <RefTableName>Zutatenliste</RefTableName>
-      <RefColNames>ID</RefColNames>
-    </foreign-key>
-    <foreign-key id="302" parent="277" name="FKc58en2gx5a8n1swmu9tda345">
-      <ColNames>IngredientID</ColNames>
-      <RefSchemaName>deliverytool</RefSchemaName>
-      <RefTableName>Zutatenliste</RefTableName>
-      <RefColNames>ID</RefColNames>
-    </foreign-key>
-    <column id="303" parent="278" name="PizzaId">
-      <Position>1</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="304" parent="278" name="ZutatId">
-      <Position>2</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="305" parent="278" name="Menge">
-      <Position>3</Position>
-      <DataType>double|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="306" parent="278" name="Mengeneinheit">
-      <Position>4</Position>
-      <DataType>varchar(2)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="307" parent="279" name="ID">
+    <column id="288" parent="277" name="ID">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="308" parent="279" name="Name">
+    <column id="289" parent="277" name="Name">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="309" parent="279" name="PRIMARY">
+    <column id="290" parent="277" name="PreisKlein">
+      <Position>3</Position>
+      <DataType>double|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="291" parent="277" name="PreisMittel">
+      <Position>4</Position>
+      <DataType>double|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="292" parent="277" name="PreisGroß">
+      <Position>5</Position>
+      <DataType>double|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="293" parent="277" name="PreisFamilie">
+      <Position>6</Position>
+      <DataType>double|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="294" parent="277" name="ID">
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="295" parent="277" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
+    <key id="296" parent="277" name="ID">
+      <ColNames>ID</ColNames>
+      <UnderlyingIndexName>ID</UnderlyingIndexName>
+    </key>
+    <column id="297" parent="278" name="PizzaID">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="298" parent="278" name="IngredientID">
+      <Position>2</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="299" parent="278" name="Amount">
+      <Position>3</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="300" parent="278" name="Volume_Unit">
+      <Position>4</Position>
+      <DataType>varchar(1)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="301" parent="278" name="FKc58en2gx5a8n1swmu9tda345">
+      <ColNames>IngredientID</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="302" parent="278" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>PizzaID
+IngredientID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="303" parent="278" name="FKhghfxg8raskdydyu8o8msxtfn">
+      <ColNames>PizzaID</ColNames>
+      <RefSchemaName>deliverytool</RefSchemaName>
+      <RefTableName>Pizza</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="304" parent="278" name="FK_IngredienceId">
+      <ColNames>IngredientID</ColNames>
+      <RefSchemaName>deliverytool</RefSchemaName>
+      <RefTableName>Ingredients</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="305" parent="278" name="FKc58en2gx5a8n1swmu9tda345">
+      <ColNames>IngredientID</ColNames>
+      <RefSchemaName>deliverytool</RefSchemaName>
+      <RefTableName>Ingredients</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="306" parent="279" name="RegisterEntryID">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="307" parent="279" name="PizzaID">
+      <Position>2</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="308" parent="279" name="Pizza_Counter">
+      <Position>3</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="309" parent="279" name="Pizza_Size">
+      <Position>4</Position>
+      <DataType>varchar(1)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="310" parent="279" name="FK_PizzaId_idx">
+      <ColNames>PizzaID</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="311" parent="279" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>RegisterEntryID
+PizzaID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="312" parent="279" name="FK_PizzaId">
+      <ColNames>PizzaID</ColNames>
+      <RefSchemaName>deliverytool</RefSchemaName>
+      <RefTableName>Pizza</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
   </database-model>
 </dataSource>

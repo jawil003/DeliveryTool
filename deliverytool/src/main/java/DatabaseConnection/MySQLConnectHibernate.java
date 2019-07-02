@@ -72,6 +72,14 @@ public class MySQLConnectHibernate implements SQLConnection {
         }
     }
 
+    public Pizza getPizza(Long id) {
+        createSessionIfNecessary();
+        beginTransaction();
+        final Pizza pizza = session.get(Pizza.class, id);
+        session.close();
+        return pizza;
+    }
+
     private void beginTransaction() {
         session.beginTransaction();
         logger.debug("Beginning the transaction");

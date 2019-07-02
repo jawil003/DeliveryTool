@@ -18,9 +18,10 @@ import java.io.Serializable;
 @Setter
 @ToString(exclude = "id")
 @EqualsAndHashCode(exclude = "id")
-@NamedQueries(
-        @NamedQuery(name = "Pizza.findAll", query = "SELECT a FROM Pizza a")
-)
+@NamedQueries({
+        @NamedQuery(name = "Pizza.findAll", query = "SELECT a FROM Pizza a"),
+        @NamedQuery(name = "Pizza.findById", query = "SELECT a FROM Pizza a where id=:id")
+})
 
 /**
  * @author Jannik Will
@@ -29,9 +30,11 @@ import java.io.Serializable;
 
 public class Pizza implements Serializable {
     public final static String findAll = "Pizza.findAll";
+    public final static String findById = "Pizza.findById";
     @Id
     @Column(name = "ID")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @Column(name = "Name")
     private String name;
     @Column(name = "PreisKlein")

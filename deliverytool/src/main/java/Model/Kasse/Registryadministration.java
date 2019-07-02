@@ -4,6 +4,8 @@
 
 package Model.Kasse;
 
+import DatabaseConnection.MySQLConnectHibernate;
+import DatabaseConnection.SQLConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -25,9 +27,11 @@ public class Registryadministration {
 
     private double gesamterPreis;
 
-    private ObservableMap<RegisterEntry, Integer> kassenEintraege;
+    private ObservableMap<OrderedPizza, Integer> kassenEintraege;
 
     private Logger logger;
+
+    private SQLConnection connection;
 
 
     /**
@@ -37,13 +41,14 @@ public class Registryadministration {
         kassenEintraege = FXCollections.observableHashMap();
         addListener();
         logger = LoggerFactory.getLogger(this.getClass());
+        connection = MySQLConnectHibernate.getInstance();
     }
 
     private void addListener() {
-        kassenEintraege.addListener(new MapChangeListener<RegisterEntry, Integer>() {
+        kassenEintraege.addListener(new MapChangeListener<OrderedPizza, Integer>() {
             @Override
-            public void onChanged(Change<? extends RegisterEntry, ? extends Integer> change) {
-                final RegisterEntry key = change.getKey();
+            public void onChanged(Change<? extends OrderedPizza, ? extends Integer> change) {
+                final OrderedPizza key = change.getKey();
                 final Integer valueAdded = change.getValueAdded();
                 final Integer valueRemoved = change.getValueRemoved();
                 if(valueRemoved!=null)
@@ -58,7 +63,7 @@ public class Registryadministration {
         kassenEintraege.addListener(listener);
     }
 
-    public int getSize(RegisterEntry entry) throws NoSuchEntryException {
+    public int getSize(OrderedPizza entry) throws NoSuchEntryException {
         final Integer integer = kassenEintraege.get(entry);
 
         if (integer==null){
@@ -71,9 +76,9 @@ public class Registryadministration {
     /**
      * @return the Obervablelist of KassenEintraege
      */
-    public ObservableList<RegisterEntry> getKassenEintraege() {
-        ObservableList<RegisterEntry> l = FXCollections.observableArrayList();
-        for (RegisterEntry e : kassenEintraege.keySet()) {
+    public ObservableList<OrderedPizza> getKassenEintraege() {
+        ObservableList<OrderedPizza> l = FXCollections.observableArrayList();
+        for (OrderedPizza e : kassenEintraege.keySet()) {
             l.add(e);
         }
 
@@ -85,9 +90,9 @@ public class Registryadministration {
      * @return The Value from the Set which contains entry
      * @throws NoSuchEntryException when Element isn't stored yet
      */
-    public RegisterEntry get(RegisterEntry entry) throws NoSuchEntryException {
-        final Iterator<RegisterEntry> iterator = kassenEintraege.keySet().iterator();
-        RegisterEntry next;
+    public OrderedPizza get(OrderedPizza entry) throws NoSuchEntryException {
+        final Iterator<OrderedPizza> iterator = kassenEintraege.keySet().iterator();
+        OrderedPizza next;
         while (iterator.hasNext()) {
             next = iterator.next();
             if (next.equals(entry)) {
@@ -105,13 +110,13 @@ public class Registryadministration {
     }
 
     /**
-     * @param index The position of the RegisterEntry in the Set
+     * @param index The position of the OrderedPizza in the Set
      * @return The Element if it is there
      * @throws NoSuchEntryException If no such Element is in Set this Exception is thrown
      */
-    public RegisterEntry get(int index) throws NoSuchEntryException {
+    public OrderedPizza get(int index) throws NoSuchEntryException {
         int i = 0;
-        for (RegisterEntry e : kassenEintraege.keySet()) {
+        for (OrderedPizza e : kassenEintraege.keySet()) {
             if (i == index) {
                 return e;
             }
@@ -125,13 +130,13 @@ public class Registryadministration {
      * @param entry The Entry which should be in the Set
      * @return True if the Entry is in there, else false
      */
-    public boolean contains(RegisterEntry entry) {
+    public boolean contains(OrderedPizza entry) {
 
         return kassenEintraege.keySet().contains(entry);
 
     }
 
-    public void remove(RegisterEntry entry) throws NoSuchEntryException {
+    public void remove(OrderedPizza entry) throws NoSuchEntryException {
         boolean remove = false;
         final int size = getSize(entry);
         if (size == 1) {
@@ -154,12 +159,16 @@ public class Registryadministration {
     }
 
     /**
-     * Add a new RegisterEntry to the List
-     * @param entry The RegisterEntry which should be added
+     * Add a new OrderedPizza to the List
+     * @param entry The OrderedPizza which should be added
      */
-    public void addRegisterEntry(RegisterEntry entry) throws NoSuchEntryException {
+    /**
+     * @todo Kasseneintraege to database
+     * @body Create DB Connection to add Kasseneintraege to database
+     */
+    public void addOrderedPizza(OrderedPizza entry) throws NoSuchEntryException {
         assert (entry!=null);
-        final Set<RegisterEntry> registerEntries = kassenEintraege.keySet();
+        final Set<OrderedPizza> registerEntries = kassenEintraege.keySet();
 
         if(kassenEintraege.containsKey(entry)){
             final Integer entrySize = kassenEintraege.get(entry);
@@ -176,9 +185,13 @@ public class Registryadministration {
         }
     }
 
-    public RegisterEntry remove(int index) {
-        final Iterator<RegisterEntry> iterator = kassenEintraege.keySet().iterator();
-        RegisterEntry e = null;
+    /**
+     * @todo Kasseneintraege to database
+     * @body Create DB Connection to remove Kasseneintraege to database
+     */
+    public OrderedPizza remove(int index) {
+        final Iterator<OrderedPizza> iterator = kassenEintraege.keySet().iterator();
+        OrderedPizza e = null;
         for (int i = 0; i <= index && i < kassenEintraege.size(); i++) {
             e = iterator.next();
         }

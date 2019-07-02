@@ -15,7 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Zutatenliste")
+@Table(name = "Ingredients")
 @Getter
 @Setter
 @ToString
