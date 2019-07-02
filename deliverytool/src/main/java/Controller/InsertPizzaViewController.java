@@ -31,7 +31,7 @@ import java.nio.file.Paths;
  * @version 1.0
  */
 
-public class InsertPizzaViewController extends Pizza {
+public class InsertPizzaViewController {
 
     Pane root;
 
@@ -103,10 +103,6 @@ public class InsertPizzaViewController extends Pizza {
                 }
             }
         });
-    }
-
-    public void loadDBEntries() {
-
     }
 
     void init(Stage parent) throws IOException {

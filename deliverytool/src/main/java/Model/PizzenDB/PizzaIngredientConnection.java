@@ -18,7 +18,7 @@ import java.io.Serializable;
 @ToString(exclude = "id")
 @EqualsAndHashCode(exclude = "id")
 @NamedQueries({
-        @NamedQuery(name = "PizzaIngredientConnection.getById", query = "from PizzaIngredientConnection where id.pizzaId=:id"),
+        @NamedQuery(name = "PizzaIngredientConnection.getByPizzaId", query = "from PizzaIngredientConnection where id.pizzaId=:id"),
         @NamedQuery(name = "PizzaIngredientConnection.deleteByPizzaId", query = "delete from PizzaIngredientConnection where id.pizzaId =:id"),
         @NamedQuery(name = "PizzaIngredientConnection.deleteByIngredientId", query = "delete from PizzaIngredientConnection where id.ingredientId =:id"),
         @NamedQuery(name = "PizzaIngredientConnection.deleteAll", query = "delete from PizzaIngredientConnection ")
@@ -31,7 +31,7 @@ import java.io.Serializable;
 
 public class PizzaIngredientConnection implements Serializable {
 
-    public final static String getById = "PizzaIngredientConnection.getById";
+    public final static String getByPizzaId = "PizzaIngredientConnection.getByPizzaId";
     public final static String deleteByPizzaId = "PizzaIngredientConnection.deleteByPizzaId";
     public final static String deleteByIngredientId = "PizzaIngredientConnection.deleteByIngredientId";
     public final static String deleteAll = "PizzaIngredientConnection.deleteAll";

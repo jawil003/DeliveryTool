@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,6 +38,7 @@ public class PizzaAdministration {
     private ObservableList<Pizza> pizzen;
     private SQLConnection sqlConnection;
     private Logger logger;
+    private static PizzaAdministration pizzaAdministration;
 
     // Constructors:
 
@@ -48,9 +50,17 @@ public class PizzaAdministration {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    public PizzaAdministration() {
+    private PizzaAdministration() {
         this(new LinkedList<>());
         logger = LoggerFactory.getLogger(this.getClass());
+    }
+
+    public static PizzaAdministration getInstance() {
+        if (pizzaAdministration == null) {
+            pizzaAdministration = new PizzaAdministration();
+        }
+
+        return pizzaAdministration;
     }
 
     /**
@@ -73,6 +83,20 @@ public class PizzaAdministration {
         //pizzen are loaded out of the mysql database with the help of the heping class MySQLConnect
         sqlConnection = MySQLConnectHibernate.getInstance();
         this.pizzen = FXCollections.observableArrayList(sqlConnection.getPizzas());
+    }
+
+    public Pizza getPizzaById(long id) throws NoSuchEntryException {
+        final ListIterator<Pizza> pizzaListIterator = pizzen.listIterator();
+
+        while (pizzaListIterator.hasNext()) {
+            final Pizza next = pizzaListIterator.next();
+
+            if (next.getId() == id) {
+                return next;
+            }
+        }
+
+        throw new NoSuchEntryException("This Entry isn't stored");
     }
 
     // method to add a new Pizza Entry (used by the eintraegeHinzufuegen Window)

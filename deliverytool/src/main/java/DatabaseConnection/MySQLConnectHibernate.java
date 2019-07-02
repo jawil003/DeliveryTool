@@ -6,16 +6,19 @@ package DatabaseConnection;
 
 import Model.PizzenDB.Ingredient;
 import Model.PizzenDB.Pizza;
+import Model.PizzenDB.PizzaIngredientConnection;
 import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -41,6 +44,20 @@ public class MySQLConnectHibernate implements SQLConnection {
         logger = LoggerFactory.getLogger(this.getClass());
         setup();
         session = sessionFactory.openSession();
+    }
+
+    public List<Ingredient> getIngredientConnectionsByPizzaId(long pizzaId) {
+        createSessionIfNecessary();
+        beginTransaction();
+        final Query<PizzaIngredientConnection> namedQuery = session.createNamedQuery(PizzaIngredientConnection.getByPizzaId, PizzaIngredientConnection.class);
+        namedQuery.setParameter("id", pizzaId);
+        final List<PizzaIngredientConnection> list = namedQuery.list();
+        LinkedList<Ingredient> ingredience = new LinkedList<>();
+        for (PizzaIngredientConnection p : list) {
+            ingredience.add(p.getIngredient());
+        }
+
+        return ingredience;
     }
 
     public static MySQLConnectHibernate getInstance() {

@@ -28,4 +28,6 @@ public interface SQLConnection {
     boolean isRunning();
 
     List<Ingredient> getZutaten();
+
+    List<Ingredient> getIngredientConnectionsByPizzaId(long pizzaId);
 }
