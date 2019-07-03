@@ -25,11 +25,17 @@ public class ObservableLinkedHashMultiSet<E> {
         linkedHashMultiset = LinkedHashMultiset.create();
     }
 
+    /**
+     * @param e Adds one occurency of the specified element
+     */
     public void add(E e) {
         linkedHashMultiset.add(e);
         addedChangedetect(e);
     }
 
+    /**
+     * @param e Create an addingchange for the specified Element
+     */
     private void addedChangedetect(E e) {
         if (listeners != null) {
             for (SetChangeListener<E> m : listeners) {
@@ -38,6 +44,9 @@ public class ObservableLinkedHashMultiSet<E> {
         }
     }
 
+    /**
+     * @param e Create an removingchange for the specified Element
+     */
     private void removeChangedetect(E e) {
         if (listeners != null) {
             for (SetChangeListener<E> m : listeners) {
@@ -46,11 +55,18 @@ public class ObservableLinkedHashMultiSet<E> {
         }
     }
 
+    /**
+     * @param e           Adds the specified number of occurrences of the specified element
+     * @param occurencies the specified number of occurrences added
+     */
     public void add(E e, int occurencies) {
         linkedHashMultiset.add(e, occurencies);
         addedChangedetect(e);
     }
 
+    /**
+     * @param listener the Listener added to observe the MultiSet
+     */
     public void addListener(SetChangeListener<E> listener) {
         if (listeners == null) {
             listeners = new LinkedList<>();
@@ -60,33 +76,80 @@ public class ObservableLinkedHashMultiSet<E> {
 
     }
 
+    /**
+     * @param listener the Listener removed to observe the MultiSet
+     * @return wheather the listener was successful removed or not
+     */
+    public boolean removeListener(SetChangeListener<E> listener) {
+        if (listeners == null) {
+            return false;
+        }
+
+        return listeners.remove(listener);
+
+    }
+
+    /**
+     * @param e Element which number of occurrences should be removed
+     * @return wheather the element was removed or not
+     */
     public boolean remove(E e) {
         removeChangedetect(e);
         return linkedHashMultiset.remove(e);
     }
 
+    /**
+     * @param e Element which number of occurrences should be removed
+     * @param occurencies number of occurrences should be removed
+     * @return the old number of occurrences of the Element
+     */
     public int remove(E e, int occurencies) {
         removeChangedetect(e);
         return linkedHashMultiset.remove(e, occurencies);
     }
 
+    /**
+     * @return a Set<Multiset.Entry<E>>, containing entries supporting getElement() and getCount()
+     */
     public Set<Multiset.Entry<E>> entrySet() {
         return linkedHashMultiset.entrySet();
     }
 
+    /**
+     * @return the distinct elements of a Multiset<E> as a Set<E>
+     */
     public Set<E> elementSet() {
         return linkedHashMultiset.elementSet();
 
     }
 
+    /**
+     * @return the total number of occurrences of all elements in the Multiset
+     */
     public int size() {
         return linkedHashMultiset.size();
     }
 
+    /**
+     * @param e Element which number of occurrences needed
+     * @return the number of occurrences of an element that have been added to this multiset
+     */
     public int count(E e) {
         return linkedHashMultiset.count(e);
     }
 
+    /**
+     * @param e     Element which number of occurrences wanted to set
+     * @param count the new number of ooccurrences
+     * @return the oldCount of the Element
+     */
+    public int setCount(E e, int count) {
+        return linkedHashMultiset.setCount(e, count);
+    }
+
+    /**
+     * Remove all Elements from the Multiset
+     */
     public void clear() {
         linkedHashMultiset.clear();
     }
