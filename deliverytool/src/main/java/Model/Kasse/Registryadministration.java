@@ -39,6 +39,7 @@ public class Registryadministration {
         kassenEintraege = new ObservableLinkedHashMultiSet<>();
         logger = LoggerFactory.getLogger(this.getClass());
         connection = MySQLConnectHibernate.getInstance();
+        addListener();
     }
 
     public static Registryadministration getInstance() {
@@ -47,6 +48,16 @@ public class Registryadministration {
         }
 
         return registryadministration;
+    }
+
+    private void addListener() {
+        kassenEintraege.addListener(change -> {
+            if (change.wasRemoved()) {
+                gesamterPreis -= change.getElementRemoved().getPreis();
+            } else if (change.wasAdded()) {
+                gesamterPreis += change.getElementAdded().getPreis();
+            }
+        });
     }
 
     public int getSize(OrderedPizza entry) {
