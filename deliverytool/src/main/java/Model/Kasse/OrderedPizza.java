@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
 package Model.Kasse;
 
 import Controller.PizzaSize;
-import Model.PizzenDB.Pizza;
+import Model.Pizzen.Pizza;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

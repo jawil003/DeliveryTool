@@ -1,20 +1,17 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
 package Model.Kasse;
 
+import Collections.ObservableLinkedHashMultiSet;
 import DatabaseConnection.MySQLConnectHibernate;
 import DatabaseConnection.SQLConnection;
-import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
+import javafx.collections.SetChangeListener;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -27,62 +24,40 @@ public class Registryadministration {
 
     private double gesamterPreis;
 
-    private ObservableMap<OrderedPizza, Integer> kassenEintraege;
+    private static Registryadministration registryadministration;
 
     private Logger logger;
 
     private SQLConnection connection;
+    private ObservableLinkedHashMultiSet<OrderedPizza> kassenEintraege;
 
 
     /**
      * Contructor where the Registryadministration is initalized
      */
-    public Registryadministration() {
-        kassenEintraege = FXCollections.observableHashMap();
-        addListener();
+    private Registryadministration() {
+        kassenEintraege = new ObservableLinkedHashMultiSet<>();
         logger = LoggerFactory.getLogger(this.getClass());
         connection = MySQLConnectHibernate.getInstance();
     }
 
-    private void addListener() {
-        kassenEintraege.addListener(new MapChangeListener<OrderedPizza, Integer>() {
-            @Override
-            public void onChanged(Change<? extends OrderedPizza, ? extends Integer> change) {
-                final OrderedPizza key = change.getKey();
-                final Integer valueAdded = change.getValueAdded();
-                final Integer valueRemoved = change.getValueRemoved();
-                if(valueRemoved!=null)
-                    gesamterPreis -= key.getPreis() * valueRemoved;
-                if (valueAdded != null)
-                    gesamterPreis += key.getPreis() * valueAdded;
-            }
-        });
-    }
-
-    public void addListener(MapChangeListener listener){
-        kassenEintraege.addListener(listener);
-    }
-
-    public int getSize(OrderedPizza entry) throws NoSuchEntryException {
-        final Integer integer = kassenEintraege.get(entry);
-
-        if (integer==null){
-            throw new NoSuchEntryException("This Entry does not exist in here");
-        }else{
-            return integer;
+    public static Registryadministration getInstance() {
+        if (registryadministration == null) {
+            registryadministration = new Registryadministration();
         }
+
+        return registryadministration;
+    }
+
+    public int getSize(OrderedPizza entry) {
+        return kassenEintraege.count(entry);
     }
 
     /**
      * @return the Obervablelist of KassenEintraege
      */
-    public ObservableList<OrderedPizza> getKassenEintraege() {
-        ObservableList<OrderedPizza> l = FXCollections.observableArrayList();
-        for (OrderedPizza e : kassenEintraege.keySet()) {
-            l.add(e);
-        }
-
-        return l;
+    public Set<OrderedPizza> getKassenEintraege() {
+        return kassenEintraege.elementSet();
     }
 
     /**
@@ -91,17 +66,13 @@ public class Registryadministration {
      * @throws NoSuchEntryException when Element isn't stored yet
      */
     public OrderedPizza get(OrderedPizza entry) throws NoSuchEntryException {
-        final Iterator<OrderedPizza> iterator = kassenEintraege.keySet().iterator();
-        OrderedPizza next;
-        while (iterator.hasNext()) {
-            next = iterator.next();
-            if (next.equals(entry)) {
-                return next;
+        for (OrderedPizza e : kassenEintraege.elementSet()) {
+            if (e.equals(entry)) {
+                return e;
             }
-
         }
 
-        throw new NoSuchEntryException("This Entry does not exist in here");
+        throw new NoSuchEntryException("Element does not exist in here");
 
     }
 
@@ -116,7 +87,7 @@ public class Registryadministration {
      */
     public OrderedPizza get(int index) throws NoSuchEntryException {
         int i = 0;
-        for (OrderedPizza e : kassenEintraege.keySet()) {
+        for (OrderedPizza e : kassenEintraege.elementSet()) {
             if (i == index) {
                 return e;
             }
@@ -132,30 +103,14 @@ public class Registryadministration {
      */
     public boolean contains(OrderedPizza entry) {
 
-        return kassenEintraege.keySet().contains(entry);
+        return kassenEintraege.elementSet().contains(entry);
 
     }
 
     public void remove(OrderedPizza entry) throws NoSuchEntryException {
-        boolean remove = false;
-        final int size = getSize(entry);
-        if (size == 1) {
-            remove = kassenEintraege.keySet().remove(entry);
-        } else {
-            kassenEintraege.put(entry, size - 1);
-            remove = true;
-        }
+        kassenEintraege.remove(entry);
+        logger.info("Removed Pizza={} with Price={} and Size={}", entry.getName(), entry.getPreis(), entry.getGroeße());
 
-        if (!remove) {
-            throw new NoSuchEntryException("This Entry does not exist in here");
-        }
-
-        if (entry instanceof OrderedPizza) {
-            final OrderedPizza pizza = (OrderedPizza) entry;
-            logger.info("Removed Pizza={} with Price={} and Size={}", pizza.getName(), pizza.getPreis(), pizza.getGroeße());
-        } else {
-            logger.info("Removed Pizza={} with Price={}", entry.getName(), entry.getPreis());
-        }
     }
 
     /**
@@ -166,43 +121,11 @@ public class Registryadministration {
      * @todo Kasseneintraege to database
      * @body Create DB Connection to add Kasseneintraege to database
      */
-    public void addOrderedPizza(OrderedPizza entry) throws NoSuchEntryException {
+    public void add(OrderedPizza entry) throws NoSuchEntryException {
         assert (entry!=null);
-        final Set<OrderedPizza> registerEntries = kassenEintraege.keySet();
+        kassenEintraege.add(entry);
+        logger.info("Added Pizza={} with Price={} and Size={}", entry.getName(), entry.getPreis(), entry.getGroeße());
 
-        if(kassenEintraege.containsKey(entry)){
-            final Integer entrySize = kassenEintraege.get(entry);
-            kassenEintraege.put(entry, entrySize+1);
-        }else{
-            kassenEintraege.put(entry, 1);
-        }
-
-        if (entry instanceof OrderedPizza) {
-            final OrderedPizza pizza = (OrderedPizza) entry;
-            logger.info("Added Pizza={} with Price={} and Size={}", pizza.getName(), pizza.getPreis(), pizza.getGroeße());
-        } else {
-            logger.info("Added Pizza={} with Price={}", entry.getName(), entry.getPreis());
-        }
-    }
-
-    /**
-     * @todo Kasseneintraege to database
-     * @body Create DB Connection to remove Kasseneintraege to database
-     */
-    public OrderedPizza remove(int index) {
-        final Iterator<OrderedPizza> iterator = kassenEintraege.keySet().iterator();
-        OrderedPizza e = null;
-        for (int i = 0; i <= index && i < kassenEintraege.size(); i++) {
-            e = iterator.next();
-        }
-        kassenEintraege.remove(e);
-        if (e instanceof OrderedPizza) {
-            final OrderedPizza pizza = (OrderedPizza) e;
-            logger.info("Removed Pizza={} with Price={} and Size={}", pizza.getName(), pizza.getPreis(), pizza.getGroeße());
-        } else {
-            logger.info("Removed Pizza={} with Price={}", e.getName(), e.getPreis());
-        }
-        return e;
     }
 
     public double getGesamterPreis() {
@@ -225,6 +148,10 @@ public class Registryadministration {
 
     public String toEuroValue() {
         return String.format("%.2f", gesamterPreis) + "€";
+    }
+
+    public void addListener(SetChangeListener<OrderedPizza> setChangeListener) {
+        kassenEintraege.addListener(setChangeListener);
     }
 
     /*public void createPDF(String path, double gesamterPreis) throws IOException, URISyntaxException {

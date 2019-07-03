@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
 package Controller;
 
-import Model.PizzenDB.Ingredient;
-import Model.PizzenDB.Ingredientsadministration;
-import Model.PizzenDB.Pizza;
+import Model.Pizzen.Ingredient;
+import Model.Pizzen.Ingredientsadministration;
+import Model.Pizzen.Pizza;
 import Tools.LinkFetcher;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

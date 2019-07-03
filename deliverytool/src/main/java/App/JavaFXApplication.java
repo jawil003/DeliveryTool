@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
 package App;
@@ -7,8 +7,8 @@ package App;
 import Controller.WindowController;
 import DatabaseConnection.MySQLConnectHibernate;
 import Model.Kasse.Registryadministration;
-import Model.PizzenDB.Ingredientsadministration;
-import Model.PizzenDB.PizzaAdministration;
+import Model.Pizzen.Ingredientsadministration;
+import Model.Pizzen.PizzaAdministration;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -60,9 +60,9 @@ public class JavaFXApplication extends Application {
         super.init();
 
         try {
-            verw = new PizzaAdministration();
+            verw = PizzaAdministration.getInstance();
             verw.connectToDB();
-            verwk = new Registryadministration();
+            verwk = Registryadministration.getInstance();
             ingredientsadministration = Ingredientsadministration.getInstance();
             ingredientsadministration.loadDBEntries();
         } catch (ServiceException e) {

@@ -1,20 +1,20 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
 package Controller;
 
 import App.JavaFXApplication;
 import Model.Kasse.*;
-import Model.PizzenDB.Ingredient;
-import Model.PizzenDB.Ingredientsadministration;
-import Model.PizzenDB.Pizza;
-import Model.PizzenDB.PizzaAdministration;
+import Model.Pizzen.Ingredient;
+import Model.Pizzen.Ingredientsadministration;
+import Model.Pizzen.Pizza;
+import Model.Pizzen.PizzaAdministration;
 import Tools.LinkFetcher;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
-import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.SetChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -97,8 +97,8 @@ public class WindowController {
      */
     public WindowController() {
 
-        pizzaAdministration = new PizzaAdministration();
-        registryadministration = new Registryadministration();
+        pizzaAdministration = PizzaAdministration.getInstance();
+        registryadministration = Registryadministration.getInstance();
         ingredientsadministration = Ingredientsadministration.getInstance();
     }
 
@@ -467,24 +467,53 @@ public class WindowController {
             }
         }
 
+    /**
+     * @param pizza The Entry for which a new RegisterRow is created
+     * @throws IOException
+     * @throws NoSuchEntryException
+     */
+    private void addOrderedPizza(OrderedPizza pizza) throws IOException, NoSuchEntryException {
 
-        private class BonDruckenListener implements EventHandler<ActionEvent> {
+        if (!registryadministration.contains(pizza)) {
 
-            @Override
-            public void handle(ActionEvent event) {
-                FileChooser chooser = new FileChooser();
-                chooser.setTitle("Rechnung speichern unter");
-                chooser.setInitialFileName("Rechnung.pdf");
-                try {
-                    final double gesamterPreis = registryadministration.getGesamterPreis();
-                    BonCreator creator = new BonCreator(registryadministration, gesamterPreis , (chooser.showSaveDialog(primaryStage.getScene().getWindow())).getAbsolutePath());
-                    creator.addPizzas(registryadministration.getKassenEintraege(), gesamterPreis);
-                    creator.close();
-                } catch (IOException | URISyntaxException e) {
-                    e.printStackTrace();
+
+            FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
+
+            RowRegisterController kasseContr = new RowRegisterController();
+            loader.setController(kasseContr);
+
+            Pane rootPane = loader.load();
+            kasseContr.init(pizza);
+
+            this.kasseListview.getItems().add(rootPane);
+            registryadministration.add(pizza);
+        } else {
+            String groese = null;
+            switch (pizza.getGroeße()) {
+                case Small:
+                    groese = "(Klein)";
+                    break;
+                case Middle:
+                    groese = "(Mittel)";
+                    break;
+                case Big:
+                    groese = "(Groß)";
+                    break;
+                case Family:
+                    groese = "(Familie)";
+                    break;
+            }
+            for (Pane p : kasseListview.getItems()) {
+                if (((Label) p.lookup("#kasseAnzahlName")).getText().contains(pizza.getName() + " " + groese)) {
+                    final Label lookup = (Label) p.lookup("#kasseAnzahlLabel");
+                    final int text = Integer.valueOf(lookup.getText());
+                    lookup.setText(String.valueOf(text + 1));
+                    registryadministration.add(pizza);
+                    return;
                 }
             }
         }
+    }
 
     private void readdOrderedPizza(OrderedPizza pizza) throws NoSuchEntryException, IOException {
         FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
@@ -737,50 +766,20 @@ public class WindowController {
         this.scene = scene;
     }
 
-    /**
-     * @param pizza The Entry for which a new RegisterRow is created
-     * @throws IOException
-     * @throws NoSuchEntryException
-     */
-    private void addOrderedPizza(OrderedPizza pizza) throws IOException, NoSuchEntryException {
+    private class BonDruckenListener implements EventHandler<ActionEvent> {
 
-        if (!registryadministration.contains(pizza)) {
-
-
-            FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
-
-            RowRegisterController kasseContr = new RowRegisterController();
-            loader.setController(kasseContr);
-
-            Pane rootPane = loader.load();
-            kasseContr.init(pizza);
-
-            this.kasseListview.getItems().add(rootPane);
-            registryadministration.addOrderedPizza(pizza);
-        } else {
-            String groese = null;
-            switch (pizza.getGroeße()) {
-                case Small:
-                    groese = "(Klein)";
-                    break;
-                case Middle:
-                    groese = "(Mittel)";
-                    break;
-                case Big:
-                    groese = "(Groß)";
-                    break;
-                case Family:
-                    groese = "(Familie)";
-                    break;
-            }
-            for (Pane p : kasseListview.getItems()) {
-                if (((Label) p.lookup("#kasseAnzahlName")).getText().contains(pizza.getName() + " " + groese)) {
-                    final Label lookup = (Label) p.lookup("#kasseAnzahlLabel");
-                    final int text = Integer.valueOf(lookup.getText());
-                    lookup.setText(String.valueOf(text + 1));
-                    registryadministration.addOrderedPizza(pizza);
-                    return;
-                }
+        @Override
+        public void handle(ActionEvent event) {
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle("Rechnung speichern unter");
+            chooser.setInitialFileName("Rechnung.pdf");
+            try {
+                final double gesamterPreis = registryadministration.getGesamterPreis();
+                BonCreator creator = new BonCreator(registryadministration, gesamterPreis, (chooser.showSaveDialog(primaryStage.getScene().getWindow())).getAbsolutePath());
+                //creator.addPizzas(registryadministration.getKassenEintraege(), gesamterPreis);
+                creator.close();
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -863,7 +862,7 @@ public class WindowController {
         }
     }
 
-    private class RegistryAdministrationListener implements MapChangeListener<OrderedPizza, Integer> {
+    private class RegistryAdministrationListener implements SetChangeListener<OrderedPizza> {
         /**
          * Called after a change has been made to an ObservableMap.
          * This method is called on every elementary change (put/remove) once.
@@ -873,7 +872,7 @@ public class WindowController {
          * @param change the change that was made
          */
         @Override
-        public void onChanged(Change<? extends OrderedPizza, ? extends Integer> change) {
+        public void onChanged(Change<? extends OrderedPizza> change) {
             gesamterPreisLabel.setText(registryadministration.toEuroValue());
         }
     }

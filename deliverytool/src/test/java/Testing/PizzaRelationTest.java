@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) Jannik Will and Albert Munsch
+ */
+
 package Testing;
 
-import Model.PizzenDB.PizzaIngredientConnection;
+import Model.Pizzen.PizzaIngredientConnection;
 import lombok.SneakyThrows;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

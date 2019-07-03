@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
 package Controller;
 
 import Model.Kasse.OrderedPizza;
-import Model.PizzenDB.Pizza;
+import Model.Pizzen.Pizza;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;

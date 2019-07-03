@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
-package Model.PizzenDB;
+package Model.Pizzen;
 
 import org.junit.jupiter.api.Test;
 

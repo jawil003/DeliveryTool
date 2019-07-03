@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
 package DatabaseConnection;
 
-import Model.PizzenDB.Ingredient;
-import Model.PizzenDB.Pizza;
-import Model.PizzenDB.PizzaIngredientConnection;
+import Model.Pizzen.Ingredient;
+import Model.Pizzen.Pizza;
+import Model.Pizzen.PizzaIngredientConnection;
 import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;

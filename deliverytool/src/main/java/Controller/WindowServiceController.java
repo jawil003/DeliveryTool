@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
 package Controller;
@@ -7,8 +7,8 @@ package Controller;
 import Model.Kasse.NoSuchEntryException;
 import Model.Kasse.OrderedPizza;
 import Model.Kasse.Registryadministration;
-import Model.PizzenDB.Ingredient;
-import Model.PizzenDB.PizzaAdministration;
+import Model.Pizzen.Ingredient;
+import Model.Pizzen.PizzaAdministration;
 import Tools.LinkFetcher;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;

@@ -1,4 +1,8 @@
-package Model.PizzenDB;
+/*
+ * Copyright (c) Jannik Will and Albert Munsch
+ */
+
+package Model.Pizzen;
 
 import DatabaseConnection.MySQLConnectHibernate;
 import DatabaseConnection.SQLConnection;

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) Jannik Will and Albert Munsch
+  -->
+
 <Configuration status="WARN" monitorInterval="30">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
@@ -9,7 +13,7 @@
         <Root level="error">
             <AppenderRef ref="Console"/>
         </Root>
-        <Logger name="Model.PizzenDB.PizzaAdministration" level="info" additivity="false">
+        <Logger name="Model.Pizzen.PizzaAdministration" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="Model.Kasse.Registryadministration" level="info" additivity="false">

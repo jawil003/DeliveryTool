@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
-package Model.PizzenDB;
+package Model.Pizzen;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ class PizzaAdministrationTest {
 
     @Test
     public void addPizzen() throws Exception {
-        pizzaAdministration = new PizzaAdministration();
+        pizzaAdministration = PizzaAdministration.getInstance();
         pizzaAdministration.add(new Pizza("Salami", 5.0, 10.0, 15.0, 20.0));
         pizzaAdministration.add(new Pizza("Schinken", 5.0, 10.0, 15.0, 20.0));
         pizzaAdministration.add(new Pizza("Hawaii", 5.0, 10.0, 15.0, 20.0));
@@ -34,7 +34,7 @@ class PizzaAdministrationTest {
 
     @Test
     public void addPizzenDuplicate() {
-        pizzaAdministration = new PizzaAdministration();
+        pizzaAdministration = PizzaAdministration.getInstance();
         pizzaAdministration.add(new Pizza("Salami", 5.0, 10.0, 15.0, 20.0));
         pizzaAdministration.add(new Pizza("Salami", 5.0, 10.0, 15.0, 20.0));
         pizzaAdministration.add(new Pizza("Salami", 5.0, 10.0, 15.0, 20.0));
@@ -45,7 +45,7 @@ class PizzaAdministrationTest {
 
     @Test
     public void deletePizzaNegative() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-        pizzaAdministration = new PizzaAdministration();
+        pizzaAdministration = PizzaAdministration.getInstance();
         pizzaAdministration.delete(-1);
     }
 

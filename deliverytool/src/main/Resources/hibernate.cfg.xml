@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2019. Jannik Will und Albert Munsch
+  ~ Copyright (c) Jannik Will and Albert Munsch
   -->
 
 <!DOCTYPE hibernate-configuration PUBLIC
@@ -23,8 +23,8 @@
         <property name="hbm2ddl.auto">update</property>
 
 
-        <mapping class="Model.PizzenDB.Pizza"/>
-        <mapping class="Model.PizzenDB.Ingredient"/>
-        <mapping class="Model.PizzenDB.PizzaIngredientConnection"/>
+        <mapping class="Model.Pizzen.Pizza"/>
+        <mapping class="Model.Pizzen.Ingredient"/>
+        <mapping class="Model.Pizzen.PizzaIngredientConnection"/>
     </session-factory>
 </hibernate-configuration>
