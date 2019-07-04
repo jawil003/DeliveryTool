@@ -151,7 +151,11 @@ public class ObservableLinkedHashMultiSet<E> {
      * Remove all Elements from the Multiset
      */
     public void clear() {
-        linkedHashMultiset.clear();
+        for (Multiset.Entry<E> p : linkedHashMultiset.entrySet()) {
+            while (p.getCount() > 0) {
+                remove(p.getElement());
+            }
+        }
     }
 
     public class AddSetChange<E> extends SetChangeListener.Change<E> {

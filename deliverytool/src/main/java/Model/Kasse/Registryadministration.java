@@ -96,6 +96,10 @@ public class Registryadministration {
 
     }
 
+    /**
+     * @todo Fixing needed
+     * @body Error when use this method trough "Alles Löschen" Gesamter Preis != 0€
+     */
     public void clear() {
         kassenEintraege.clear();
     }

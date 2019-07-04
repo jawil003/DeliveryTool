@@ -1,35 +1,27 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
 .button:pressed {
-    -fx-border-color: dodgerblue !important;
-}
-
-.button {
-    -fx-border-width: 2.5px;
-    -fx-border-radius: 3;
+    /*-fx-background-color: dodgerblue !important;*/
 }
 
 
 #kleinButton {
-    -fx-background-color: red;
-    /* -fx-border-color: red;*/
+    -fx-color: red;
 }
 
 
 #mittelButton {
-    -fx-background-color: orange;
-    /*-fx-border-color: orange;*/
+    -fx-color: orange;
+
 }
 
 #grossButton {
-    -fx-background-color: yellow;
-    /*-fx-border-color: yellow;*/
+    -fx-color: yellow;
 }
 
 #familieButton {
-    -fx-background-color: green;
-    /*-fx-border-color: green;*/
+    -fx-color: green;
 }
 
