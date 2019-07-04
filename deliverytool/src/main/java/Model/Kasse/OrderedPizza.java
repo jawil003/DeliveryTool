@@ -6,6 +6,7 @@ package Model.Kasse;
 
 import Controller.PizzaSize;
 import Model.Pizzen.Pizza;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "RegisterEntries")
+@EqualsAndHashCode(exclude = "id")
 public class OrderedPizza implements Comparable<OrderedPizza> {
 
     @EmbeddedId

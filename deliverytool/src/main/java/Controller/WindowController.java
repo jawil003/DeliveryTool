@@ -545,7 +545,6 @@ public class WindowController {
                         event -> {
                             try {
                                 addOrderedPizza(pizza, PizzaSize.Small);
-                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -557,7 +556,6 @@ public class WindowController {
                         event -> {
                             try {
                                 addOrderedPizza(pizza, PizzaSize.Middle);
-                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -570,7 +568,6 @@ public class WindowController {
                         event -> {
                             try {
                                 addOrderedPizza(pizza, PizzaSize.Big);
-                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
                             } catch (AddingOrderedPizzaException | IOException | InvalidEntryException | NoSuchEntryException e) {
                                 e.printStackTrace();
                             }
@@ -582,7 +579,6 @@ public class WindowController {
                         event -> {
                             try {
                                 addOrderedPizza(pizza, PizzaSize.Family);
-                                gesamterPreisLabel.setText(registryadministration.toEuroValue());
                             } catch (AddingOrderedPizzaException | InvalidEntryException | IOException | NoSuchEntryException e) {
                                 e.printStackTrace();
                             }
