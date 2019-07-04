@@ -6,6 +6,7 @@ package DatabaseConnection;
 
 import Model.Pizzen.Ingredient;
 import Model.Pizzen.Pizza;
+import Model.Pizzen.PizzaIngredientConnection;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -24,6 +25,8 @@ public interface SQLConnection {
     void addPizza(Pizza pizza);
 
     void addIngredience(Ingredient e);
+
+    void setIngredientConnection(PizzaIngredientConnection connection);
 
     boolean isRunning();
 

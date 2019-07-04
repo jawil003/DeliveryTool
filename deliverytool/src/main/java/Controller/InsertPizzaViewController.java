@@ -4,6 +4,7 @@
 
 package Controller;
 
+import Model.Kasse.NoSuchEntryException;
 import Model.Pizzen.Ingredient;
 import Model.Pizzen.Ingredientsadministration;
 import Model.Pizzen.Pizza;
@@ -87,8 +88,7 @@ public class InsertPizzaViewController {
     }
 
     private void loadIngrediences() {
-        for (int i = 0; i < ingredientsadministration.getSize(); i++) {
-            final Ingredient ingredient = ingredientsadministration.get(i);
+        for (Ingredient ingredient : ingredientsadministration.getList()) {
             addZutat(ingredient);
 
         }
@@ -105,7 +105,7 @@ public class InsertPizzaViewController {
         });
     }
 
-    void init(Stage parent) throws IOException {
+    void init(Stage parent) throws IOException, NoSuchEntryException {
         addListener();
         current = new Stage();
         current.setTitle("Pizza hinzufügen");

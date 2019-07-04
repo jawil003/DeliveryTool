@@ -6,6 +6,7 @@ package Model.Pizzen;
 
 import DatabaseConnection.MySQLConnectHibernate;
 import DatabaseConnection.SQLConnection;
+import Model.Kasse.NoSuchEntryException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +56,10 @@ public class Ingredientsadministration {
         sqlConnection = MySQLConnectHibernate.getInstance();
     }
 
+    public boolean contains(Ingredient ingredient) {
+        return zutaten.contains(ingredient);
+    }
+
     /**
      * @param e
      */
@@ -68,6 +73,10 @@ public class Ingredientsadministration {
         executor.execute(() -> {
             sqlConnection.addIngredience(e);
         });
+    }
+
+    public ObservableList<Ingredient> getList() {
+        return FXCollections.unmodifiableObservableList(zutaten);
     }
 
     /**
@@ -111,11 +120,17 @@ public class Ingredientsadministration {
     }
 
     /**
-     * @param number
+     * @param ingredientId
      * @return
      */
-    public Ingredient get(int number) {
-        return zutaten.get(number);
+    public Ingredient get(long ingredientId) throws NoSuchEntryException {
+        for (Ingredient e : zutaten) {
+            if (e.getId() == ingredientId) {
+                return e;
+            }
+        }
+
+        throw new NoSuchEntryException("There is no such Ingredient Entry");
     }
 
     /**

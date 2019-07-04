@@ -73,6 +73,13 @@ public class MySQLConnectHibernate implements SQLConnection {
         }
     }
 
+    public void setIngredientConnection(PizzaIngredientConnection connection) {
+        createSessionIfNecessary();
+        beginTransaction();
+        session.save(connection);
+        commitAndcloseSession();
+    }
+
     /**
      * Set up the connection to the mySQL Database.
      *

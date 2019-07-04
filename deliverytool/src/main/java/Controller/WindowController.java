@@ -299,7 +299,7 @@ public class WindowController {
 
 
         /** @throws IOException */
-        private void eintragHinzufuegen() throws IOException {
+        private void eintragHinzufuegen() throws IOException, NoSuchEntryException {
             //FXMLLoader loader = new FXMLLoader(new File("deliverytool/Fxml/InsertNewPizzaView.fxml").toURI().toURL());
             Pizza pizza = new Pizza();
             final InsertPizzaViewController insertPizzaViewController = new InsertPizzaViewController(pizza, ingredientsadministration);
@@ -608,7 +608,7 @@ public class WindowController {
         public void handle(ActionEvent event) {
             try {
                 eintragHinzufuegen();
-            } catch (IOException e) {
+            } catch (IOException | NoSuchEntryException e) {
                 e.printStackTrace();
             }
         }
