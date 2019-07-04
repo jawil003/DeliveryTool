@@ -4,24 +4,39 @@
 
 package Model.Pizzen;
 
-import org.junit.jupiter.api.Test;
+import javafx.collections.FXCollections;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.api.support.membermodification.MemberModifier;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.powermock.api.mockito.PowerMockito.spy;
 
 /**
  * @author Jannik Will
  * @version 1.0
  */
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Ingredientsadministration.class)
 public class IngredientsadministrationTest {
-    private Ingredientsadministration ingredientsadministration;
+    @Mock
+    private static Ingredientsadministration ingredientsadministration;
+
+    @BeforeClass
+    public static void prepare() throws Exception {
+        ingredientsadministration = spy(Ingredientsadministration.getInstance());
+        MemberModifier.field(ingredientsadministration.getClass(), "zutaten").set(ingredientsadministration, FXCollections.observableArrayList());
+    }
 
     @Test
     public void addZutaten() {
-        ingredientsadministration = Ingredientsadministration.getInstance();
-        ingredientsadministration.deleteAll();
         ingredientsadministration.add(new Ingredient("Petersilie"));
         ingredientsadministration.add(new Ingredient("Oregano"));
         ingredientsadministration.add(new Ingredient("Kümmel"));

@@ -7,10 +7,10 @@ package Controller;
 import Model.Pizzen.Ingredientsadministration;
 import Model.Pizzen.Pizza;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
+import org.junit.Test;
+import org.testfx.framework.junit.ApplicationTest;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Jannik Will

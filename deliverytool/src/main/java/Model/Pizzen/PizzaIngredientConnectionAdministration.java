@@ -61,7 +61,7 @@ public class PizzaIngredientConnectionAdministration {
         }
     }
 
-    private class IdOutOfRangeException extends Throwable {
+    public class IdOutOfRangeException extends Exception {
         public IdOutOfRangeException(String message) {
             super(message);
         }

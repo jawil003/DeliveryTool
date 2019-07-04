@@ -34,8 +34,9 @@ public class Ingredientsadministration {
      *
      */
     private Ingredientsadministration() {
-        this.zutaten = FXCollections.observableArrayList();
         logger = LoggerFactory.getLogger(this.getClass());
+        connectToDB();
+        zutaten = FXCollections.observableArrayList(sqlConnection.getZutaten());
 
     }
 
@@ -50,9 +51,8 @@ public class Ingredientsadministration {
     /**
      *
      */
-    public void loadDBEntries() throws ServiceException {
+    public void connectToDB() throws ServiceException {
         sqlConnection = MySQLConnectHibernate.getInstance();
-        zutaten = FXCollections.observableArrayList(sqlConnection.getZutaten());
     }
 
     /**

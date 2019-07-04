@@ -1,12 +1,16 @@
+/*
+ * Copyright (c) Jannik Will and Albert Munsch
+ */
+
 package Controller;
 
 import Preloader.SplashScreenController;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
+import org.junit.Test;
+import org.testfx.framework.junit.ApplicationTest;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Jannik Will

@@ -64,7 +64,7 @@ public class JavaFXApplication extends Application {
             verw.connectToDB();
             verwk = Registryadministration.getInstance();
             ingredientsadministration = Ingredientsadministration.getInstance();
-            ingredientsadministration.loadDBEntries();
+            ingredientsadministration.connectToDB();
         } catch (ServiceException e) {
             dbConnectionEstablished = false;
         }

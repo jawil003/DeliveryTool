@@ -2,27 +2,27 @@
  * Copyright (c) Jannik Will and Albert Munsch
  */
 
-package Testing;
+package Model.Pizzen;
 
-import Model.Pizzen.Ingredient;
-import Model.Pizzen.PizzaAdministration;
-import Model.Pizzen.PizzaIngredientConnectionAdministration;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.Set;
+
+import static org.junit.Assert.fail;
+
 
 /**
  * @author Jannik Will
  * @version 1.0
  */
 
-public class PizzaRelationTest {
+public class PizzaIngredientConnectionAdministrationTest {
     private static PizzaIngredientConnectionAdministration pizzaIngredientConnectionAdministration;
     private static PizzaAdministration pizzaAdministration;
 
-    @BeforeAll
+    @BeforeClass
     public static void prepare() {
         pizzaAdministration = PizzaAdministration.getInstance();
         pizzaIngredientConnectionAdministration = PizzaIngredientConnectionAdministration.getInstance();
@@ -40,12 +40,18 @@ public class PizzaRelationTest {
     public void loadEntries() {
         final Set<Ingredient> ingrediencesByPizzaId = pizzaIngredientConnectionAdministration.getIngrediencesByPizzaId(1);
         System.out.println(ingrediencesByPizzaId);
-        assert (ingrediencesByPizzaId.size() == 1);
+        assert (ingrediencesByPizzaId.size() >= 1);
     }
 
     @Test
     @SneakyThrows
     public void loadEntriesFromUnvalidId() {
-        final Set<Ingredient> ingrediencesByPizzaId = pizzaIngredientConnectionAdministration.getIngrediencesByPizzaId(-1);
+        try {
+            pizzaIngredientConnectionAdministration.getIngrediencesByPizzaId(-1);
+        } catch (PizzaIngredientConnectionAdministration.IdOutOfRangeException e) {
+            return;
+        }
+
+        fail("Negative Id isn't catched properly");
     }
 }

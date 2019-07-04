@@ -1,15 +1,14 @@
 /*
- * Copyright (c) 2019. Jannik Will und Albert Munsch
+ * Copyright (c) Jannik Will and Albert Munsch
  */
 
 package Controller;
 
 import javafx.stage.Stage;
-import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
-import org.testfx.framework.junit5.Start;
+import org.junit.Test;
+import org.testfx.framework.junit.ApplicationTest;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Jannik Will
@@ -19,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class WindowControllerTest extends ApplicationTest {
     WindowController controller;
 
-
-    @Start
     public void start(Stage primaryStage) throws Exception {
         controller = new WindowController();
         controller.loadFXMLItemsAgain();
