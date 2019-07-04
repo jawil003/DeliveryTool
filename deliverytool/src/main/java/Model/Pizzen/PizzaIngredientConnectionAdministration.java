@@ -46,9 +46,24 @@ public class PizzaIngredientConnectionAdministration {
         }
     }
 
-    public Set<Ingredient> getIngrediencesByPizzaId(long pizzaId) throws NoSuchEntryException {
-        final PizzaAdministration instance = PizzaAdministration.getInstance();
-        final Pizza pizzaById = instance.getPizzaById(pizzaId);
-        return connections.get(pizzaById);
+    public Set<Ingredient> getIngrediencesByPizzaId(long pizzaId) throws NoSuchEntryException, IdOutOfRangeException {
+        if (pizzaId >= 0) {
+            final PizzaAdministration instance = PizzaAdministration.getInstance();
+            Pizza pizzaById;
+            try {
+                pizzaById = instance.getPizzaById(pizzaId);
+            } catch (NoSuchEntryException e) {
+                throw new NoSuchEntryException("There is no Pizza with this Id in Database");
+            }
+            return connections.get(pizzaById);
+        } else {
+            throw new IdOutOfRangeException("This Index is unvalid, because it is negative");
+        }
+    }
+
+    private class IdOutOfRangeException extends Throwable {
+        public IdOutOfRangeException(String message) {
+            super(message);
+        }
     }
 }

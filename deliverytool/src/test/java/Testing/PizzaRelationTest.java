@@ -4,13 +4,14 @@
 
 package Testing;
 
-import Model.Pizzen.PizzaIngredientConnection;
+import Model.Pizzen.Ingredient;
+import Model.Pizzen.PizzaAdministration;
+import Model.Pizzen.PizzaIngredientConnectionAdministration;
 import lombok.SneakyThrows;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 /**
  * @author Jannik Will
@@ -18,22 +19,33 @@ import org.junit.jupiter.api.Test;
  */
 
 public class PizzaRelationTest {
-    private static SessionFactory factory;
+    private static PizzaIngredientConnectionAdministration pizzaIngredientConnectionAdministration;
+    private static PizzaAdministration pizzaAdministration;
 
     @BeforeAll
     public static void prepare() {
-        factory = new Configuration().configure().buildSessionFactory();
-
+        pizzaAdministration = PizzaAdministration.getInstance();
+        pizzaIngredientConnectionAdministration = PizzaIngredientConnectionAdministration.getInstance();
     }
 
     //WARNING: Just an test for Relation not an actual JUnitTest
     @Test
     @SneakyThrows
     public void addPizzaIngredience() {
-        final Session session = factory.openSession();
-        session.beginTransaction();
-        PizzaIngredientConnection pizzaIngredientConnection = new PizzaIngredientConnection(1, 1);
-        session.save(pizzaIngredientConnection);
-        session.getTransaction().commit();
+
+    }
+
+    @Test
+    @SneakyThrows
+    public void loadEntries() {
+        final Set<Ingredient> ingrediencesByPizzaId = pizzaIngredientConnectionAdministration.getIngrediencesByPizzaId(1);
+        System.out.println(ingrediencesByPizzaId);
+        assert (ingrediencesByPizzaId.size() == 1);
+    }
+
+    @Test
+    @SneakyThrows
+    public void loadEntriesFromUnvalidId() {
+        final Set<Ingredient> ingrediencesByPizzaId = pizzaIngredientConnectionAdministration.getIngrediencesByPizzaId(-1);
     }
 }

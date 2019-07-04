@@ -53,6 +53,7 @@ public class PizzaAdministration {
     private PizzaAdministration() {
         this(new LinkedList<>());
         logger = LoggerFactory.getLogger(this.getClass());
+        connectToDB();
     }
 
     public static PizzaAdministration getInstance() {

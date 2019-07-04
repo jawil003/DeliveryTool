@@ -68,7 +68,7 @@ public class WindowServiceController {
         final ObservableList<Node> children = root.getChildren();
         children.remove(1);
         root.getChildren().add(pane);
-        for (OrderedPizza m : e.getKassenEintraege()) {
+        for (OrderedPizza m : e.getRegisterEntriesUnique()) {
             if (m instanceof OrderedPizza)
                 addKasseListView((OrderedPizza) m);
         }

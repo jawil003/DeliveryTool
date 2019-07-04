@@ -590,7 +590,7 @@ public class WindowController {
     }
 
     private void reloadRegistryEntries() throws NoSuchEntryException, IOException {
-        for (OrderedPizza e : registryadministration.getKassenEintraege()) {
+        for (OrderedPizza e : registryadministration.getRegisterEntriesUnique()) {
             if (e instanceof OrderedPizza) {
                 readdOrderedPizza((OrderedPizza) e);
             }
@@ -766,6 +766,13 @@ public class WindowController {
         this.scene = scene;
     }
 
+    private void loadKassenEintraege() throws IOException, NoSuchEntryException {
+        for (OrderedPizza e : registryadministration.getRegisterEntriesUnique()) {
+            if (e instanceof OrderedPizza)
+                addOrderedPizza((OrderedPizza) e);
+        }
+    }
+
     private class BonDruckenListener implements EventHandler<ActionEvent> {
 
         @Override
@@ -776,18 +783,11 @@ public class WindowController {
             try {
                 final double gesamterPreis = registryadministration.getGesamterPreis();
                 BonCreator creator = new BonCreator(registryadministration, gesamterPreis, (chooser.showSaveDialog(primaryStage.getScene().getWindow())).getAbsolutePath());
-                //creator.addPizzas(registryadministration.getKassenEintraege(), gesamterPreis);
+                //creator.addPizzas(registryadministration.getRegisterEntriesUnique(), gesamterPreis);
                 creator.close();
             } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private void loadKassenEintraege() throws IOException, NoSuchEntryException {
-        for (OrderedPizza e : registryadministration.getKassenEintraege()) {
-            if (e instanceof OrderedPizza)
-                addOrderedPizza((OrderedPizza) e);
         }
     }
 

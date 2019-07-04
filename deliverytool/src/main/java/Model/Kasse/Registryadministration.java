@@ -7,6 +7,7 @@ package Model.Kasse;
 import Collections.ObservableLinkedHashMultiSet;
 import DatabaseConnection.MySQLConnectHibernate;
 import DatabaseConnection.SQLConnection;
+import com.google.common.collect.Multiset;
 import javafx.collections.SetChangeListener;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -65,10 +66,18 @@ public class Registryadministration {
     }
 
     /**
-     * @return the Obervablelist of KassenEintraege
+     * @return the distinct elements of a ObservableMultiset<E> as a Set<E>
      */
-    public Set<OrderedPizza> getKassenEintraege() {
+    public Set<OrderedPizza> getRegisterEntriesUnique() {
         return kassenEintraege.elementSet();
+    }
+
+    /**
+     * @return a Set<Multiset.Entry<E>>, containing entries supporting getElement() and getCount()
+     */
+    public Set<Multiset.Entry<Model.Kasse.OrderedPizza>> getRegisterEntriesUniqueWithSize() {
+        final Set<Multiset.Entry<Model.Kasse.OrderedPizza>> entries = kassenEintraege.entrySet();
+        return entries;
     }
 
     /**

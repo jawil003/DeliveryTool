@@ -43,7 +43,6 @@ public class MySQLConnectHibernate implements SQLConnection {
     private MySQLConnectHibernate() throws ServiceException {
         logger = LoggerFactory.getLogger(this.getClass());
         setup();
-        session = sessionFactory.openSession();
     }
 
     public List<Ingredient> getIngredientConnectionsByPizzaId(long pizzaId) {
@@ -56,7 +55,7 @@ public class MySQLConnectHibernate implements SQLConnection {
         for (PizzaIngredientConnection p : list) {
             ingredience.add(p.getIngredient());
         }
-
+        closeSession();
         return ingredience;
     }
 
@@ -83,6 +82,9 @@ public class MySQLConnectHibernate implements SQLConnection {
      * @throws ClassNotFoundException
      */
     private void createSessionIfNecessary() {
+        if (session == null) {
+            session = sessionFactory.openSession();
+        }
         if (!session.isOpen()) {
             session = sessionFactory.openSession();
             logger.debug("Open Session={}", session);
@@ -93,7 +95,7 @@ public class MySQLConnectHibernate implements SQLConnection {
         createSessionIfNecessary();
         beginTransaction();
         final Pizza pizza = session.get(Pizza.class, id);
-        session.close();
+        closeSession();
         return pizza;
     }
 
@@ -116,6 +118,12 @@ public class MySQLConnectHibernate implements SQLConnection {
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
+            closeSession();
+        }
+    }
+
+    private void closeSession() {
+        if (session.isOpen()) {
             session.close();
         }
     }
@@ -144,8 +152,6 @@ public class MySQLConnectHibernate implements SQLConnection {
     }
 
     private Pizza executeTransaction(Pizza p) {
-        createSessionIfNecessary();
-        beginTransaction();
         Pizza entity = new Pizza(p.getName(), p.getSmallPrice(), p.getMiddlePrice(), p.getBigPrice(), p.getFamilyPrice());
         logger.debug("Convert Pizza={} to Pizza={}", p, entity);
         return entity;
@@ -153,7 +159,6 @@ public class MySQLConnectHibernate implements SQLConnection {
     }
 
     private Ingredient executeTransaction(Ingredient e) {
-        beginTransaction();
         Ingredient entity = new Ingredient(e.getName());
         logger.debug("Convert Ingredient={} to Ingredient={}", e, entity);
         return entity;
@@ -172,8 +177,11 @@ public class MySQLConnectHibernate implements SQLConnection {
      * @param p Pizza that should be deleted
      */
     public void deletePizza(Pizza p) {
+        createSessionIfNecessary();
+        beginTransaction();
         delete(p);
         logger.info("Delete Pizza={} from database ", p);
+        commitAndcloseSession();
     }
 
     /**
@@ -199,11 +207,20 @@ public class MySQLConnectHibernate implements SQLConnection {
      * @return LinkedList of Pizza Entries
      */
     public List<Pizza> getPizzas() {
-        return session.createNamedQuery(Pizza.findAll, Pizza.class).list();
+        createSessionIfNecessary();
+        beginTransaction();
+        final List<Pizza> list = session.createNamedQuery(Pizza.findAll, Pizza.class).list();
+        closeSession();
+        return list;
+
     }
 
     public List<Ingredient> getZutaten() {
-        return session.createNamedQuery(Ingredient.findAll, Ingredient.class).list();
+        createSessionIfNecessary();
+        beginTransaction();
+        final List<Ingredient> list = session.createNamedQuery(Ingredient.findAll, Ingredient.class).list();
+        closeSession();
+        return list;
     }
 
     /**
