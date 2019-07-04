@@ -9,6 +9,7 @@ import Model.Kasse.OrderedPizza;
 import Model.Kasse.Registryadministration;
 import Model.Pizzen.Ingredient;
 import Model.Pizzen.PizzaAdministration;
+import Model.Pizzen.PizzaIngredientConnectionAdministration;
 import Tools.LinkFetcher;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -24,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author Jannik Will
@@ -42,7 +44,16 @@ public class WindowServiceController {
 
     private GridPane pane;
     private Registryadministration registerAdmininst;
+    private PizzaIngredientConnectionAdministration pizzaIngredientConnectionAdministration;
     private PizzaAdministration pizzaAdministration;
+
+    public WindowServiceController() throws IOException {
+        registerAdmininst = Registryadministration.getInstance();
+        pizzaAdministration = PizzaAdministration.getInstance();
+        pizzaIngredientConnectionAdministration = PizzaIngredientConnectionAdministration.getInstance();
+        loadFXMLItemsAgain();
+        addListener();
+    }
 
     public void loadFXMLItemsAgain() throws IOException {
         FXMLLoader loader = new FXMLLoader(new File(LinkFetcher.normalizePath(FXML_WINDOWCONTROLLERSERVICE_FXML, "/deliverytool")).toURI().toURL());
@@ -56,21 +67,36 @@ public class WindowServiceController {
         kasseListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                zutatenListView.getItems().clear();
+                OrderedPizza pizza = null;
+                try {
+                    pizza = registerAdmininst.get(kasseListView.getSelectionModel().getSelectedIndex());
+                } catch (NoSuchEntryException e) {
+                    e.printStackTrace();
+                }
+                assert pizza != null;
+                Set<Ingredient> ingrediencesByPizzaId = null;
+                try {
+                    ingrediencesByPizzaId = pizzaIngredientConnectionAdministration.getIngrediencesByPizzaId(pizza.getPizza().getId());
+                } catch (NoSuchEntryException | PizzaIngredientConnectionAdministration.IdOutOfRangeException e) {
+                    e.printStackTrace();
+                }
+                assert ingrediencesByPizzaId != null;
+                for (Ingredient e : ingrediencesByPizzaId) {
+                    zutatenListView.getItems().add(e);
+                }
 
             }
         });
     }
 
-    public void init(Stage primaryStage, Registryadministration e, PizzaAdministration administration) throws IOException, NoSuchEntryException {
-        this.registerAdmininst = e;
-        this.pizzaAdministration = pizzaAdministration;
+    public void init(Stage primaryStage) throws IOException, NoSuchEntryException {
         final VBox root = (VBox) primaryStage.getScene().getRoot();
         final ObservableList<Node> children = root.getChildren();
         children.remove(1);
         root.getChildren().add(pane);
-        for (OrderedPizza m : e.getRegisterEntriesUnique()) {
-            if (m instanceof OrderedPizza)
-                addKasseListView((OrderedPizza) m);
+        for (OrderedPizza m : registerAdmininst.getRegisterEntriesUnique()) {
+            addKasseListView(m);
         }
         primaryStage.show();
 

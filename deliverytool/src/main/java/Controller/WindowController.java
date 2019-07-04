@@ -143,14 +143,14 @@ public class WindowController {
       serviceAnsicht.setOnAction(new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
-              WindowServiceController controller = new WindowServiceController();
+              WindowServiceController controller = null;
               try {
-                  controller.loadFXMLItemsAgain();
+                  controller = new WindowServiceController();
               } catch (IOException e) {
                   e.printStackTrace();
               }
               try {
-                  controller.init(primaryStage, registryadministration, pizzaAdministration);
+                  controller.init(primaryStage);
               } catch (IOException | NoSuchEntryException e) {
                   e.printStackTrace();
               }
@@ -814,8 +814,12 @@ public class WindowController {
             gesamterPreisLabel.setText(registryadministration.toEuroValue());
 
             try {
-                reloadRegistryEntries();
-                loadPizzaEntries();
+                if (kasseListview.getItems().isEmpty()) {
+                    reloadRegistryEntries();
+                }
+                if (pizzenListview.getItems().isEmpty()) {
+                    loadPizzaEntries();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (NoSuchEntryException e) {
