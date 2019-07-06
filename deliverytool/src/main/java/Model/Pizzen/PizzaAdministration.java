@@ -13,8 +13,6 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -37,7 +35,6 @@ public class PizzaAdministration {
 
     private ObservableList<Pizza> pizzen;
     private SQLConnection sqlConnection;
-    private Logger logger;
     private static PizzaAdministration pizzaAdministration;
 
     // Constructors:
@@ -52,7 +49,6 @@ public class PizzaAdministration {
      */
     private PizzaAdministration() {
         this(new LinkedList<>());
-        logger = LoggerFactory.getLogger(this.getClass());
         connectToDB();
     }
 
@@ -113,7 +109,7 @@ public class PizzaAdministration {
         }
 
         this.pizzen.add(pizza);
-        logger.info("Added {} with {}€, {}€, {}€, {}€", pizza.getName(), pizza.getSmallPrice(),
+        log.info("Added {} with {}€, {}€, {}€, {}€", pizza.getName(), pizza.getSmallPrice(),
                 pizza.getMiddlePrice(), pizza.getBigPrice(), pizza.getFamilyPrice());
 
         ExecutorService executor = Executors.newFixedThreadPool(10);
@@ -150,7 +146,7 @@ public class PizzaAdministration {
             return;
         }
         final Pizza pizza = pizzen.remove(number);
-        logger.info("Removed {} with {}€, {}€, {}€, {}€", pizza.getName(), pizza.getSmallPrice(),
+        log.info("Removed {} with {}€, {}€, {}€, {}€", pizza.getName(), pizza.getSmallPrice(),
                 pizza.getMiddlePrice(), pizza.getBigPrice(), pizza.getFamilyPrice());
         if (sqlConnection != null) {
             Platform.runLater(new Runnable() {
@@ -169,8 +165,8 @@ public class PizzaAdministration {
 
     public void deleteAll() {
         for (Pizza pizza : pizzen) {
-            logger.info("Remove all:");
-            logger.info("Removed {} with {}€, {}€, {}€, {}€", pizza.getName(), pizza.getSmallPrice(),
+            log.info("Remove all:");
+            log.info("Removed {} with {}€, {}€, {}€, {}€", pizza.getName(), pizza.getSmallPrice(),
                     pizza.getMiddlePrice(), pizza.getBigPrice(), pizza.getFamilyPrice());
         }
         pizzen.clear();

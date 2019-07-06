@@ -11,8 +11,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -29,13 +27,11 @@ public class Ingredientsadministration {
     private ObservableList<Ingredient> zutaten;
     private SQLConnection sqlConnection;
     private static Ingredientsadministration ingredientsadministration;
-    private Logger logger;
 
     /**
      *
      */
     private Ingredientsadministration() {
-        logger = LoggerFactory.getLogger(this.getClass());
         connectToDB();
         zutaten = FXCollections.observableArrayList(sqlConnection.getZutaten());
 
@@ -68,7 +64,7 @@ public class Ingredientsadministration {
             return;
         }
         zutaten.add(e);
-        logger.info("Added Ingredience={}", e.getName());
+        log.info("Added Ingredience={}", e.getName());
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.execute(() -> {
             sqlConnection.addIngredience(e);
@@ -100,7 +96,7 @@ public class Ingredientsadministration {
     public void delete(int number) {
         if (number >= 0) {
             final Ingredient remove = zutaten.remove(number);
-            logger.info("Removed Ingredience={} by number.", remove);
+            log.info("Removed Ingredience={} by number.", remove);
         }
 
     }
@@ -110,7 +106,7 @@ public class Ingredientsadministration {
      */
     public void delete(Ingredient ingredient) {
         zutaten.remove(ingredient);
-        logger.info("Removed Ingredience={} by instance.", ingredient.getName());
+        log.info("Removed Ingredience={} by instance.", ingredient.getName());
     }
     /**
      *

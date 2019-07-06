@@ -77,6 +77,7 @@ public class WindowController {
     @FXML
     private MenuItem neustartItem;
     @FXML
+    private VBox mainVBox;
 
     //Other variables:
     private Label gesamterPreisLabel;
@@ -95,11 +96,12 @@ public class WindowController {
 
     /**
      */
-    public WindowController() {
+    public WindowController() throws IOException {
 
         pizzaAdministration = PizzaAdministration.getInstance();
         registryadministration = Registryadministration.getInstance();
         ingredientsadministration = Ingredientsadministration.getInstance();
+        loadFXMLItemsAgain();
     }
 
     // A Pizza is added
@@ -263,6 +265,15 @@ public class WindowController {
       loadPizzaEntries();
     }
 
+    private void autosizing() {
+        mainVBox.layoutXProperty().bind(gridpane.widthProperty());
+        pizzenListview.setPrefWidth(40);
+        kasseListview.setPrefWidth(40);
+
+        pizzenListview.layoutXProperty().bind(gridpane.widthProperty());
+        kasseListview.layoutXProperty().bind(gridpane.widthProperty());
+    }
+
 
   /**
    * @param pizza The Entry which a new Row should be generated in Pizzalistview
@@ -417,6 +428,17 @@ public class WindowController {
 
     public void show() {
             primaryStage.show();
+        mainVBox.widthProperty().addListener((observable, oldValue, newValue) -> gridpane.setPrefWidth(gridpane.getWidth() + (newValue.doubleValue() - oldValue.doubleValue())));
+        mainVBox.heightProperty().addListener((observable, oldValue, newValue) -> gridpane.setPrefHeight(gridpane.getHeight() + (oldValue.doubleValue() - newValue.doubleValue())));
+        gridpane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            kasseListview.setPrefHeight(kasseListview.getHeight() + (newValue.doubleValue() - oldValue.doubleValue()));
+            pizzenListview.setPrefHeight(kasseListview.getHeight() + (newValue.doubleValue() - oldValue.doubleValue()));
+        });
+
+        gridpane.widthProperty().addListener((observable, oldValue, newValue) -> {
+            kasseListview.setPrefWidth(kasseListview.getWidth() + (newValue.doubleValue() - oldValue.doubleValue()));
+            kasseListview.setPrefWidth(kasseListview.getWidth() + (newValue.doubleValue() - oldValue.doubleValue()));
+        });
     }
 
     // Listener:

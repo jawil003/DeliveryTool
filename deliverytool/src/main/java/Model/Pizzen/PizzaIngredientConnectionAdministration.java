@@ -11,12 +11,14 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
+@Slf4j
 public class PizzaIngredientConnectionAdministration {
     private static PizzaIngredientConnectionAdministration pizzaIngredientConnectionAdministration;
     private SetMultimap<Pizza, Ingredient> connections;
@@ -45,6 +47,7 @@ public class PizzaIngredientConnectionAdministration {
             final List<Ingredient> ingredientConnectionsByPizzaId = connection.getIngredientConnectionsByPizzaId(p.getId());
 
             for (Ingredient e : ingredientConnectionsByPizzaId) {
+                log.info("Loaded Connection Pizza=() and Ingredient={} from Database", p, e);
                 connections.put(p, e);
             }
         }
@@ -56,6 +59,7 @@ public class PizzaIngredientConnectionAdministration {
         if (contains && contains1) {
             connections.put(pizza, ingredient);
             connection.setIngredientConnection(new PizzaIngredientConnection(pizza.getId(), ingredient.getId()));
+            log.info("Set new Connection Pizza={} and Ingredient={}", pizza, ingredient);
         } else {
             if (!contains & !contains1) {
                 throw new NoSuchEntryException("There is no Pizza and Ingredient with this Id in Database");
@@ -92,6 +96,7 @@ public class PizzaIngredientConnectionAdministration {
         } else {
             connections.put(pizza, ingredient);
             connection.setIngredientConnection(new PizzaIngredientConnection(pizzaId, ingredientId));
+            log.info("Set new Connection Pizza={} and Ingredient={}", pizza, ingredient);
         }
     }
 
@@ -102,11 +107,18 @@ public class PizzaIngredientConnectionAdministration {
             try {
                 pizzaById = pizzaAdministration.getPizzaById(pizzaId);
             } catch (NoSuchEntryException e) {
-                throw new NoSuchEntryException("There is no Pizza with this Id in Database");
+                NoSuchEntryException noSuchEntryException = new NoSuchEntryException("There is no Pizza with this Id in Database");
+                log.debug("Error getting Ingrediences for PizzaId={}", pizzaId, noSuchEntryException);
+                throw noSuchEntryException;
             }
-            return connections.get(pizzaById);
+            Set<Ingredient> ingredients = connections.get(pizzaById);
+            log.debug("Getted Ingrediences={} for PizzaId={}", ingredients, pizzaById);
+            return ingredients;
+
         } else {
-            throw new IdOutOfRangeException("This Index is unvalid, because it is negative");
+            final IdOutOfRangeException idOutOfRangeException = new IdOutOfRangeException("This Index is unvalid, because it is negative");
+            log.debug("Error getting Ingrediences for PizzaId={}", pizzaId, idOutOfRangeException);
+            throw idOutOfRangeException;
         }
     }
 

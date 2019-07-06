@@ -14,8 +14,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.service.spi.ServiceException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -31,7 +29,6 @@ public class MySQLConnectHibernate implements SQLConnection {
 
     private static SessionFactory sessionFactory;
     private Session session;
-    private Logger logger;
     private static MySQLConnectHibernate entity;
 
     /**
@@ -41,7 +38,6 @@ public class MySQLConnectHibernate implements SQLConnection {
      * @throws IllegalAccessException
      */
     private MySQLConnectHibernate() throws ServiceException {
-        logger = LoggerFactory.getLogger(this.getClass());
         setup();
     }
 
@@ -69,7 +65,7 @@ public class MySQLConnectHibernate implements SQLConnection {
     private void setup() throws ServiceException {
         if (sessionFactory == null) {
             sessionFactory = new Configuration().configure().buildSessionFactory();
-            logger.debug("Create new SessionFactory={}.", sessionFactory);
+            log.debug("Create new SessionFactory={}.", sessionFactory);
         }
     }
 
@@ -94,7 +90,7 @@ public class MySQLConnectHibernate implements SQLConnection {
         }
         if (!session.isOpen()) {
             session = sessionFactory.openSession();
-            logger.debug("Open Session={}", session);
+            log.debug("Open Session={}", session);
         }
     }
 
@@ -108,7 +104,7 @@ public class MySQLConnectHibernate implements SQLConnection {
 
     private void beginTransaction() {
         session.beginTransaction();
-        logger.debug("Beginning the transaction");
+        log.debug("Beginning the transaction");
     }
 
 
@@ -116,7 +112,7 @@ public class MySQLConnectHibernate implements SQLConnection {
         final Pizza entity = executeTransaction(p);
         session.save(entity);
         commitAndcloseSession();
-        logger.debug("Fired Pizza={} to database successful", p);
+        log.debug("Fired Pizza={} to database successful", p);
     }
 
     private void commitAndcloseSession() {
@@ -139,7 +135,7 @@ public class MySQLConnectHibernate implements SQLConnection {
         final Ingredient entity = executeTransaction(p);
         session.save(entity);
         commitAndcloseSession();
-        logger.debug("Fired Ingredience={} to database successful", p);
+        log.debug("Fired Ingredience={} to database successful", p);
 
     }
 
@@ -147,7 +143,7 @@ public class MySQLConnectHibernate implements SQLConnection {
         final Pizza entity = executeTransaction(p);
         session.update(entity);
         commitAndcloseSession();
-        logger.debug("Update Pizza={} on database successful", p);
+        log.debug("Update Pizza={} on database successful", p);
 
     }
 
@@ -155,19 +151,19 @@ public class MySQLConnectHibernate implements SQLConnection {
         Pizza entity = executeTransaction(p);
         session.delete(entity);
         commitAndcloseSession();
-        logger.debug("Deleted Pizza={} on database successful", p);
+        log.debug("Deleted Pizza={} on database successful", p);
     }
 
     private Pizza executeTransaction(Pizza p) {
         Pizza entity = new Pizza(p.getName(), p.getSmallPrice(), p.getMiddlePrice(), p.getBigPrice(), p.getFamilyPrice());
-        logger.debug("Convert Pizza={} to Pizza={}", p, entity);
+        log.debug("Convert Pizza={} to Pizza={}", p, entity);
         return entity;
 
     }
 
     private Ingredient executeTransaction(Ingredient e) {
         Ingredient entity = new Ingredient(e.getName());
-        logger.debug("Convert Ingredient={} to Ingredient={}", e, entity);
+        log.debug("Convert Ingredient={} to Ingredient={}", e, entity);
         return entity;
     }
 
@@ -187,7 +183,7 @@ public class MySQLConnectHibernate implements SQLConnection {
         createSessionIfNecessary();
         beginTransaction();
         delete(p);
-        logger.info("Delete Pizza={} from database ", p);
+        log.info("Delete Pizza={} from database ", p);
         commitAndcloseSession();
     }
 
@@ -198,13 +194,13 @@ public class MySQLConnectHibernate implements SQLConnection {
      */
     public void addPizza(Pizza pizza) {
         create(pizza);
-        logger.info("Create Pizza={} in database ", pizza);
+        log.info("Create Pizza={} in database ", pizza);
     }
 
     @Override
     public void addIngredience(Ingredient e) {
         create(e);
-        logger.info("Create Ingredient={} in database ", e);
+        log.info("Create Ingredient={} in database ", e);
     }
 
 

@@ -4,19 +4,23 @@
 
 package Model.Pizzen;
 
-import javafx.collections.FXCollections;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.powermock.api.support.membermodification.MemberModifier;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
-import static org.powermock.api.mockito.PowerMockito.spy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 /**
  * @author Jannik Will
@@ -24,15 +28,22 @@ import static org.powermock.api.mockito.PowerMockito.spy;
  */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Ingredientsadministration.class)
+@PrepareForTest(LoggerFactory.class)
 public class IngredientsadministrationTest {
     @Mock
-    private static Ingredientsadministration ingredientsadministration;
+    private static Logger loggerMock;
+    @Mock
+    private static SessionFactory mockSessionFactory;
+    private Ingredientsadministration ingredientsadministration = Ingredientsadministration.getInstance();
 
     @BeforeClass
-    public static void prepare() throws Exception {
-        ingredientsadministration = spy(Ingredientsadministration.getInstance());
-        MemberModifier.field(ingredientsadministration.getClass(), "zutaten").set(ingredientsadministration, FXCollections.observableArrayList());
+    public static void prepare() {
+        PowerMockito.mockStatic(LoggerFactory.class);
+        when(LoggerFactory.getLogger(any(Class.class))).
+                thenReturn(loggerMock);
+        PowerMockito.mockStatic(SessionFactory.class);
+        when(new Configuration().configure().buildSessionFactory()).
+                thenReturn(mockSessionFactory);
     }
 
     @Test
