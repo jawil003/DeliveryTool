@@ -132,6 +132,7 @@ public class MySQLConnectHibernate implements SQLConnection {
     }
 
     private void create(Ingredient p) {
+        createSessionIfNecessary();
         final Ingredient entity = executeTransaction(p);
         session.save(entity);
         commitAndcloseSession();
@@ -140,6 +141,7 @@ public class MySQLConnectHibernate implements SQLConnection {
     }
 
     private void update(Pizza p) {
+        createSessionIfNecessary();
         final Pizza entity = executeTransaction(p);
         session.update(entity);
         commitAndcloseSession();
@@ -148,6 +150,7 @@ public class MySQLConnectHibernate implements SQLConnection {
     }
 
     private void delete(Pizza p) {
+        createSessionIfNecessary();
         Pizza entity = executeTransaction(p);
         session.delete(entity);
         commitAndcloseSession();

@@ -78,9 +78,10 @@ public class WindowController {
     private MenuItem neustartItem;
     @FXML
     private VBox mainVBox;
+    @FXML
+    private Label gesamterPreisLabel;
 
     //Other variables:
-    private Label gesamterPreisLabel;
     private Stage primaryStage;
     private static final String FXML_CELLS_ROW_PIZZEN_LISTCELL_FXML = "deliverytool/Fxml/Cells/RowPizzenListcell.fxml";
     private static final String FXML_CELLS_ROW_KASSE_LISTCELL_FXML = "deliverytool/Fxml/Cells/RowKasseListcell.fxml";
