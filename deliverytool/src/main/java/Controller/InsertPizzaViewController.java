@@ -274,7 +274,9 @@ public class InsertPizzaViewController {
         @Override
         protected void updateItem(Ingredient item, boolean empty) {
             super.updateItem(item, empty);
-            //setText(item.getName());
+            if (!empty) {
+                setText(item.getName());
+            }
         }
     }
 }
