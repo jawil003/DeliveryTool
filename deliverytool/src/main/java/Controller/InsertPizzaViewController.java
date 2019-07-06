@@ -12,13 +12,10 @@ import Tools.LinkFetcher;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -107,6 +104,7 @@ public class InsertPizzaViewController {
 
     void init(Stage parent) throws IOException, NoSuchEntryException {
         addListener();
+        zutatenView.setCellFactory(param -> new IngredientListCell());
         current = new Stage();
         current.setTitle("Pizza hinzufügen");
         current.initOwner(parent);
@@ -243,6 +241,40 @@ public class InsertPizzaViewController {
             if (event.getCode() == KeyCode.ENTER) {
                 then.requestFocus();
             }
+        }
+    }
+
+    /**
+     * @todo Create Drag and Drop in Pizza Adding VieW
+     * @body Create Drag and Drop in Pizza Adding VieW for Ingredients to add them to the Pizza
+     */
+    private class IngredientListCell extends ListCell<Ingredient> {
+        public IngredientListCell() {
+            super();
+            setContentDisplay(ContentDisplay.CENTER);
+            setAlignment(Pos.CENTER);
+
+            setOnDragDetected(event -> {
+                if (getItem() == null) {
+                    return;
+                }
+                Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                content.putString(getItem().getName());
+
+
+                dragboard.setContent(content);
+
+                event.consume();
+                hinzugefuegteZutatenView.getItems().add(getItem());
+
+            });
+        }
+
+        @Override
+        protected void updateItem(Ingredient item, boolean empty) {
+            super.updateItem(item, empty);
+            //setText(item.getName());
         }
     }
 }
