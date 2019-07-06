@@ -266,8 +266,17 @@ public class InsertPizzaViewController {
                 dragboard.setContent(content);
 
                 event.consume();
-                hinzugefuegteZutatenView.getItems().add(getItem());
 
+            });
+
+            setOnDragDropped(event -> {
+                if (getItem() == null) {
+                    return;
+                }
+                if (event.getGestureTarget() == hinzugefuegteZutatenView) {
+                    event.consume();
+                    hinzugefuegteZutatenView.getItems().add(getItem());
+                }
             });
         }
 
