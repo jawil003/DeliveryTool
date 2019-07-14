@@ -4,6 +4,7 @@
 
 package App;
 
+import Controller.LanguageHelper;
 import Controller.WindowController;
 import DatabaseConnection.MySQLConnectHibernate;
 import Model.Kasse.Registryadministration;
@@ -84,7 +85,7 @@ public class JavaFXApplication extends Application {
         if (!dbConnectionEstablished) {
             return;
         }
-        FXMLLoader loader = new FXMLLoader(new File(FXML_PATH).toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File(FXML_PATH).toURI().toURL(), LanguageHelper.getInstance().getLanguageAuto());
 
         //MainWindow is build and controller added
 

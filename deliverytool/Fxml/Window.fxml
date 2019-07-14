@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+  ~ Copyright (c) Jannik Will and Albert Munsch
+  -->
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -12,46 +16,55 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<!--
-  ~ Copyright (c) Jannik Will and Albert Munsch
-  -->
-
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="mainVBox" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308"
-      maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/11.0.1">
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="mainVBox" xmlns="http://javafx.com/javafx/11.0.1">
     <children>
-        <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
-        <menus>
-            <Menu mnemonicParsing="false" text="Datei">
-               <items>
-                  <MenuItem fx:id="schliessenItem" mnemonicParsing="false" text="Schließen" />
-                  <MenuItem fx:id="neustartItem" mnemonicParsing="false" text="Neustart" />
-                  <MenuItem fx:id="bonDruckenItem" mnemonicParsing="false" text="Bon drucken" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Bearbeiten">
-               <items>
-                  <MenuItem fx:id="ausgewaehltLoeschen" mnemonicParsing="false" text="Ausgewählt löschen" />
-                  <MenuItem fx:id="allesLoeschenItem" mnemonicParsing="false" text="Alles löschen" />
-                  <MenuItem fx:id="eintragHinzufuegenItem" mnemonicParsing="false" text="Pizza hinzufügen" />
-                  <MenuItem fx:id="eintragHinzufuegenItem1" mnemonicParsing="false" text="Zutat hinzufügen" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Ansicht">
-               <items>
-                  <MenuItem fx:id="kasseAnsicht" mnemonicParsing="false" text="Kasse" />
-                  <MenuItem fx:id="serviceAnsicht" mnemonicParsing="false" text="Service" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Hilfe">
-               <items>
-                  <MenuItem fx:id="ueberItem" mnemonicParsing="false" text="Über" />
-               </items>
-            </Menu>
-        </menus>
-      </MenuBar>
-        <GridPane fx:id="gridpane" alignment="CENTER" hgap="10.0" maxHeight="1.7976931348623157E308"
-                  maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="388.0"
-                  prefWidth="600.0" vgap="10.0" VBox.vgrow="ALWAYS">
+        <MenuBar fx:id="menuBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <menus>
+                <Menu mnemonicParsing="false" text="%mainwindow.file">
+                    <items>
+                        <MenuItem fx:id="schliessenItem" mnemonicParsing="false" text="%mainwindow.file.close"/>
+                        <MenuItem fx:id="neustartItem" mnemonicParsing="false" text="%mainwindow.file.restart"/>
+                        <MenuItem fx:id="bonDruckenItem" mnemonicParsing="false" text="%mainwindow.file.print_receipt"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="%mainwindow.edit">
+                    <items>
+                        <MenuItem fx:id="ausgewaehltLoeschen" mnemonicParsing="false"
+                                  text="%mainwindow.edit.delete_selected"/>
+                        <MenuItem fx:id="allesLoeschenItem" mnemonicParsing="false" text="%mainwindow.edit.delete_all"/>
+                        <MenuItem fx:id="eintragHinzufuegenItem" mnemonicParsing="false"
+                                  text="%mainwindow.edit.adding_a_pizza"/>
+                        <MenuItem fx:id="eintragHinzufuegenItem1" mnemonicParsing="false"
+                                  text="%mainwindow.edit.add_an_ingredient"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="%mainwindow.view">
+                    <items>
+                        <MenuItem fx:id="kasseAnsicht" mnemonicParsing="false" text="%mainwindow.view.cash_register"/>
+                        <MenuItem fx:id="serviceAnsicht" mnemonicParsing="false" text="%mainwindow.view.service"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="%mainwindow.help">
+                    <items>
+                        <MenuItem fx:id="ueberItem" mnemonicParsing="false" text="%mainwindow.help.about"/>
+                        <Menu mnemonicParsing="false" text="%mainwindow.help.settings">
+                            <items>
+                                <Menu mnemonicParsing="false" text="%mainwindow.help.settings.language">
+                                    <items>
+                                        <MenuItem fx:id="changeLanguageEnglishItem" mnemonicParsing="false"
+                                                  onAction="#changeLanguage" text="English"/>
+                                        <MenuItem fx:id="changeLanguageDeutschItem" mnemonicParsing="false"
+                                                  onAction="#changeLanguage" text="Deutsch"/>
+                                    </items>
+                                </Menu>
+                            </items>
+                        </Menu>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <GridPane fx:id="gridpane" alignment="CENTER" hgap="10.0" prefHeight="388.0" prefWidth="600.0" vgap="10.0"
+                  VBox.vgrow="ALWAYS">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="10.0" prefWidth="291.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="289.0" />
@@ -61,22 +74,19 @@
                 <RowConstraints maxHeight="362.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <ListView id="kasseListview" fx:id="kasseListview" maxHeight="1.7976931348623157E308"
-                          maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="353.0"
-                          prefWidth="271.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-                          GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS"/>
+                <ListView id="kasseListview" fx:id="kasseListview" maxHeight="1.0E42" maxWidth="1.0E42"
+                          minHeight="353.0" minWidth="271.0" prefHeight="353.0" prefWidth="271.0"
+                          GridPane.columnIndex="1"/>
                 <HBox alignment="TOP_CENTER" prefHeight="29.0" prefWidth="271.0" spacing="5.0" GridPane.columnIndex="1"
-                      GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1"
+                      GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"
                       GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                     <children>
-                        <Label contentDisplay="CENTER" text="Zu bezahlen:" HBox.hgrow="NEVER"/>
-                        <Label fx:id="gesamterPreisLabel" text="0,00€" HBox.hgrow="NEVER"/>
+                        <Label contentDisplay="CENTER" text="%mainwindow.label.to_pay"/>
+                        <Label fx:id="gesamterPreisLabel" text="0,00€"/>
                     </children>
                 </HBox>
-                <ListView id="kasseListview" fx:id="pizzenListview" maxHeight="1.7976931348623157E308"
-                          maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="353.0"
-                          prefWidth="271.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
-                          GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS"/>
+                <ListView id="kasseListview" fx:id="pizzenListview" maxHeight="1.0E42" maxWidth="1.0E21"
+                          minHeight="353.0" minWidth="271.0" prefHeight="353.0" prefWidth="271.0"/>
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Jannik Will and Albert Munsch
+ */
+
 package Controller;
 
 import javafx.event.ActionEvent;
@@ -15,7 +19,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 /**
  * @author Jannik Will
@@ -51,13 +54,13 @@ public class InsertNewIngredienceViewController {
     private Stage owner;
 
 
-    public InsertNewIngredienceViewController(Stage stage) throws MalformedURLException {
+    public InsertNewIngredienceViewController(Stage stage) throws IOException {
         loadFXMLAgain();
         owner = stage;
     }
 
-    private void loadFXMLAgain() throws MalformedURLException {
-        loader = new FXMLLoader(new File("deliverytool/Fxml/InsertNewIngredienceView.fxml").toURI().toURL());
+    private void loadFXMLAgain() throws IOException {
+        loader = new FXMLLoader(new File("deliverytool/Fxml/InsertNewIngredienceView.fxml").toURI().toURL(), LanguageHelper.getInstance().getLanguageAuto());
 
     }
 

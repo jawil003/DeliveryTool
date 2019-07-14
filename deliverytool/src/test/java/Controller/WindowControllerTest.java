@@ -111,6 +111,11 @@ public class WindowControllerTest extends ApplicationTest {
         assertNotNull(controller.getServiceAnsicht());
     }
 
+    @Test
+    public void mainVBoxNotNull() {
+        assertNotNull(controller.getMainVBox());
+    }
+
     /**
      * Tests wheater the GesamterPreis Label is Null, because the loading from the FXML File wasn´t sucessful
      */

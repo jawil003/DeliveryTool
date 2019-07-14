@@ -31,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +44,7 @@ import java.util.List;
  * @author Jannik Will
  * @version 1.0
  */
-
+@Getter
 public class WindowController {
     //FXML-Integration variables:
     @FXML
@@ -80,6 +81,11 @@ public class WindowController {
     private VBox mainVBox;
     @FXML
     private Label gesamterPreisLabel;
+    @FXML
+    private MenuItem changeLanguageEnglishItem;
+
+    @FXML
+    private MenuItem changeLanguageDeutschItem;
 
     //Other variables:
     private Stage primaryStage;
@@ -94,6 +100,7 @@ public class WindowController {
     private Ingredientsadministration ingredientsadministration;
     private Parent pane;
     private Scene scene;
+
 
     /**
      */
@@ -110,7 +117,7 @@ public class WindowController {
     public void loadFXMLItemsAgain() throws IOException {
 
         final String s = LinkFetcher.normalizePath(Paths.get(FXML_WINDOW_FXML).toAbsolutePath().toString(), "/deliverytool");
-        FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL(), LanguageHelper.getInstance().getLanguageAuto());
         if (loader.getController() == null) {
             loader.setController(this);
         }
@@ -173,7 +180,7 @@ public class WindowController {
           insertNewIngredienceViewController = null;
           try {
               insertNewIngredienceViewController = new InsertNewIngredienceViewController(primaryStage);
-          } catch (MalformedURLException e) {
+          } catch (IOException e) {
               e.printStackTrace();
           }
 
@@ -282,7 +289,7 @@ public class WindowController {
   private void addPizzaRow(Pizza pizza) throws MalformedURLException {
     // load fxml
     try {
-      FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_PIZZEN_LISTCELL_FXML).toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_PIZZEN_LISTCELL_FXML).toURI().toURL(), LanguageHelper.getInstance().getLanguageAuto());
 
             // set controller
             pizzasController = new RowPizzasController();
@@ -500,7 +507,7 @@ public class WindowController {
         if (!registryadministration.contains(pizza)) {
 
 
-            FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(new File(FXML_CELLS_ROW_KASSE_LISTCELL_FXML).toURI().toURL(), LanguageHelper.getInstance().getLanguageAuto());
 
             RowRegisterController kasseContr = new RowRegisterController();
             loader.setController(kasseContr);
@@ -614,6 +621,17 @@ public class WindowController {
                 readdOrderedPizza((OrderedPizza) e);
             }
         }
+    }
+
+    @FXML
+    void changeLanguage(ActionEvent event) {
+        if (event.getSource() == changeLanguageDeutschItem) {
+            LanguageHelper.getInstance().setLanguage(Language.Deutsch);
+        } else if (event.getSource() == changeLanguageEnglishItem) {
+            LanguageHelper.getInstance().setLanguage(Language.English);
+        }
+        neustartItem.fire();
+
     }
 
     private class EintragHinzufuegenListener implements EventHandler<ActionEvent> {

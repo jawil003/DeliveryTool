@@ -81,7 +81,7 @@ public class InsertPizzaViewController {
 
     public void loadFXMLItemsAgain() throws IOException {
         final String s = LinkFetcher.normalizePath(Paths.get("deliverytool/Fxml/InsertNewPizzaView.fxml").toAbsolutePath().toString(), "/deliverytool");
-        FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File(s).toURI().toURL(), LanguageHelper.getInstance().getLanguageAuto());
         if (loader.getController() == null)
             loader.setController(this);
         root = loader.load();

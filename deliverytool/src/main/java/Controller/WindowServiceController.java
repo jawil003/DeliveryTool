@@ -57,7 +57,7 @@ public class WindowServiceController {
     }
 
     public void loadFXMLItemsAgain() throws IOException {
-        FXMLLoader loader = new FXMLLoader(new File(LinkFetcher.normalizePath(FXML_WINDOWCONTROLLERSERVICE_FXML, "/deliverytool")).toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File(LinkFetcher.normalizePath(FXML_WINDOWCONTROLLERSERVICE_FXML, "/deliverytool")).toURI().toURL(), LanguageHelper.getInstance().getLanguageAuto());
         if (loader.getController() == null)
             loader.setController(this);
         pane = loader.load();
@@ -121,7 +121,7 @@ public class WindowServiceController {
 
     private void addKasseListView(OrderedPizza e) throws IOException, NoSuchEntryException {
         RowRegisterController c = new RowRegisterController();
-        FXMLLoader loader = new FXMLLoader(new File(WindowController.getFxmlCellsRowKasseListcellFxml()).toURI().toURL());
+        FXMLLoader loader = new FXMLLoader(new File(WindowController.getFxmlCellsRowKasseListcellFxml()).toURI().toURL(), LanguageHelper.getInstance().getLanguageAuto());
         loader.setController(c);
         final Pane load = loader.load();
         c.init(e);
