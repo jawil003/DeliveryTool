@@ -4,7 +4,6 @@
 
 package Controller;
 
-import Model.Kasse.NoSuchEntryException;
 import Model.Pizzen.Ingredient;
 import Model.Pizzen.Ingredientsadministration;
 import Model.Pizzen.Pizza;
@@ -18,7 +17,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -95,17 +93,15 @@ public class InsertPizzaViewController {
     }
 
     private void addListener() {
-        zutatenView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getClickCount() >= 2) {
-
-                }
+        zutatenView.setOnMouseClicked(event -> {
+            if (event.getClickCount() >= 2) {
+                Ingredient selectedItem = zutatenView.getSelectionModel().getSelectedItem();
+                hinzugefuegteZutatenView.getItems().add(selectedItem);
             }
         });
     }
 
-    void init(Stage parent) throws IOException, NoSuchEntryException {
+    void init(Stage parent) {
         addListener();
         current = new Stage();
         current.setTitle("Pizza hinzufügen");
@@ -178,14 +174,14 @@ public class InsertPizzaViewController {
         this.zutatenView = zutatenView;
     }
 
-    public ListView<?> getZutatenView() {
+    public ListView<Ingredient> getZutatenView() {
         return this.zutatenView;
     }
 
     /**
      * @return the ListView where the Zutatten are shown which are added to the Pizza
      */
-    public ListView<?> getHinzugefuegteZutatenView() {
+    public ListView<Ingredient> getHinzugefuegteZutatenView() {
         return hinzugefuegteZutatenView;
     }
 
@@ -245,5 +241,6 @@ public class InsertPizzaViewController {
             }
         }
     }
+
 }
 

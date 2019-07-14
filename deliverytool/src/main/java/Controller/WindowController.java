@@ -6,10 +6,7 @@ package Controller;
 
 import App.JavaFXApplication;
 import Model.Kasse.*;
-import Model.Pizzen.Ingredient;
-import Model.Pizzen.Ingredientsadministration;
-import Model.Pizzen.Pizza;
-import Model.Pizzen.PizzaAdministration;
+import Model.Pizzen.*;
 import Tools.LinkFetcher;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -187,12 +184,9 @@ public class WindowController {
           try {
               insertNewIngredienceViewController.init();
 
-              insertNewIngredienceViewController.getOkButton().setOnAction(new EventHandler<ActionEvent>() {
-                  @Override
-                  public void handle(ActionEvent event) {
-                      ingredientsadministration.add(new Ingredient(insertNewIngredienceViewController.getNameTextField().getText()));
-                      insertNewIngredienceViewController.getAbbrechenButton().fire();
-                  }
+              insertNewIngredienceViewController.getOkButton().setOnAction(event1 -> {
+                  ingredientsadministration.add(new Ingredient(insertNewIngredienceViewController.getNameTextField().getText()));
+                  insertNewIngredienceViewController.getAbbrechenButton().fire();
               });
           } catch (IOException e) {
               e.printStackTrace();
@@ -887,11 +881,21 @@ public class WindowController {
         @Override
         public void handle(ActionEvent event) {
             try {
-                pizzaAdministration.add(new Pizza(insertPizzaViewController.getNameField().getText(),
+                Pizza pizza = new Pizza(insertPizzaViewController.getNameField().getText(),
                         Double.valueOf(insertPizzaViewController.getPreisKleinField().getText()),
                         Double.valueOf(insertPizzaViewController.getPreisMittelField().getText()),
                         Double.valueOf(insertPizzaViewController.getPreisGrossField().getText()),
-                        Double.valueOf(insertPizzaViewController.getPreisFamilieField().getText())));
+                        Double.valueOf(insertPizzaViewController.getPreisFamilieField().getText()));
+                pizzaAdministration.add(pizza);
+                final ObservableList<Ingredient> items = insertPizzaViewController.getHinzugefuegteZutatenView().getItems();
+                final PizzaIngredientConnectionAdministration admin = PizzaIngredientConnectionAdministration.getInstance();
+                for (Ingredient e : items) {
+                    try {
+                        admin.setPizzaIngredientConnection(pizza, e);
+                    } catch (NoSuchEntryException e1) {
+                        e1.printStackTrace();
+                    }
+                }
                 insertPizzaViewController.close();
             } catch (NumberFormatException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);

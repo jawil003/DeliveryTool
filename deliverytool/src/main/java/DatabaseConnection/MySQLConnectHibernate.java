@@ -11,6 +11,7 @@ import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.service.spi.ServiceException;
@@ -30,6 +31,7 @@ public class MySQLConnectHibernate implements SQLConnection {
     private static SessionFactory sessionFactory;
     private Session session;
     private static MySQLConnectHibernate entity;
+    private Transaction transaction;
 
     /**
      * @throws ClassNotFoundException
@@ -59,6 +61,8 @@ public class MySQLConnectHibernate implements SQLConnection {
         if (entity == null) {
             entity = new MySQLConnectHibernate();
         }
+        if (entity.session != null)
+            entity.session.close();
         return entity;
     }
 
@@ -85,13 +89,11 @@ public class MySQLConnectHibernate implements SQLConnection {
      * @throws ClassNotFoundException
      */
     private void createSessionIfNecessary() {
-        if (session == null) {
-            session = sessionFactory.openSession();
-        }
-        if (!session.isOpen()) {
+        if (session == null || !session.isOpen()) {
             session = sessionFactory.openSession();
             log.debug("Open Session={}", session);
         }
+
     }
 
     public Pizza getPizza(Long id) {
@@ -109,6 +111,7 @@ public class MySQLConnectHibernate implements SQLConnection {
 
 
     private void create(Pizza p) {
+        createSessionIfNecessary();
         final Pizza entity = executeTransaction(p);
         session.save(entity);
         commitAndcloseSession();
